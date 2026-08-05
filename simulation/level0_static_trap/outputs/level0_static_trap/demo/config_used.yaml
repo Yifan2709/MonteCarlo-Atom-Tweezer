@@ -1,0 +1,50 @@
+aod:
+  center_um: 0.0
+  depth_source: paper_transport_depth
+  depth_uK: 280.0
+  name: AOD
+  waist_source: assumed_matched_to_slm_back_aperture
+  waist_um: 1.17
+atom:
+  isotope: Cs-133
+  mass_u: 132.90545196
+grid:
+  curvature_step_waist: 0.002
+  max_offset_waist: 4.0
+  min_offset_waist: -4.0
+  num_points: 4001
+model:
+  coordinate: radial_at_focus
+output:
+  cli_output_dir_override: outputs/level0_static_trap/demo
+  directory: outputs/level0_static_trap/demo
+  resolved_directory: /Users/yifansmac/work/Quantum/MonteCarlo/simulation/level0_static_trap/outputs/level0_static_trap/demo
+  save_csv: true
+  save_json: true
+  save_md: true
+  save_png: true
+runtime:
+  mass_kg: 2.2069469514370953e-25
+  omega_dt: 0.01131198571991948
+  trap_choice: both
+  warnings: []
+slm:
+  center_um: 0.0
+  depth_source: paper_full_depth
+  depth_uK: 180.0
+  name: SLM
+  waist_source: paper_1061nm_slm_measurement
+  waist_um: 1.17
+trajectory:
+  dt_us: 0.05
+  duration_us: 3000.0
+  frequency_estimator: interpolated_zero_crossings
+  initial_displacement_waist: 0.1
+  initial_velocity_m_per_s: 0.0
+  minimum_complete_cycles: 20
+validation:
+  curvature_relative_tolerance: 0.0001
+  harmonic_frequency_relative_tolerance: 0.0001
+  max_energy_error_over_depth: 0.0001
+  max_omega_dt: 0.05
+  trajectory_frequency_relative_tolerance: 0.03

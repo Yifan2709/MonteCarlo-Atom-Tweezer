@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg-link
+build/
+dist/
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Large generated trajectory CSVs (regenerable via CLI; ~15MB each)
+# Kept out of git; all other (small) results are committed.
+simulation/level0_static_trap/outputs/**/*_trajectory.csv
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/

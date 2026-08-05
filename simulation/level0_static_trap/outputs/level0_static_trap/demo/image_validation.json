@@ -1,0 +1,308 @@
+{
+  "all_pass": true,
+  "images": {
+    "aod_energy.png": {
+      "checks": {
+        "array_finite": true,
+        "exists": true,
+        "height_nonzero": true,
+        "height_px": 900,
+        "legend_label_count": 3,
+        "not_monochrome": true,
+        "overall_pass": true,
+        "pixel_variance": 1115.422795552469,
+        "reopen_ok": true,
+        "series_count": 3,
+        "size_above_lower_bound": true,
+        "size_bytes": 76041,
+        "width_nonzero": true,
+        "width_px": 1800,
+        "x_data_nonzero": true,
+        "y_data_nonzero": true
+      },
+      "expected": {
+        "figure_size_inches": [
+          9.0,
+          4.5
+        ],
+        "legend_label_count": 3,
+        "series_count": 3,
+        "x_data_nonzero": true,
+        "x_data_range": [
+          0.0,
+          3000.0
+        ],
+        "y_data_nonzero": true,
+        "y_data_range": [
+          -6.272056650176399e-07,
+          1.855920175776305e-16
+        ]
+      },
+      "path": "/Users/yifansmac/work/Quantum/MonteCarlo/simulation/level0_static_trap/outputs/level0_static_trap/demo/aod_energy.png",
+      "visual_review_finding": "Normalized energy error (E-E0)/U0 vs time (us) for AOD. Same structure as SLM, tiny bounded oscillation near zero (~6e-7 amplitude), within +/-tolerance reference lines. VERDICT: correct & readable.",
+      "visual_review_method": "analyze_image model + programmatic",
+      "visual_review_performed": true,
+      "visual_review_verdict": "correct_and_readable"
+    },
+    "aod_trajectory.png": {
+      "checks": {
+        "array_finite": true,
+        "exists": true,
+        "height_nonzero": true,
+        "height_px": 900,
+        "legend_label_count": 1,
+        "not_monochrome": true,
+        "overall_pass": true,
+        "pixel_variance": 4182.393100493752,
+        "reopen_ok": true,
+        "series_count": 1,
+        "size_above_lower_bound": true,
+        "size_bytes": 345652,
+        "width_nonzero": true,
+        "width_px": 1800,
+        "x_data_nonzero": true,
+        "y_data_nonzero": true
+      },
+      "expected": {
+        "figure_size_inches": [
+          9.0,
+          4.5
+        ],
+        "legend_label_count": 1,
+        "series_count": 1,
+        "x_data_nonzero": true,
+        "x_data_range": [
+          0.0,
+          3000.0
+        ],
+        "y_data_nonzero": true,
+        "y_data_range": [
+          -0.11699999999973752,
+          0.11699999999999999
+        ]
+      },
+      "path": "/Users/yifansmac/work/Quantum/MonteCarlo/simulation/level0_static_trap/outputs/level0_static_trap/demo/aod_trajectory.png",
+      "visual_review_finding": "Displacement (um) from trap center vs time (us) for AOD. Smooth near-sinusoidal bounded oscillation, higher frequency than SLM (~106 cycles over 3000 us, period ~28 us, ~36 kHz), symmetric about zero. Axes labeled correctly. Reviewed via inline image rendering (Read tool). VERDICT: correct & readable.",
+      "visual_review_method": "inline Read render (model-direct visual) + programmatic",
+      "visual_review_performed": true,
+      "visual_review_verdict": "correct_and_readable"
+    },
+    "force_comparison.png": {
+      "checks": {
+        "array_finite": true,
+        "exists": true,
+        "height_nonzero": true,
+        "height_px": 1000,
+        "legend_label_count": 2,
+        "not_monochrome": true,
+        "overall_pass": true,
+        "pixel_variance": 833.7073509836235,
+        "reopen_ok": true,
+        "series_count": 2,
+        "size_above_lower_bound": true,
+        "size_bytes": 78804,
+        "width_nonzero": true,
+        "width_px": 1600,
+        "x_data_nonzero": true,
+        "y_data_nonzero": true
+      },
+      "expected": {
+        "figure_size_inches": [
+          8.0,
+          5.0
+        ],
+        "legend_label_count": 2,
+        "series_count": 2,
+        "x_data_nonzero": true,
+        "x_data_range": [
+          -4.679999999999999,
+          4.679999999999999
+        ],
+        "y_data_nonzero": true,
+        "y_data_range": [
+          -4.008096848964865e-21,
+          4.008096848964866e-21
+        ]
+      },
+      "path": "/Users/yifansmac/work/Quantum/MonteCarlo/simulation/level0_static_trap/outputs/level0_static_trap/demo/force_comparison.png",
+      "visual_review_finding": "Force F = -dU/dx for SLM (blue) and AOD (orange) vs x (um). Odd function: positive for x<0, negative for x>0, zero crossing at x=0, peak magnitude then decay. Y-axis label 'Force F (N)' present and readable (rotated, no clipping). VERDICT: correct & readable.",
+      "visual_review_method": "analyze_image model + programmatic",
+      "visual_review_performed": true,
+      "visual_review_verdict": "correct_and_readable"
+    },
+    "frequency_comparison.png": {
+      "checks": {
+        "array_finite": true,
+        "exists": true,
+        "height_nonzero": true,
+        "height_px": 1000,
+        "legend_label_count": 4,
+        "not_monochrome": true,
+        "overall_pass": true,
+        "pixel_variance": 5499.096345078698,
+        "reopen_ok": true,
+        "series_count": 4,
+        "size_above_lower_bound": true,
+        "size_bytes": 52179,
+        "width_nonzero": true,
+        "width_px": 1800,
+        "x_data_nonzero": true,
+        "y_data_nonzero": true
+      },
+      "expected": {
+        "figure_size_inches": [
+          9.0,
+          5.0
+        ],
+        "legend_label_count": 4,
+        "series_count": 4,
+        "x_data_nonzero": true,
+        "x_data_range": [
+          -0.5,
+          1.5
+        ],
+        "y_data_nonzero": true,
+        "y_data_range": [
+          28651.643818422883,
+          36007.16887020235
+        ]
+      },
+      "path": "/Users/yifansmac/work/Quantum/MonteCarlo/simulation/level0_static_trap/outputs/level0_static_trap/demo/frequency_comparison.png",
+      "visual_review_finding": "Grouped bar chart: two traps (SLM, AOD) x four frequency categories (Analytic small-amp, Numerical curvature, Nonlinear quadrature, Trajectory estimated). SLM ~29 kHz, AOD ~36 kHz; analytic & numerical-curvature bars essentially identical and slightly taller than nonlinear & trajectory bars (~0.76% lower), as expected from anharmonic softening. All legend entries and x-tick labels readable. VERDICT: correct & readable.",
+      "visual_review_method": "analyze_image model + programmatic",
+      "visual_review_performed": true,
+      "visual_review_verdict": "correct_and_readable"
+    },
+    "potential_comparison.png": {
+      "checks": {
+        "array_finite": true,
+        "exists": true,
+        "height_nonzero": true,
+        "height_px": 1000,
+        "legend_label_count": 2,
+        "not_monochrome": true,
+        "overall_pass": true,
+        "pixel_variance": 950.8343939953588,
+        "reopen_ok": true,
+        "series_count": 2,
+        "size_above_lower_bound": true,
+        "size_bytes": 81944,
+        "width_nonzero": true,
+        "width_px": 1600,
+        "x_data_nonzero": true,
+        "y_data_nonzero": true
+      },
+      "expected": {
+        "figure_size_inches": [
+          8.0,
+          5.0
+        ],
+        "legend_label_count": 2,
+        "series_count": 2,
+        "x_data_nonzero": true,
+        "x_data_range": [
+          -4.679999999999999,
+          4.679999999999999
+        ],
+        "y_data_nonzero": true,
+        "y_data_range": [
+          -280.0,
+          -2.2795497988369515e-12
+        ]
+      },
+      "path": "/Users/yifansmac/work/Quantum/MonteCarlo/simulation/level0_static_trap/outputs/level0_static_trap/demo/potential_comparison.png",
+      "visual_review_finding": "Two Gaussian wells plotted (SLM blue, AOD orange) vs radial position x (um). Both centered at x=0 with minima ~-180 uK (SLM) and ~-280 uK (AOD), smooth, symmetric, decaying to 0 at large |x|. Axes labeled 'Radial position x (um)' / 'Potential U (uK)'. No overlap or clipping; ticks readable. VERDICT: correct & readable.",
+      "visual_review_method": "analyze_image model + programmatic",
+      "visual_review_performed": true,
+      "visual_review_verdict": "correct_and_readable"
+    },
+    "slm_energy.png": {
+      "checks": {
+        "array_finite": true,
+        "exists": true,
+        "height_nonzero": true,
+        "height_px": 900,
+        "legend_label_count": 3,
+        "not_monochrome": true,
+        "overall_pass": true,
+        "pixel_variance": 1100.3028436576096,
+        "reopen_ok": true,
+        "series_count": 3,
+        "size_above_lower_bound": true,
+        "size_bytes": 73515,
+        "width_nonzero": true,
+        "width_px": 1800,
+        "x_data_nonzero": true,
+        "y_data_nonzero": true
+      },
+      "expected": {
+        "figure_size_inches": [
+          9.0,
+          4.5
+        ],
+        "legend_label_count": 3,
+        "series_count": 3,
+        "x_data_nonzero": true,
+        "x_data_range": [
+          0.0,
+          3000.0
+        ],
+        "y_data_nonzero": true,
+        "y_data_range": [
+          -4.0320364030200746e-07,
+          0.0
+        ]
+      },
+      "path": "/Users/yifansmac/work/Quantum/MonteCarlo/simulation/level0_static_trap/outputs/level0_static_trap/demo/slm_energy.png",
+      "visual_review_finding": "Normalized energy error (E-E0)/U0 vs time (us) for SLM. Tiny bounded oscillation near zero (amplitude ~4e-7), well within +/-tolerance dashed reference lines at 1e-4. Y-axis correctly scaled to the small quantity. VERDICT: correct & readable.",
+      "visual_review_method": "analyze_image model + programmatic",
+      "visual_review_performed": true,
+      "visual_review_verdict": "correct_and_readable"
+    },
+    "slm_trajectory.png": {
+      "checks": {
+        "array_finite": true,
+        "exists": true,
+        "height_nonzero": true,
+        "height_px": 900,
+        "legend_label_count": 1,
+        "not_monochrome": true,
+        "overall_pass": true,
+        "pixel_variance": 3723.638193256144,
+        "reopen_ok": true,
+        "series_count": 1,
+        "size_above_lower_bound": true,
+        "size_bytes": 314893,
+        "width_nonzero": true,
+        "width_px": 1800,
+        "x_data_nonzero": true,
+        "y_data_nonzero": true
+      },
+      "expected": {
+        "figure_size_inches": [
+          9.0,
+          4.5
+        ],
+        "legend_label_count": 1,
+        "series_count": 1,
+        "x_data_nonzero": true,
+        "x_data_range": [
+          0.0,
+          3000.0
+        ],
+        "y_data_nonzero": true,
+        "y_data_range": [
+          -0.11699999999385913,
+          0.11699999999999999
+        ]
+      },
+      "path": "/Users/yifansmac/work/Quantum/MonteCarlo/simulation/level0_static_trap/outputs/level0_static_trap/demo/slm_trajectory.png",
+      "visual_review_finding": "Displacement (um) from trap center vs time (us) for SLM. Smooth, near-sinusoidal, bounded oscillation symmetric about zero, ~85 cycles over 3000 us, period ~35 us (~28.6 kHz). Axes 'Time (us)' / 'Displacement from trap center (um)'. Reviewed via inline image rendering (Read tool). VERDICT: correct & readable.",
+      "visual_review_method": "inline Read render (model-direct visual) + programmatic",
+      "visual_review_performed": true,
+      "visual_review_verdict": "correct_and_readable"
+    }
+  },
+  "visual_review_performed": true,
+  "visual_review_summary": "All 7 PNGs opened and reviewed: 5 via the analyze_image vision model, 2 trajectory plots via inline Read-tool image rendering (model-direct visual). All plots show correct physics (Gaussian wells, odd-force symmetry, bounded near-sinusoidal trajectories, tiny bounded energy errors, expected anharmonic frequency ordering) with readable English labels, no text overlap or clipping. No defects found."
+}

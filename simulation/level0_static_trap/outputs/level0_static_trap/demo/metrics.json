@@ -1,0 +1,175 @@
+{
+  "trap_choice": "both",
+  "traps": {
+    "aod": {
+      "curvature": {
+        "analytic_N_per_m": 1.1296127401563304e-14,
+        "convergence_diff_N_per_m": 3.388840669681825e-20,
+        "numerical_h2_N_per_m": 1.129611610560719e-14,
+        "numerical_h_N_per_m": 1.1296082217200494e-14,
+        "step_h_m": 2.3399999999999998e-09,
+        "step_h_waist": 0.002
+      },
+      "energy": {
+        "amplitude_m": 1.1699999999999999e-07,
+        "amplitude_waist": 0.1,
+        "initial_total_energy_J": -3.789268890686436e-27,
+        "initial_total_energy_uK": -274.4556285258915,
+        "is_bound": true,
+        "linear_fit_intercept": -3.0870547341335997e-07,
+        "linear_fit_slope_per_s": 1.89282085833636e-07,
+        "max_abs_energy_error_over_depth": 6.272056650176399e-07,
+        "peak_to_peak_energy_error_over_depth": 6.272056652032319e-07,
+        "rms_energy_error_over_depth": 3.798467128552197e-07
+      },
+      "equilibrium": {
+        "center_deviation_m": 0.0,
+        "force_residual_N": 0.0,
+        "potential_at_eq_J": -3.8658172e-27,
+        "potential_at_eq_uK": -280.0,
+        "x_eq_m": 0.0
+      },
+      "error_classification": {
+        "anharmonic_shift_relative": 0.007562122427201584,
+        "discretization_error_relative": 4.999925431220686e-07,
+        "trajectory_vs_nonlinear_relative": 9.767426171858813e-05,
+        "trajectory_vs_small_amp_relative": 0.007465186790208098
+      },
+      "extremes": {
+        "max_acceleration_m_per_s2": 5869.994033979153,
+        "max_displacement_from_center_m": 1.1699999999999999e-07,
+        "max_velocity_m_per_s": 0.026337829025850246
+      },
+      "fft_diagnostics": {
+        "complete_cycles": 106,
+        "cycle_count_sufficient": true,
+        "fft_peak_freq_Hz": 35666.07223212947,
+        "fft_resolution_Hz": 333.3333333333333,
+        "num_zero_crossings": 107
+      },
+      "frequencies": {
+        "analytic_small_amp_Hz": 36007.16887020235,
+        "nonlinear_quadrature_Hz": 35734.87825094896,
+        "numerical_curvature_Hz": 36007.15086688642,
+        "trajectory_estimated_Hz": 35738.368628799726,
+        "trajectory_method": "interpolated_zero_crossings"
+      },
+      "inputs": {
+        "center_m": 0.0,
+        "center_um": 0.0,
+        "depth_J": 3.8658172e-27,
+        "depth_uK": 280.0,
+        "mass_kg": 2.2069469514370953e-25,
+        "mass_u": 132.90545196,
+        "sources": {
+          "depth_source": "paper_transport_depth",
+          "isotope": "Cs-133",
+          "waist_source": "assumed_matched_to_slm_back_aperture"
+        },
+        "waist_assumed": true,
+        "waist_m": 1.1699999999999998e-06,
+        "waist_um": 1.1699999999999997
+      },
+      "tolerances": {
+        "curvature_relative_tolerance": 0.0001,
+        "harmonic_frequency_relative_tolerance": 0.0001,
+        "max_energy_error_over_depth": 0.0001,
+        "trajectory_frequency_relative_tolerance": 0.03
+      },
+      "trap": "AOD",
+      "validation": {
+        "curvature_relative_error_within_tolerance": true,
+        "cycle_count_sufficient": true,
+        "harmonic_frequency_within_tolerance": true,
+        "is_bound": true,
+        "max_energy_error_within_tolerance": true,
+        "trajectory_frequency_within_tolerance": true
+      }
+    },
+    "slm": {
+      "curvature": {
+        "analytic_N_per_m": 7.261796186719267e-15,
+        "convergence_diff_N_per_m": 2.1785479177801764e-20,
+        "numerical_h2_N_per_m": 7.261788925108067e-15,
+        "numerical_h_N_per_m": 7.26176713962889e-15,
+        "step_h_m": 2.3399999999999998e-09,
+        "step_h_waist": 0.002
+      },
+      "energy": {
+        "amplitude_m": 1.1699999999999999e-07,
+        "amplitude_waist": 0.1,
+        "initial_total_energy_J": -2.4359585725841372e-27,
+        "initial_total_energy_uK": -176.43576119521595,
+        "is_bound": true,
+        "linear_fit_intercept": -1.9816762565850395e-07,
+        "linear_fit_slope_per_s": -1.646341845321312e-07,
+        "max_abs_energy_error_over_depth": 4.0320364030200746e-07,
+        "peak_to_peak_energy_error_over_depth": 4.0320364030200746e-07,
+        "rms_energy_error_over_depth": 2.443019218817289e-07
+      },
+      "equilibrium": {
+        "center_deviation_m": 0.0,
+        "force_residual_N": 0.0,
+        "potential_at_eq_J": -2.4851682e-27,
+        "potential_at_eq_uK": -180.0,
+        "x_eq_m": 0.0
+      },
+      "error_classification": {
+        "anharmonic_shift_relative": 0.007562122579291399,
+        "discretization_error_relative": 4.999873878491771e-07,
+        "trajectory_vs_nonlinear_relative": 9.579850040344738e-05,
+        "trajectory_vs_small_amp_relative": 0.007467048518890914
+      },
+      "extremes": {
+        "max_acceleration_m_per_s2": 3773.5675932723116,
+        "max_displacement_from_center_m": 1.1699999999999999e-07,
+        "max_velocity_m_per_s": 0.0211173621314985
+      },
+      "fft_diagnostics": {
+        "complete_cycles": 85,
+        "cycle_count_sufficient": true,
+        "fft_peak_freq_Hz": 28666.18889685172,
+        "fft_resolution_Hz": 333.3333333333333,
+        "num_zero_crossings": 86
+      },
+      "frequencies": {
+        "analytic_small_amp_Hz": 28869.962010002004,
+        "nonlinear_quadrature_Hz": 28651.643818422883,
+        "numerical_curvature_Hz": 28869.94757538511,
+        "trajectory_estimated_Hz": 28654.38860293478,
+        "trajectory_method": "interpolated_zero_crossings"
+      },
+      "inputs": {
+        "center_m": 0.0,
+        "center_um": 0.0,
+        "depth_J": 2.4851682e-27,
+        "depth_uK": 180.0,
+        "mass_kg": 2.2069469514370953e-25,
+        "mass_u": 132.90545196,
+        "sources": {
+          "depth_source": "paper_full_depth",
+          "isotope": "Cs-133",
+          "waist_source": "paper_1061nm_slm_measurement"
+        },
+        "waist_assumed": false,
+        "waist_m": 1.1699999999999998e-06,
+        "waist_um": 1.1699999999999997
+      },
+      "tolerances": {
+        "curvature_relative_tolerance": 0.0001,
+        "harmonic_frequency_relative_tolerance": 0.0001,
+        "max_energy_error_over_depth": 0.0001,
+        "trajectory_frequency_relative_tolerance": 0.03
+      },
+      "trap": "SLM",
+      "validation": {
+        "curvature_relative_error_within_tolerance": true,
+        "cycle_count_sufficient": true,
+        "harmonic_frequency_within_tolerance": true,
+        "is_bound": true,
+        "max_energy_error_within_tolerance": true,
+        "trajectory_frequency_within_tolerance": true
+      }
+    }
+  }
+}

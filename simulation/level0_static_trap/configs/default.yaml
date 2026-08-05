@@ -1,0 +1,53 @@
+# Level 0 默认配置：一维径向静态高斯光偶极阱自洽检查
+# 内部统一 SI 单位。所有 _uK / _um / _u 量在加载时换算。
+
+model:
+  coordinate: radial_at_focus          # 仅焦平面径向坐标，不是光轴方向
+
+atom:
+  isotope: Cs-133
+  mass_u: 132.90545196                 # 铯-133 原子质量 (u)
+
+slm:
+  name: SLM
+  depth_uK: 180.0                      # 论文满深度 k_B*0.18(2) mK
+  waist_um: 1.17                       # 论文 1061 nm SLM 阵列测量束腰
+  center_um: 0.0
+  depth_source: paper_full_depth
+  waist_source: paper_1061nm_slm_measurement
+
+aod:
+  name: AOD
+  depth_uK: 280.0                      # 论文运输/转移使用的 AOD 深度
+  waist_um: 1.17                       # 假设值：匹配 SLM 后孔径，论文未单独报告
+  center_um: 0.0
+  depth_source: paper_transport_depth
+  waist_source: assumed_matched_to_slm_back_aperture
+
+grid:
+  min_offset_waist: -4.0               # 相对中心的无量纲偏移
+  max_offset_waist: 4.0
+  num_points: 4001
+  curvature_step_waist: 0.002          # 数值曲率差分步长 (以 w 为单位)
+
+trajectory:
+  initial_displacement_waist: 0.10     # x(0) = x_c + q0*w（相对中心，非实验室坐标）
+  initial_velocity_m_per_s: 0.0
+  duration_us: 3000.0                  # 约 87 个 SLM 周期，FFT 原始分辨率约 0.333 kHz
+  dt_us: 0.05
+  frequency_estimator: interpolated_zero_crossings
+  minimum_complete_cycles: 20
+
+validation:
+  max_omega_dt: 0.05                   # omega*dt 上限
+  curvature_relative_tolerance: 1.0e-4
+  harmonic_frequency_relative_tolerance: 1.0e-4
+  trajectory_frequency_relative_tolerance: 0.03   # 包含有限振幅非简谐软化
+  max_energy_error_over_depth: 1.0e-4  # |E(t)-E0|/U0 的最大允许值
+
+output:
+  directory: outputs/level0_static_trap/demo
+  save_png: true
+  save_csv: true
+  save_json: true
+  save_md: true
