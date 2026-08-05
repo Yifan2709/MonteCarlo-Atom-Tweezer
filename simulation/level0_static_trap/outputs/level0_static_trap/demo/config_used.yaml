@@ -1,0 +1,45 @@
+model:
+  coordinate: radial_at_focus
+atom:
+  isotope: Cs-133
+  mass_u: 132.90545196
+slm:
+  name: SLM
+  depth_uK: 180.0
+  waist_um: 1.17
+  center_um: 0.0
+  depth_source: paper_full_depth
+  waist_source: paper_1061nm_slm_measurement
+  waist_assumption: false
+aod:
+  name: AOD
+  depth_uK: 280.0
+  waist_um: 1.17
+  center_um: 0.0
+  depth_source: paper_transport_depth
+  waist_source: assumed_matched_to_slm_back_aperture
+  waist_assumption: true
+grid:
+  min_offset_waist: -4.0
+  max_offset_waist: 4.0
+  num_points: 4001
+  curvature_step_waist: 0.002
+trajectory:
+  initial_displacement_waist: 0.1
+  initial_velocity_m_per_s: 0.0
+  duration_us: 3000.0
+  dt_us: 0.05
+  frequency_estimator: interpolated_zero_crossings
+  minimum_complete_cycles: 20
+validation:
+  max_omega_dt: 0.05
+  curvature_relative_tolerance: 0.0001
+  harmonic_frequency_relative_tolerance: 0.0001
+  trajectory_frequency_relative_tolerance: 0.03
+  max_energy_error_over_depth: 0.0001
+output:
+  directory: outputs/level0_static_trap/demo
+  resolved_directory: D:\AICoding\MonteCarlo\simulation\level0_static_trap\outputs\level0_static_trap\demo
+  save_png: true
+  save_csv: true
+  save_json: true
