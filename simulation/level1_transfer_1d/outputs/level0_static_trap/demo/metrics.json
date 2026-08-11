@@ -1,0 +1,210 @@
+{
+  "model": {
+    "coordinate": "radial_at_focus",
+    "coordinate_definition": "one radial coordinate in the Gaussian-beam focal plane, not the optical axis",
+    "scope_and_limitations": [
+      "x 是高斯光束焦平面内的一维径向坐标，不是光轴方向。",
+      "不模拟论文报告的轴向 5.64 kHz 运动。",
+      "不模拟 SLM-AOD 交接、时变深度、长距离移动、AOD 柱面透镜效应或二维运动。",
+      "不包含噪声、量子内态、加热、损失或多原子效应。",
+      "SLM 与 AOD 调用同一高斯势函数，仅由配置参数及来源区分。",
+      "解析/数值曲率比较是代码一致性检查，不是独立实验验证。"
+    ]
+  },
+  "selection": "both",
+  "trap_results": {
+    "slm": {
+      "input_parameters": {
+        "name": "SLM",
+        "depth": {
+          "value": 180.0,
+          "unit": "uK",
+          "si_value_J": 2.4851682e-27,
+          "source": "paper_full_depth"
+        },
+        "waist": {
+          "value": 1.17,
+          "unit": "um",
+          "si_value_m": 1.1699999999999998e-06,
+          "source": "paper_1061nm_slm_measurement",
+          "assumed": false
+        },
+        "center": {
+          "value": 0.0,
+          "unit": "um",
+          "si_value_m": 0.0
+        },
+        "mass": {
+          "value": 132.90545196,
+          "unit": "u",
+          "si_value_kg": 2.206946954520502e-25,
+          "isotope": "Cs-133"
+        }
+      },
+      "equilibrium": {
+        "position_m": 0.0,
+        "potential_J": -2.4851682e-27,
+        "force_residual_N": 0.0,
+        "center_offset_m": 0.0,
+        "force_residual_over_depth_per_waist": 0.0
+      },
+      "curvature": {
+        "analytic_J_per_m2": 7.261796186719267e-15,
+        "step_h_m": 2.3399999999999998e-09,
+        "step_h_over_2_m": 1.1699999999999999e-09,
+        "curvature_h_J_per_m2": 7.26176713962889e-15,
+        "curvature_h_over_2_J_per_m2": 7.261788925108067e-15,
+        "relative_convergence_difference": 3.0000154786208634e-06,
+        "h_over_2_relative_error_vs_analytic": 9.999745260050888e-07
+      },
+      "frequencies": {
+        "analytic_small_amplitude_Hz": 28869.961989834366,
+        "analytic_omega_rad_per_s": 181395.32099336042,
+        "numerical_curvature_Hz": 28869.947555217477,
+        "numerical_omega_rad_per_s": 181395.23029798767,
+        "nonlinear_quadrature_Hz": 28654.2918392332,
+        "trajectory_estimate_Hz": 28654.38858357044,
+        "trajectory_period_s": 3.489866821214848e-05,
+        "fft_peak_Hz": 28666.18889685172,
+        "fft_raw_resolution_Hz": 333.3333333333333,
+        "zero_crossing_complete_cycle_intervals": 85,
+        "estimated_duration_cycles": 86.6098859695031
+      },
+      "error_classification": {
+        "numerical_discretization_relative_error": 4.999873880724398e-07,
+        "finite_amplitude_nonlinear_shift_relative": -0.0074703995341978,
+        "trajectory_vs_nonlinear_reference_relative_error": 3.3762599258081787e-06,
+        "trajectory_vs_harmonic_relative_difference": 0.007467048496282568,
+        "note": "前两项分别是数值离散化误差与物理非简谐频移，不得合并解释。"
+      },
+      "trajectory": {
+        "initial_position_m": 1.1699999999999999e-07,
+        "initial_displacement_waist": 0.1,
+        "initial_velocity_m_per_s": 0.0,
+        "initial_total_energy_J": -2.4359585725841372e-27,
+        "bound": true,
+        "nonlinear_turning_amplitude_m": 1.1699999999999979e-07,
+        "max_abs_displacement_m": 1.1699999999999999e-07,
+        "max_abs_velocity_m_per_s": 0.021117362116737835,
+        "omega_dt": 0.009069766049668021
+      },
+      "energy_error": {
+        "normalization": "trap depth U0 (positive)",
+        "max_abs_energy_error_over_depth": 4.0320363958026074e-07,
+        "rms_energy_error_over_depth": 2.443019214115247e-07,
+        "peak_to_peak_energy_error_over_depth": 4.032036397246101e-07
+      },
+      "validation": {
+        "equilibrium_center_passed": true,
+        "force_residual_passed": true,
+        "curvature_convergence_passed": true,
+        "harmonic_frequency_consistency_passed": true,
+        "trajectory_finite_amplitude_band_passed": true,
+        "trajectory_nonlinear_reference_passed": true,
+        "energy_error_passed": true,
+        "time_step_passed": true,
+        "cycle_count_passed": true,
+        "initial_state_bound_passed": true,
+        "all_passed": true
+      }
+    },
+    "aod": {
+      "input_parameters": {
+        "name": "AOD",
+        "depth": {
+          "value": 280.0,
+          "unit": "uK",
+          "si_value_J": 3.8658171999999996e-27,
+          "source": "paper_transport_depth"
+        },
+        "waist": {
+          "value": 1.17,
+          "unit": "um",
+          "si_value_m": 1.1699999999999998e-06,
+          "source": "assumed_matched_to_slm_back_aperture",
+          "assumed": true
+        },
+        "center": {
+          "value": 0.0,
+          "unit": "um",
+          "si_value_m": 0.0
+        },
+        "mass": {
+          "value": 132.90545196,
+          "unit": "u",
+          "si_value_kg": 2.206946954520502e-25,
+          "isotope": "Cs-133"
+        }
+      },
+      "equilibrium": {
+        "position_m": 0.0,
+        "potential_J": -3.8658171999999996e-27,
+        "force_residual_N": 0.0,
+        "center_offset_m": 0.0,
+        "force_residual_over_depth_per_waist": 0.0
+      },
+      "curvature": {
+        "analytic_J_per_m2": 1.1296127401563301e-14,
+        "step_h_m": 2.3399999999999998e-09,
+        "step_h_over_2_m": 1.1699999999999999e-09,
+        "curvature_h_J_per_m2": 1.1296082217200494e-14,
+        "curvature_h_over_2_J_per_m2": 1.129611610560719e-14,
+        "relative_convergence_difference": 3.000005168147718e-06,
+        "h_over_2_relative_error_vs_analytic": 9.99984836328149e-07
+      },
+      "frequencies": {
+        "analytic_small_amplitude_Hz": 36007.16884504888,
+        "analytic_omega_rad_per_s": 226239.7142403457,
+        "numerical_curvature_Hz": 36007.15084173296,
+        "numerical_omega_rad_per_s": 226239.6011221756,
+        "nonlinear_quadrature_Hz": 35738.180907643786,
+        "trajectory_estimate_Hz": 35738.368603827825,
+        "trajectory_period_s": 2.798113173786263e-05,
+        "fft_peak_Hz": 35666.07223212947,
+        "fft_raw_resolution_Hz": 333.3333333333333,
+        "zero_crossing_complete_cycle_intervals": 106,
+        "estimated_duration_cycles": 108.02150653514664
+      },
+      "error_classification": {
+        "numerical_discretization_relative_error": 4.999925430672082e-07,
+        "finite_amplitude_nonlinear_shift_relative": -0.007470399535232582,
+        "trajectory_vs_nonlinear_reference_relative_error": 5.251979235428748e-06,
+        "trajectory_vs_harmonic_relative_difference": 0.007465186790380393,
+        "note": "前两项分别是数值离散化误差与物理非简谐频移，不得合并解释。"
+      },
+      "trajectory": {
+        "initial_position_m": 1.1699999999999999e-07,
+        "initial_displacement_waist": 0.1,
+        "initial_velocity_m_per_s": 0.0,
+        "initial_total_energy_J": -3.789268890686435e-27,
+        "bound": true,
+        "nonlinear_turning_amplitude_m": 1.1700000000000012e-07,
+        "max_abs_displacement_m": 1.1699999999999999e-07,
+        "max_abs_velocity_m_per_s": 0.02633782900745372,
+        "omega_dt": 0.011311985712017284
+      },
+      "energy_error": {
+        "normalization": "trap depth U0 (positive)",
+        "max_abs_energy_error_over_depth": 6.272056637184959e-07,
+        "rms_energy_error_over_depth": 3.7984671196392295e-07,
+        "peak_to_peak_energy_error_over_depth": 6.272056640896799e-07
+      },
+      "validation": {
+        "equilibrium_center_passed": true,
+        "force_residual_passed": true,
+        "curvature_convergence_passed": true,
+        "harmonic_frequency_consistency_passed": true,
+        "trajectory_finite_amplitude_band_passed": true,
+        "trajectory_nonlinear_reference_passed": true,
+        "energy_error_passed": true,
+        "time_step_passed": true,
+        "cycle_count_passed": true,
+        "initial_state_bound_passed": true,
+        "all_passed": true
+      }
+    }
+  },
+  "image_validation_all_passed": true,
+  "visual_review_performed": false,
+  "overall_validation_passed": true
+}

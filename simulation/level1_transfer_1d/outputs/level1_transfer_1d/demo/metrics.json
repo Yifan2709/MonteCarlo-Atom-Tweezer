@@ -1,0 +1,75 @@
+{
+  "simulation": {
+    "type": "classical_1d_aod_to_slm_transfer"
+  },
+  "parameters": {
+    "temperature_uK": 5.0,
+    "transfer_duration_us": 600.0,
+    "move_fraction": 0.52,
+    "ramp_fraction": 0.48,
+    "initial_separation_um": 2.4
+  },
+  "monte_carlo": {
+    "shots": 50,
+    "seed": 20260811,
+    "captured_shots": 50,
+    "failed_shots": 0,
+    "classical_capture_fraction": 1.0,
+    "wilson_95_interval": [
+      0.9286524008666414,
+      1.0
+    ]
+  },
+  "energy": {
+    "mean_initial_excitation_uK": 6.563465162073621,
+    "median_initial_excitation_uK": 3.5818733020986855,
+    "mean_final_excitation_uK": 4.639165990809056,
+    "median_final_excitation_uK": 2.544524509052147,
+    "mean_excitation_change_uK": -1.9242991712645627,
+    "median_excitation_change_uK": -1.0615037458945058,
+    "mean_final_energy_over_slm_depth": -0.9668631000656496
+  },
+  "capture": {
+    "mean_capture_margin": 0.9668631000656496,
+    "median_capture_margin": 0.9818248249353418
+  },
+  "ideal": {
+    "captured_in_slm": true,
+    "final_energy_over_slm_depth": -0.999999658374217,
+    "excitation_energy_change_uK": 4.782760961702604e-05,
+    "dt_us": 0.05,
+    "dt_half_us": 0.025,
+    "final_energy_dt_convergence": 1.0449615643854953e-09,
+    "capture_classification_consistent": true
+  },
+  "thermal_example": {
+    "initial_aod_energy_uK": -279.2452735501776,
+    "initial_excitation_energy_uK": 0.7547264498223314,
+    "final_slm_energy_uK": -139.477199827058,
+    "final_excitation_energy_uK": 0.5228001729419723,
+    "excitation_energy_change_uK": -0.23192627688035905,
+    "final_energy_over_slm_depth": -0.9962657130504144,
+    "captured_in_slm": true,
+    "capture_margin": 0.9962657130504144
+  },
+  "thermal_sampling": {
+    "all_bound": true,
+    "sample_mean_x_m": 2.4014687606598124e-06,
+    "sample_std_x_m": 7.51492091277135e-08,
+    "sample_mean_v_m_s": -0.000328566096704843,
+    "sample_std_v_m_s": 0.017692816435005594,
+    "theory_sigma_x_m": 7.817391325938412e-08,
+    "theory_sigma_v_m_s": 0.017686043796852634,
+    "first_ten_reproducible": true
+  },
+  "validation": {
+    "baseline_level0_passed": true,
+    "time_dependent_integrator_static_limit_passed": true,
+    "waveform_endpoints_passed": true,
+    "ideal_transfer_dt_convergence_passed": true,
+    "ideal_transfer_capture_reported": true,
+    "thermal_example_completed": true,
+    "monte_carlo_reproducibility_passed": true,
+    "all_passed": true
+  }
+}
