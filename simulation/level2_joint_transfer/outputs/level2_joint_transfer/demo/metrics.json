@@ -1,0 +1,819 @@
+{
+  "level2": {
+    "name": "joint_transfer_optimization",
+    "stage": "validate"
+  },
+  "seeds": {
+    "optimization": 21001,
+    "selection": 21002,
+    "validation": 21003
+  },
+  "preflight": {
+    "existing_tests": {
+      "exit_code": 0,
+      "summary_line": "65 passed in 57.79s",
+      "passed": true
+    },
+    "static_limit": {
+      "position_match": true,
+      "velocity_match": true,
+      "passed": true
+    },
+    "level1_reproduction": {
+      "reproduced_shots": 50,
+      "reproduced_captured": 50,
+      "reproduced_fraction": 1.0,
+      "seed": 20260811,
+      "historical_fraction": 1.0,
+      "matches_historical": true,
+      "passed": true
+    },
+    "waveform_constraints": {
+      "sequential_600us": {
+        "valid": true,
+        "reasons": [],
+        "smoothness": {
+          "max_abs_center_velocity_m_per_s": 0.011538461538461537,
+          "max_abs_center_acceleration_m_per_s2": 147.64451524806555,
+          "max_abs_center_jerk_m_per_s3": 948262.7825823092,
+          "max_abs_depth_rate_J_per_s": 2.681798824363426e-23,
+          "dimensionless_accel": 22.14667728720983,
+          "dimensionless_jerk": 85.34365043240781
+        }
+      },
+      "sequential_400us": {
+        "valid": true,
+        "reasons": [],
+        "smoothness": {
+          "max_abs_center_velocity_m_per_s": 0.01730769230769231,
+          "max_abs_center_acceleration_m_per_s2": 332.20015930814753,
+          "max_abs_center_jerk_m_per_s3": 3200386.891215294,
+          "max_abs_depth_rate_J_per_s": 4.022698236545139e-23,
+          "dimensionless_accel": 22.146677287209833,
+          "dimensionless_jerk": 85.34365043240783
+        }
+      },
+      "nominal_overlapped_400us": {
+        "valid": true,
+        "reasons": [],
+        "smoothness": {
+          "max_abs_center_velocity_m_per_s": 0.021634615384615384,
+          "max_abs_center_acceleration_m_per_s2": 320.275404128276,
+          "max_abs_center_jerk_m_per_s3": 15909704.37157279,
+          "max_abs_depth_rate_J_per_s": 4.8114027122461314e-23,
+          "dimensionless_accel": 21.35169360855173,
+          "dimensionless_jerk": 424.258783241941
+        }
+      }
+    },
+    "ideal_runs": {
+      "sequential_600us": {
+        "final_slm_energy_over_depth": -0.999999658374217,
+        "captured": true,
+        "max_abs_residual_over_depth": 0.00017361111692110182
+      },
+      "sequential_400us": {
+        "final_slm_energy_over_depth": -0.9999646766296277,
+        "captured": true,
+        "max_abs_residual_over_depth": 0.00026041699263863293
+      },
+      "nominal_overlapped_400us": {
+        "final_slm_energy_over_depth": -0.9988327059462678,
+        "captured": true,
+        "max_abs_residual_over_depth": 8.700220405098144e-08
+      }
+    },
+    "ideal_work_energy": {
+      "per_waveform_passed": {
+        "sequential_600us": true,
+        "sequential_400us": true,
+        "nominal_overlapped_400us": true
+      },
+      "tolerance": 0.0005,
+      "passed": true
+    },
+    "ideal_timestep_convergence": {
+      "per_waveform": {
+        "sequential_600us": {
+          "position_error_coarse_m": 3.0744184097598653e-12,
+          "position_error_fine_m": 6.157426519797048e-13,
+          "velocity_error_coarse_m_per_s": 3.4998115980235025e-07,
+          "velocity_error_fine_m_per_s": 6.98546075189027e-08,
+          "position_convergence_order": 2.3199141090553326,
+          "velocity_convergence_order": 2.324850078768531
+        },
+        "sequential_400us": {
+          "position_error_coarse_m": 5.4825590077584895e-12,
+          "position_error_fine_m": 1.0966083305132823e-12,
+          "velocity_error_coarse_m_per_s": 5.272998837476664e-07,
+          "velocity_error_fine_m_per_s": 1.0560664938984794e-07,
+          "position_convergence_order": 2.3218010960492834,
+          "velocity_convergence_order": 2.3199230036159677
+        },
+        "nominal_overlapped_400us": {
+          "position_error_coarse_m": 3.114160135205075e-11,
+          "position_error_fine_m": 6.2323970606317135e-12,
+          "velocity_error_coarse_m_per_s": 5.390148664541697e-06,
+          "velocity_error_fine_m_per_s": 1.077380145871748e-06,
+          "position_convergence_order": 2.3209840777671604,
+          "velocity_convergence_order": 2.322797679864137
+        }
+      },
+      "min_position_order": 2.3199141090553326,
+      "passed": true
+    },
+    "mc_timestep_paired": {
+      "per_waveform": {
+        "sequential_600us": {
+          "label_flip_rate": 0.0,
+          "flip_count": 0,
+          "median_abs_margin_of_flipped": null,
+          "max_final_energy_abs_diff_uK": 3.476153507024019e-10
+        },
+        "sequential_400us": {
+          "label_flip_rate": 0.0,
+          "flip_count": 0,
+          "median_abs_margin_of_flipped": null,
+          "max_final_energy_abs_diff_uK": 1.968797863453886e-10
+        },
+        "nominal_overlapped_400us": {
+          "label_flip_rate": 0.0,
+          "flip_count": 0,
+          "median_abs_margin_of_flipped": null,
+          "max_final_energy_abs_diff_uK": 4.939731255873374e-10
+        }
+      },
+      "shots": 128,
+      "max_label_flip_rate": 0.0,
+      "passed": true
+    },
+    "mc_work_energy_residual": {
+      "per_waveform": {
+        "sequential_600us": {
+          "median": 0.0003469080066417717,
+          "p95": 0.000348444058814057,
+          "max": 0.0003490563278748281
+        },
+        "sequential_400us": {
+          "median": 0.0005199389573848197,
+          "p95": 0.0005213609019226106,
+          "max": 0.0005236371758397078
+        },
+        "nominal_overlapped_400us": {
+          "median": 9.129230122800621e-07,
+          "p95": 3.7290260914436196e-06,
+          "max": 8.697946947796086e-06
+        }
+      },
+      "tolerance": 0.001,
+      "passed": true
+    },
+    "hold_segment": {
+      "per_waveform_peak_to_peak_over_depth": {
+        "sequential_600us": 5.4643857735381755e-12,
+        "sequential_400us": 5.649912833909653e-10,
+        "nominal_overlapped_400us": 1.8660284635728728e-08
+      },
+      "tolerance": 0.0001,
+      "passed": true
+    },
+    "waveform_constraints_all_valid": true,
+    "critical_checks": [
+      "existing_tests",
+      "static_limit",
+      "level1_reproduction",
+      "ideal_work_energy",
+      "ideal_timestep_convergence",
+      "mc_timestep_paired",
+      "mc_work_energy_residual",
+      "hold_segment",
+      "waveform_constraints_all_valid"
+    ],
+    "all_passed": true,
+    "elapsed_s": 335.9625120162964
+  },
+  "optimization": {
+    "total": 257,
+    "ok": 229,
+    "invalid": 28,
+    "failed": 0
+  },
+  "frozen_waveform": {
+    "type": "overlapped",
+    "name": "overlapped_optimized_400us",
+    "duration_us": 400.0,
+    "move_start_fraction": 0.01945549969117366,
+    "move_end_fraction": 1.0,
+    "ramp_start_fraction": 0.6069511239907726,
+    "ramp_end_fraction": 1.0,
+    "ramp_power": 1.1121764674723393,
+    "provenance": {
+      "candidate_id": "ref_lhs_0150_3",
+      "pool": "selection",
+      "objective_total": 1.0485033249904498,
+      "selection_capture_rate": 1.0
+    }
+  },
+  "validation": {
+    "summaries": {
+      "sequential_600us": {
+        "name": "sequential_600us",
+        "shots": 2000,
+        "captured": 2000,
+        "capture_fraction": 1.0,
+        "wilson_low": 0.9980829527187469,
+        "wilson_high": 0.9999999999999998
+      },
+      "sequential_400us": {
+        "name": "sequential_400us",
+        "shots": 2000,
+        "captured": 2000,
+        "capture_fraction": 1.0,
+        "wilson_low": 0.9980829527187469,
+        "wilson_high": 0.9999999999999998
+      },
+      "overlapped_optimized_400us": {
+        "name": "overlapped_optimized_400us",
+        "shots": 2000,
+        "captured": 2000,
+        "capture_fraction": 1.0,
+        "wilson_low": 0.9980829527187469,
+        "wilson_high": 0.9999999999999998
+      }
+    },
+    "excitation_stats": {
+      "sequential_600us": {
+        "mean_final_excitation_over_depth_captured": 0.02458554579158691,
+        "mean_margin_captured": 0.9754144542084131,
+        "margin_q10_all": 0.9441867378530205,
+        "mean_excitation_change_uK_all": -1.4330123441307999e-06,
+        "near_threshold_count": 0,
+        "work_residual_max_over_depth": 0.00035566075273743363,
+        "work_residual_median_over_depth": 0.00034662645283520894,
+        "hold_peak_to_peak_max_over_depth": 3.1575329664456653e-06
+      },
+      "sequential_400us": {
+        "mean_final_excitation_over_depth_captured": 0.02466491297676923,
+        "mean_margin_captured": 0.9753350870232308,
+        "margin_q10_all": 0.9441162571355737,
+        "mean_excitation_change_uK_all": -1.421900938205275e-06,
+        "near_threshold_count": 0,
+        "work_residual_max_over_depth": 0.0005266612522854708,
+        "work_residual_median_over_depth": 0.000519716661264128,
+        "hold_peak_to_peak_max_over_depth": 3.469533832688001e-06
+      },
+      "overlapped_optimized_400us": {
+        "mean_final_excitation_over_depth_captured": 0.02455795267972016,
+        "mean_margin_captured": 0.97544204732028,
+        "margin_q10_all": 0.94379125539503,
+        "mean_excitation_change_uK_all": -1.4368753797921443e-06,
+        "near_threshold_count": 0,
+        "work_residual_max_over_depth": 1.0789708518057822e-05,
+        "work_residual_median_over_depth": 7.564274144344798e-07,
+        "hold_peak_to_peak_max_over_depth": 3.0952001711728315e-06
+      }
+    },
+    "comparisons": {
+      "sequential_600us_vs_sequential_400us": {
+        "paired_counts": {
+          "both_captured": 2000,
+          "only_a_captured": 0,
+          "only_b_captured": 0,
+          "both_failed": 0,
+          "shots": 2000
+        },
+        "capture_rate_difference_bootstrap": {
+          "difference": 0.0,
+          "ci_low": 0.0,
+          "ci_high": 0.0,
+          "num_bootstrap": 10000,
+          "seed": 21021,
+          "ci_excludes_zero": false
+        }
+      },
+      "sequential_600us_vs_overlapped_optimized_400us": {
+        "paired_counts": {
+          "both_captured": 2000,
+          "only_a_captured": 0,
+          "only_b_captured": 0,
+          "both_failed": 0,
+          "shots": 2000
+        },
+        "capture_rate_difference_bootstrap": {
+          "difference": 0.0,
+          "ci_low": 0.0,
+          "ci_high": 0.0,
+          "num_bootstrap": 10000,
+          "seed": 21022,
+          "ci_excludes_zero": false
+        }
+      },
+      "sequential_400us_vs_overlapped_optimized_400us": {
+        "paired_counts": {
+          "both_captured": 2000,
+          "only_a_captured": 0,
+          "only_b_captured": 0,
+          "both_failed": 0,
+          "shots": 2000
+        },
+        "capture_rate_difference_bootstrap": {
+          "difference": 0.0,
+          "ci_low": 0.0,
+          "ci_high": 0.0,
+          "num_bootstrap": 10000,
+          "seed": 21029,
+          "ci_excludes_zero": false
+        }
+      }
+    },
+    "initial_state_meta": {
+      "seed": 21003,
+      "shots": 2000,
+      "attempts": 2000,
+      "acceptance_rate": 1.0,
+      "mean_x0_m": 2.39744530362272e-06,
+      "std_x0_m": 7.692657331712487e-08,
+      "mean_v0_m_s": 0.0001695491539694106,
+      "std_v0_m_s": 0.017639607292667177
+    },
+    "representative_groups": {
+      "captured": 2000,
+      "near_threshold": 0,
+      "not_captured": 0
+    }
+  },
+  "robustness": {
+    "rows": [
+      {
+        "scan": "temperature",
+        "condition": "3.0",
+        "waveform": "sequential_600us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9852933220913903",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "temperature",
+        "condition": "3.0",
+        "waveform": "sequential_400us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9851484530979641",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "temperature",
+        "condition": "3.0",
+        "waveform": "overlapped_optimized_400us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9853201084700453",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "temperature",
+        "condition": "5.0",
+        "waveform": "sequential_600us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9768794151857885",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "temperature",
+        "condition": "5.0",
+        "waveform": "sequential_400us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9767301013713207",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "temperature",
+        "condition": "5.0",
+        "waveform": "overlapped_optimized_400us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9768831220302454",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "temperature",
+        "condition": "7.0",
+        "waveform": "sequential_600us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9686916184250037",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "temperature",
+        "condition": "7.0",
+        "waveform": "sequential_400us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9684681008345509",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "temperature",
+        "condition": "7.0",
+        "waveform": "overlapped_optimized_400us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9687816652125033",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "temperature",
+        "condition": "10.0",
+        "waveform": "sequential_600us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9492012107672463",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "temperature",
+        "condition": "10.0",
+        "waveform": "sequential_400us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9485083744546645",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "temperature",
+        "condition": "10.0",
+        "waveform": "overlapped_optimized_400us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9493303046389681",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "alignment",
+        "condition": "-0.1",
+        "waveform": "sequential_600us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9754575912111875",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "alignment",
+        "condition": "-0.1",
+        "waveform": "sequential_400us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9750206629072706",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "alignment",
+        "condition": "-0.1",
+        "waveform": "overlapped_optimized_400us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9754805098021812",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "alignment",
+        "condition": "-0.05",
+        "waveform": "sequential_600us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.972200039789093",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "alignment",
+        "condition": "-0.05",
+        "waveform": "sequential_400us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9720158719000842",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "alignment",
+        "condition": "-0.05",
+        "waveform": "overlapped_optimized_400us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9722260561244275",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "alignment",
+        "condition": "0.0",
+        "waveform": "sequential_600us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9724482551215414",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "alignment",
+        "condition": "0.0",
+        "waveform": "sequential_400us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9723299500318544",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "alignment",
+        "condition": "0.0",
+        "waveform": "overlapped_optimized_400us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9724825299739196",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "alignment",
+        "condition": "0.05",
+        "waveform": "sequential_600us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9738078968437085",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "alignment",
+        "condition": "0.05",
+        "waveform": "sequential_400us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9736819775348247",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "alignment",
+        "condition": "0.05",
+        "waveform": "overlapped_optimized_400us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9738182752850573",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "alignment",
+        "condition": "0.1",
+        "waveform": "sequential_600us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9746337213259243",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "alignment",
+        "condition": "0.1",
+        "waveform": "sequential_400us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.974559720257884",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "alignment",
+        "condition": "0.1",
+        "waveform": "overlapped_optimized_400us",
+        "shots": "500",
+        "captured": "500",
+        "capture_fraction": "1.0",
+        "wilson_low": "0.9923756595384479",
+        "wilson_high": "1.0",
+        "mean_capture_margin": "0.9746057132969163",
+        "label_flips_vs_reference": "",
+        "final_energy_max_abs_diff_uK": ""
+      },
+      {
+        "scan": "timestep",
+        "condition": "0.09999999999999999",
+        "waveform": "sequential_600us",
+        "shots": "200",
+        "captured": "200",
+        "capture_fraction": "1.0",
+        "wilson_low": "",
+        "wilson_high": "",
+        "mean_capture_margin": "",
+        "label_flips_vs_reference": "0.0",
+        "final_energy_max_abs_diff_uK": "1.1705089499654958e-09"
+      },
+      {
+        "scan": "timestep",
+        "condition": "0.049999999999999996",
+        "waveform": "sequential_600us",
+        "shots": "200",
+        "captured": "200",
+        "capture_fraction": "1.0",
+        "wilson_low": "",
+        "wilson_high": "",
+        "mean_capture_margin": "",
+        "label_flips_vs_reference": "0.0",
+        "final_energy_max_abs_diff_uK": "2.3423220519213847e-10"
+      },
+      {
+        "scan": "timestep",
+        "condition": "0.024999999999999998",
+        "waveform": "sequential_600us",
+        "shots": "200",
+        "captured": "200",
+        "capture_fraction": "1.0",
+        "wilson_low": "",
+        "wilson_high": "",
+        "mean_capture_margin": "",
+        "label_flips_vs_reference": "0.0",
+        "final_energy_max_abs_diff_uK": "0.0"
+      },
+      {
+        "scan": "timestep",
+        "condition": "0.09999999999999999",
+        "waveform": "sequential_400us",
+        "shots": "200",
+        "captured": "200",
+        "capture_fraction": "1.0",
+        "wilson_low": "",
+        "wilson_high": "",
+        "mean_capture_margin": "",
+        "label_flips_vs_reference": "0.0",
+        "final_energy_max_abs_diff_uK": "1.7629448854932948e-09"
+      },
+      {
+        "scan": "timestep",
+        "condition": "0.049999999999999996",
+        "waveform": "sequential_400us",
+        "shots": "200",
+        "captured": "200",
+        "capture_fraction": "1.0",
+        "wilson_low": "",
+        "wilson_high": "",
+        "mean_capture_margin": "",
+        "label_flips_vs_reference": "0.0",
+        "final_energy_max_abs_diff_uK": "3.526451162604461e-10"
+      },
+      {
+        "scan": "timestep",
+        "condition": "0.024999999999999998",
+        "waveform": "sequential_400us",
+        "shots": "200",
+        "captured": "200",
+        "capture_fraction": "1.0",
+        "wilson_low": "",
+        "wilson_high": "",
+        "mean_capture_margin": "",
+        "label_flips_vs_reference": "0.0",
+        "final_energy_max_abs_diff_uK": "0.0"
+      },
+      {
+        "scan": "timestep",
+        "condition": "0.09999999999999999",
+        "waveform": "overlapped_optimized_400us",
+        "shots": "200",
+        "captured": "200",
+        "capture_fraction": "1.0",
+        "wilson_low": "",
+        "wilson_high": "",
+        "mean_capture_margin": "",
+        "label_flips_vs_reference": "0.0",
+        "final_energy_max_abs_diff_uK": "1.0216450174998365e-09"
+      },
+      {
+        "scan": "timestep",
+        "condition": "0.049999999999999996",
+        "waveform": "overlapped_optimized_400us",
+        "shots": "200",
+        "captured": "200",
+        "capture_fraction": "1.0",
+        "wilson_low": "",
+        "wilson_high": "",
+        "mean_capture_margin": "",
+        "label_flips_vs_reference": "0.0",
+        "final_energy_max_abs_diff_uK": "2.0424290885401493e-10"
+      },
+      {
+        "scan": "timestep",
+        "condition": "0.024999999999999998",
+        "waveform": "overlapped_optimized_400us",
+        "shots": "200",
+        "captured": "200",
+        "capture_fraction": "1.0",
+        "wilson_low": "",
+        "wilson_high": "",
+        "mean_capture_margin": "",
+        "label_flips_vs_reference": "0.0",
+        "final_energy_max_abs_diff_uK": "0.0"
+      }
+    ]
+  },
+  "image_validation_all_passed": false,
+  "visual_review_performed": false
+}

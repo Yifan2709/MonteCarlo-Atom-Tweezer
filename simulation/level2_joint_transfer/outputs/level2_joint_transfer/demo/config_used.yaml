@@ -1,0 +1,82 @@
+level2:
+  name: joint_transfer_optimization
+atom:
+  isotope: Cs-133
+  mass_u: 132.90545196
+initial_ensemble:
+  temperature_uK: 5.0
+  sampler: level1_harmonic_rejection
+  optimization_shots: 128
+  selection_shots: 512
+  validation_shots: 2000
+  optimization_seed: 21001
+  selection_seed: 21002
+  validation_seed: 21003
+  level1_reproduction_seed: 20260811
+integration:
+  optimization_dt_us: 0.1
+  validation_dt_us: 0.05
+  convergence_dt_us: 0.025
+  post_transfer_hold_us: 100.0
+waveforms:
+  sequential_baseline_duration_us: 600.0
+  compressed_baseline_duration_us: 400.0
+  optimized_duration_us: 400.0
+  level1_move_fraction: 0.52
+  level1_ramp_fraction: 0.48
+  min_segment_fraction: 0.1
+  ramp_power_bounds:
+  - 0.5
+  - 4.0
+optimization:
+  method: latin_hypercube_then_local_refine
+  lhs_seed: 21010
+  max_candidates: 192
+  finalists: 8
+  refine_steps_per_finalist: 4
+  refine_perturbation_sigma: 0.03
+  enable_monotone_spline_refinement: true
+  spline_control_points: 8
+  spline_candidates: 24
+  capture_weight: 1.0
+  excitation_weight: 0.05
+  smoothness_weight: 0.001
+  margin_quantile: 0.1
+classification:
+  capture_energy_threshold_J: 0.0
+  near_threshold_fraction_of_slm_depth: 0.001
+robustness:
+  temperatures_uK:
+  - 3.0
+  - 5.0
+  - 7.0
+  - 10.0
+  final_alignment_offsets_um:
+  - -0.1
+  - -0.05
+  - 0.0
+  - 0.05
+  - 0.1
+  shots_per_condition: 500
+  timestep_subset_shots: 200
+  bootstrap_samples: 10000
+  bootstrap_seed: 21020
+traps:
+  slm:
+    depth_uK: 140.0
+    waist_um: 1.17
+    center_um: 0.0
+    waist_source: paper_1061nm_slm_measurement
+  aod:
+    initial_depth_uK: 280.0
+    waist_um: 1.17
+    initial_center_um: 2.4
+    waist_source: assumed_matched_to_slm_back_aperture
+output:
+  directory: outputs/level2_joint_transfer/demo
+  resolved_directory: /Users/yifansmac/work/Quantum/MonteCarlo/simulation/level2_joint_transfer/outputs/level2_joint_transfer/demo
+  save_candidate_table: true
+  save_representative_trajectories: true
+  representative_shots_per_outcome: 5
+config_path: /Users/yifansmac/work/Quantum/MonteCarlo/simulation/level2_joint_transfer/configs/level2_joint_transfer.yaml
+project_root: /Users/yifansmac/work/Quantum/MonteCarlo/simulation/level2_joint_transfer

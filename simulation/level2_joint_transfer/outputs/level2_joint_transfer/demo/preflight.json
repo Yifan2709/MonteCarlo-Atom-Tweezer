@@ -1,0 +1,184 @@
+{
+  "existing_tests": {
+    "exit_code": 0,
+    "summary_line": "65 passed in 57.79s",
+    "passed": true
+  },
+  "static_limit": {
+    "position_match": true,
+    "velocity_match": true,
+    "passed": true
+  },
+  "level1_reproduction": {
+    "reproduced_shots": 50,
+    "reproduced_captured": 50,
+    "reproduced_fraction": 1.0,
+    "seed": 20260811,
+    "historical_fraction": 1.0,
+    "matches_historical": true,
+    "passed": true
+  },
+  "waveform_constraints": {
+    "sequential_600us": {
+      "valid": true,
+      "reasons": [],
+      "smoothness": {
+        "max_abs_center_velocity_m_per_s": 0.011538461538461537,
+        "max_abs_center_acceleration_m_per_s2": 147.64451524806555,
+        "max_abs_center_jerk_m_per_s3": 948262.7825823092,
+        "max_abs_depth_rate_J_per_s": 2.681798824363426e-23,
+        "dimensionless_accel": 22.14667728720983,
+        "dimensionless_jerk": 85.34365043240781
+      }
+    },
+    "sequential_400us": {
+      "valid": true,
+      "reasons": [],
+      "smoothness": {
+        "max_abs_center_velocity_m_per_s": 0.01730769230769231,
+        "max_abs_center_acceleration_m_per_s2": 332.20015930814753,
+        "max_abs_center_jerk_m_per_s3": 3200386.891215294,
+        "max_abs_depth_rate_J_per_s": 4.022698236545139e-23,
+        "dimensionless_accel": 22.146677287209833,
+        "dimensionless_jerk": 85.34365043240783
+      }
+    },
+    "nominal_overlapped_400us": {
+      "valid": true,
+      "reasons": [],
+      "smoothness": {
+        "max_abs_center_velocity_m_per_s": 0.021634615384615384,
+        "max_abs_center_acceleration_m_per_s2": 320.275404128276,
+        "max_abs_center_jerk_m_per_s3": 15909704.37157279,
+        "max_abs_depth_rate_J_per_s": 4.8114027122461314e-23,
+        "dimensionless_accel": 21.35169360855173,
+        "dimensionless_jerk": 424.258783241941
+      }
+    }
+  },
+  "ideal_runs": {
+    "sequential_600us": {
+      "final_slm_energy_over_depth": -0.999999658374217,
+      "captured": true,
+      "max_abs_residual_over_depth": 0.00017361111692110182
+    },
+    "sequential_400us": {
+      "final_slm_energy_over_depth": -0.9999646766296277,
+      "captured": true,
+      "max_abs_residual_over_depth": 0.00026041699263863293
+    },
+    "nominal_overlapped_400us": {
+      "final_slm_energy_over_depth": -0.9988327059462678,
+      "captured": true,
+      "max_abs_residual_over_depth": 8.700220405098144e-08
+    }
+  },
+  "ideal_work_energy": {
+    "per_waveform_passed": {
+      "sequential_600us": true,
+      "sequential_400us": true,
+      "nominal_overlapped_400us": true
+    },
+    "tolerance": 0.0005,
+    "passed": true
+  },
+  "ideal_timestep_convergence": {
+    "per_waveform": {
+      "sequential_600us": {
+        "position_error_coarse_m": 3.0744184097598653e-12,
+        "position_error_fine_m": 6.157426519797048e-13,
+        "velocity_error_coarse_m_per_s": 3.4998115980235025e-07,
+        "velocity_error_fine_m_per_s": 6.98546075189027e-08,
+        "position_convergence_order": 2.3199141090553326,
+        "velocity_convergence_order": 2.324850078768531
+      },
+      "sequential_400us": {
+        "position_error_coarse_m": 5.4825590077584895e-12,
+        "position_error_fine_m": 1.0966083305132823e-12,
+        "velocity_error_coarse_m_per_s": 5.272998837476664e-07,
+        "velocity_error_fine_m_per_s": 1.0560664938984794e-07,
+        "position_convergence_order": 2.3218010960492834,
+        "velocity_convergence_order": 2.3199230036159677
+      },
+      "nominal_overlapped_400us": {
+        "position_error_coarse_m": 3.114160135205075e-11,
+        "position_error_fine_m": 6.2323970606317135e-12,
+        "velocity_error_coarse_m_per_s": 5.390148664541697e-06,
+        "velocity_error_fine_m_per_s": 1.077380145871748e-06,
+        "position_convergence_order": 2.3209840777671604,
+        "velocity_convergence_order": 2.322797679864137
+      }
+    },
+    "min_position_order": 2.3199141090553326,
+    "passed": true
+  },
+  "mc_timestep_paired": {
+    "per_waveform": {
+      "sequential_600us": {
+        "label_flip_rate": 0.0,
+        "flip_count": 0,
+        "median_abs_margin_of_flipped": null,
+        "max_final_energy_abs_diff_uK": 3.476153507024019e-10
+      },
+      "sequential_400us": {
+        "label_flip_rate": 0.0,
+        "flip_count": 0,
+        "median_abs_margin_of_flipped": null,
+        "max_final_energy_abs_diff_uK": 1.968797863453886e-10
+      },
+      "nominal_overlapped_400us": {
+        "label_flip_rate": 0.0,
+        "flip_count": 0,
+        "median_abs_margin_of_flipped": null,
+        "max_final_energy_abs_diff_uK": 4.939731255873374e-10
+      }
+    },
+    "shots": 128,
+    "max_label_flip_rate": 0.0,
+    "passed": true
+  },
+  "mc_work_energy_residual": {
+    "per_waveform": {
+      "sequential_600us": {
+        "median": 0.0003469080066417717,
+        "p95": 0.000348444058814057,
+        "max": 0.0003490563278748281
+      },
+      "sequential_400us": {
+        "median": 0.0005199389573848197,
+        "p95": 0.0005213609019226106,
+        "max": 0.0005236371758397078
+      },
+      "nominal_overlapped_400us": {
+        "median": 9.129230122800621e-07,
+        "p95": 3.7290260914436196e-06,
+        "max": 8.697946947796086e-06
+      }
+    },
+    "tolerance": 0.001,
+    "passed": true
+  },
+  "hold_segment": {
+    "per_waveform_peak_to_peak_over_depth": {
+      "sequential_600us": 5.4643857735381755e-12,
+      "sequential_400us": 5.649912833909653e-10,
+      "nominal_overlapped_400us": 1.8660284635728728e-08
+    },
+    "tolerance": 0.0001,
+    "passed": true
+  },
+  "waveform_constraints_all_valid": true,
+  "critical_checks": [
+    "existing_tests",
+    "static_limit",
+    "level1_reproduction",
+    "ideal_work_energy",
+    "ideal_timestep_convergence",
+    "mc_timestep_paired",
+    "mc_work_energy_residual",
+    "hold_segment",
+    "waveform_constraints_all_valid"
+  ],
+  "all_passed": true,
+  "elapsed_s": 335.9625120162964
+}
