@@ -1,0 +1,62 @@
+{
+  "shots_per_point": 200,
+  "total_shots": 8200,
+  "elapsed_s": 203.96482396125793,
+  "n_procs": 9,
+  "base_seed": 20260812,
+  "scans": {
+    "duration_us": [
+      50,
+      75,
+      100,
+      150,
+      200,
+      300,
+      450,
+      600,
+      900,
+      1400,
+      2000
+    ],
+    "move_fraction": [
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8
+    ],
+    "slm_depth_uK": [
+      40,
+      60,
+      90,
+      140,
+      200,
+      280
+    ],
+    "aod_depth_uK": [
+      100,
+      160,
+      220,
+      280,
+      360,
+      440
+    ],
+    "initial_center_um": [
+      0.6,
+      1.2,
+      1.8,
+      2.4,
+      3.0,
+      3.6,
+      4.8
+    ],
+    "center_shape": [
+      "linear",
+      "cosine",
+      "smoothstep",
+      "quintic"
+    ]
+  }
+}

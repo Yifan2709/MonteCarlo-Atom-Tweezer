@@ -1,0 +1,37 @@
+model:
+  coordinate: radial_1d
+  description: classical_aod_to_slm_transfer
+atom:
+  species: Cs133
+  mass_u: 132.90545196
+slm:
+  center_um: 0.0
+  depth_uK: 140.0
+  waist_um: 1.17
+  depth_source: literature_reference
+  waist_source: measured
+aod:
+  initial_center_um: 2.4
+  depth_uK: 280.0
+  waist_um: 1.17
+  depth_source: literature_reference
+  waist_source: assumed
+  waist_is_assumed: true
+transfer:
+  duration_us: 600.0
+  duration_source: assumed
+  move_fraction: 0.52
+  ramp_fraction: 0.48
+thermal:
+  temperature_uK: 5.0
+  source: assumed
+trajectory:
+  dt_us: 0.05
+monte_carlo:
+  shots: 50
+  seed: 20260811
+output:
+  directory: outputs/level1_transfer_1d/demo
+  resolved_directory: /Users/yifansmac/work/Quantum/MonteCarlo_codex_level1/simulation/level1_transfer_1d/outputs/level1_transfer_1d/demo
+config_path: /Users/yifansmac/work/Quantum/MonteCarlo_codex_level1/simulation/level1_transfer_1d/configs/transfer_1d.yaml
+project_root: /Users/yifansmac/work/Quantum/MonteCarlo_codex_level1/simulation/level1_transfer_1d
