@@ -119,6 +119,26 @@ def test_second_derivative_matches_finite_difference(cfg, physics):
     assert np.allclose(analytic[mask], numeric[mask], rtol=5e-2)
 
 
+def test_third_derivative_matches_finite_difference(cfg, physics):
+    waveform = build_waveform(nominal_overlapped(cfg), physics)
+    # 取移动窗口内部（jerk 非零区域）采样，避免端点零区放大相对误差
+    times = np.linspace(0.15, 0.55, 21) * waveform.duration_s
+    delta = 1e-7
+    accel = lambda t: np.asarray(waveform.center_acceleration(t), dtype=float)
+    numeric = (accel(times + delta) - accel(times - delta)) / (2 * delta)
+    analytic = np.asarray(waveform.center_jerk(times), dtype=float)
+    mask = np.abs(analytic) > 1e-6
+    assert mask.any()
+    assert np.allclose(analytic[mask], numeric[mask], rtol=1e-1)
+
+
+def test_ramp_power_just_below_one_singular_rejected(cfg, physics):
+    spec = dict(nominal_overlapped(cfg), ramp_power=0.95)
+    valid, reasons = validate_waveform(build_waveform(spec, physics), CONSTRAINT)
+    assert not valid
+    assert any("奇异" in reason for reason in reasons)
+
+
 # ---------------------------------------------------------------- 5. 与 Level 1 一致
 def test_sequential_600us_matches_level1(cfg, physics):
     from level1_transfer_1d.config import load_config as load_level1
@@ -193,6 +213,44 @@ def test_optimizer_never_touches_validation_pool():
     assert "validation_shots" not in source
 
 
+class _SequentialPool:
+    """单进程替代 multiprocessing.Pool：执行 initializer 后顺序 map。"""
+
+    def __init__(self, *args, initializer=None, initargs=(), **kwargs):
+        if initializer is not None:
+            initializer(*initargs)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc_info):
+        return False
+
+    def map(self, function, jobs):
+        return [function(job) for job in jobs]
+
+
+def test_stage_optimize_never_samples_validation_pool(tmp_path, monkeypatch):
+    """接口分层 + spy：优化全流程只允许抽取 optimization/selection 池。"""
+    from level2_joint_transfer import cli as level2_cli
+    from level2_joint_transfer import optimizer as optimizer_module
+    requested_seeds = []
+    real_sampler = level2_cli.sample_initial_states
+
+    def spy_sampler(config, seed, shots):
+        requested_seeds.append(seed)
+        return real_sampler(config, seed, shots)
+
+    monkeypatch.setattr(level2_cli, "sample_initial_states", spy_sampler)
+    monkeypatch.setattr(optimizer_module, "Pool", _SequentialPool)
+    tiny_cfg = load_config(_tiny_config(tmp_path))
+    output = tmp_path / "outputs" / "level2_joint_transfer" / "tiny_test"
+    output.mkdir(parents=True, exist_ok=True)
+    level2_cli.stage_optimize(tiny_cfg, output)
+    assert requested_seeds == [tiny_cfg.initial_ensemble.optimization_seed,
+                               tiny_cfg.initial_ensemble.selection_seed]
+
+
 # ---------------------------------------------------------------- 12. Wilson 区间
 def test_wilson_interval_known_case():
     summary = summarize_capture([True] * 3 + [False] * 7)
@@ -257,11 +315,12 @@ TINY_OVERRIDE = {
     "initial_ensemble": {"optimization_shots": 6, "selection_shots": 12, "validation_shots": 16,
                          "optimization_seed": 31001, "selection_seed": 31002,
                          "validation_seed": 31003},
-    "integration": {"post_transfer_hold_us": 10.0},
+    "integration": {"post_transfer_hold_us": 10.0, "optimization_dt_us": 0.02,
+                    "validation_dt_us": 0.01, "convergence_dt_us": 0.005},
     "waveforms": {"sequential_baseline_duration_us": 60.0, "compressed_baseline_duration_us": 40.0,
                   "optimized_duration_us": 40.0},
     "optimization": {"max_candidates": 3, "finalists": 1, "refine_steps_per_finalist": 1,
-                     "enable_monotone_spline_refinement": False, "spline_candidates": 2},
+                     "enable_monotone_spline_refinement": True, "spline_candidates": 2},
     "robustness": {"temperatures_uK": [4.0, 6.0], "final_alignment_offsets_um": [0.0, 0.05],
                    "shots_per_condition": 4, "timestep_subset_shots": 4,
                    "bootstrap_samples": 200},
@@ -308,6 +367,44 @@ def test_cli_stages_smoke(tmp_path):
     assert image_validation["all_passed"]
     frozen = yaml.safe_load((output / "best_waveform.yaml").read_text(encoding="utf-8"))
     assert frozen_spec(frozen, load_config(config_path))["duration_s"] == pytest.approx(40e-6)
+    with (output / "candidates.csv").open(newline="", encoding="utf-8") as handle:
+        candidate_ids = [row["candidate_id"] for row in csv.DictReader(handle)]
+    assert any(candidate_id.startswith("spl_") for candidate_id in candidate_ids)
+
+
+@pytest.mark.slow
+def test_cli_preflight_and_all_stages(tmp_path):
+    """preflight 与 all 两个 stage 的冒烟测试。"""
+    from level2_joint_transfer import cli as level2_cli
+    config_path = _tiny_config(tmp_path)
+    assert level2_cli.main(["--config", str(config_path), "--stage", "preflight"]) == 0
+    output = tmp_path / "outputs" / "level2_joint_transfer" / "tiny_test"
+    preflight = json.loads((output / "preflight.json").read_text())
+    assert preflight["all_passed"]
+    assert level2_cli.main(["--config", str(config_path), "--stage", "all"]) == 0
+
+
+@pytest.mark.slow
+def test_optimize_checkpoint_resume(tmp_path):
+    """检查点续跑：重跑 optimize 应复用三个阶段的既有结果且候选表不变。"""
+    from level2_joint_transfer import cli as level2_cli
+    config_path = _tiny_config(tmp_path)
+    assert level2_cli.main(["--config", str(config_path), "--stage", "optimize"]) == 0
+    output = tmp_path / "outputs" / "level2_joint_transfer" / "tiny_test"
+    checkpoint = json.loads((output / "optimization_checkpoint.json").read_text())
+
+    def read_candidates():
+        with (output / "candidates.csv").open(newline="", encoding="utf-8") as handle:
+            return list(csv.DictReader(handle))
+
+    first = read_candidates()
+    assert {"stage1", "stage2", "spline"} <= set(checkpoint["stages"])
+    assert level2_cli.main(["--config", str(config_path), "--stage", "optimize"]) == 0
+    second = read_candidates()
+    assert first == second
+    checkpoint2 = json.loads((output / "optimization_checkpoint.json").read_text())
+    for stage in ("stage1", "stage2", "spline"):
+        assert checkpoint["stages"][stage]["rows"] == checkpoint2["stages"][stage]["rows"]
 
 
 # ---------------------------------------------------------------- 20. sources/ 拒绝
