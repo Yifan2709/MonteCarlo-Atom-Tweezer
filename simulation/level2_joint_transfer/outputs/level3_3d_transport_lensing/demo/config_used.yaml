@@ -1,0 +1,68 @@
+level3:
+  name: 3d_aod_transport_lensing
+atom:
+  isotope: Cs-133
+  mass_u: 132.90545196
+aod_trap:
+  wavelength_nm: 1055.0
+  waist_um: 1.17
+  depth_uK: 280.0
+  waist_source: assumed_matched_to_slm_back_aperture
+initial_ensemble:
+  temperature_uK: 5.0
+  scan_shots: 128
+  validation_shots: 2000
+  sensitivity_shots: 500
+  scan_seed: 31001
+  validation_seed: 31002
+  convergence_seed: 31003
+integration:
+  scan_dt_us: 0.1
+  validation_dt_us: 0.05
+  convergence_dt_us: 0.025
+  post_transport_hold_us: 100.0
+transport:
+  geometries:
+  - straight
+  - diagonal
+  profiles:
+  - adiabatic_sine
+  - constant_jerk
+  - minimum_jerk
+  distances_um:
+  - 270.0
+  - 510.0
+  - 610.0
+  durations_us:
+  - 400.0
+  - 600.0
+  - 800.0
+  - 1000.0
+  - 1200.0
+  - 1600.0
+  - 2000.0
+lensing:
+  calibration_mode: normalized_reference_scan
+  axis_signs:
+  - 1
+  - 1
+  reference_geometry: diagonal
+  reference_profile: adiabatic_sine
+  reference_distance_um: 610.0
+  reference_duration_us: 1600.0
+  reference_axis_vmax_over_vs:
+  - 0.0
+  - 0.5
+  - 0.75
+  - 1.0
+  - 1.25
+  absolute_critical_velocity_m_per_s: null
+depth_control:
+  commanded_depth_mode: constant
+  enable_exploratory_lensing_compensation: false
+  max_power_multiplier: 2.0
+classification:
+  retained_energy_threshold_J: 0.0
+  near_threshold_fraction_of_depth: 0.001
+output:
+  directory: outputs/level3_3d_transport_lensing/demo

@@ -1,0 +1,620 @@
+{
+  "level3": {
+    "name": "3d_aod_transport_lensing",
+    "stage": "all"
+  },
+  "physics": {
+    "z_r_m": 4.076328136018072e-06,
+    "omega_r": 226239.7143983896,
+    "omega_z": 45916.689760374284,
+    "depth_uK": 280.0,
+    "waist_um": 1.17,
+    "waist_source": "assumed_matched_to_slm_back_aperture"
+  },
+  "seeds": {
+    "scan": 31001,
+    "validation": 31002,
+    "convergence": 31003
+  },
+  "lensing": {
+    "calibration_mode": "normalized_reference_scan",
+    "fixed_vs_m_per_s": {
+      "0.5": 1.0783378413094848,
+      "0.75": 0.7188918942063233,
+      "1.0": 0.5391689206547424,
+      "1.25": 0.43133513652379396
+    },
+    "scenario_note": "normalized_reference_scan 的 v_s 为无量纲场景参数，非论文测量值"
+  },
+  "frozen_validation_conditions": [
+    {
+      "name": "paper_anchor_diagonal",
+      "geometry": "diagonal",
+      "profile": "adiabatic_sine",
+      "distance_um": 610.0,
+      "duration_us": 1600.0
+    },
+    {
+      "name": "paper_anchor_constant_jerk",
+      "geometry": "diagonal",
+      "profile": "constant_jerk",
+      "distance_um": 610.0,
+      "duration_us": 1600.0
+    },
+    {
+      "name": "straight_control",
+      "geometry": "straight",
+      "profile": "adiabatic_sine",
+      "distance_um": 510.0,
+      "duration_us": 1600.0
+    },
+    {
+      "name": "straight_control_constant_jerk",
+      "geometry": "straight",
+      "profile": "constant_jerk",
+      "distance_um": 510.0,
+      "duration_us": 1600.0
+    }
+  ],
+  "preflight": {
+    "existing_tests": {
+      "exit_code": 0,
+      "summary_line": "83 passed, 4 deselected in 54.48s",
+      "passed": true
+    },
+    "level0_slice": {
+      "potential_match": true,
+      "force_match": true,
+      "passed": true
+    },
+    "curvature_frequencies": {
+      "omega_r_analytic": 226239.7143983896,
+      "omega_r_numeric": 226239.71380906156,
+      "omega_z_analytic": 45916.689760374284,
+      "omega_z_numeric": 45916.692504608895,
+      "passed": true
+    },
+    "lensing_zero_limit": {
+      "potential_match": true,
+      "force_match": true,
+      "passed": true
+    },
+    "force_gradient": {
+      "max_relative_error": 1.3049679678064162e-09,
+      "passed": true
+    },
+    "profile_endpoints": {
+      "profiles": {
+        "adiabatic_sine": {
+          "q0": 0.0,
+          "q1": 1.0,
+          "v0": 0.0,
+          "v1": 0.0,
+          "a0": 0.0,
+          "a1": -1.5389365549774318e-15,
+          "monotone": true,
+          "passed": true
+        },
+        "constant_jerk": {
+          "q0": 0.0,
+          "q1": 1.0,
+          "v0": 0.0,
+          "v1": 0.0,
+          "a0": 0.0,
+          "a1": 0.0,
+          "monotone": true,
+          "passed": true
+        },
+        "minimum_jerk": {
+          "q0": 0.0,
+          "q1": 1.0,
+          "v0": 0.0,
+          "v1": 0.0,
+          "a0": 0.0,
+          "a1": 0.0,
+          "monotone": true,
+          "passed": true
+        }
+      },
+      "passed": true
+    },
+    "constant_jerk_constants": {
+      "jerk_magnitude_ok": true,
+      "sign_pattern_ok": true,
+      "displacement_ok": true,
+      "passed": true
+    },
+    "straight_split_critical": {
+      "n_minima_at_1.8zR": 1,
+      "n_minima_at_2.0zR": 1,
+      "n_minima_at_2.2zR": 2,
+      "passed": true
+    },
+    "diagonal_single_minimum": {
+      "n_minima": 1,
+      "passed": true
+    },
+    "static_integrator": {
+      "error_dt_0.05us_J": 3.527049607525338e-33,
+      "error_dt_0.025us_J": 8.813246876294967e-34,
+      "convergence_order": 2.0007163437327447,
+      "passed": true
+    },
+    "work_energy_convergence": {
+      "cases": {
+        "lensing_off": {
+          "residual_dt0.05_over_depth": 2.953032168704205e-11,
+          "residual_dt0.025_over_depth": 7.544274859992636e-12,
+          "passed": true
+        },
+        "lensing_ref1.00": {
+          "residual_dt0.05_over_depth": 8.936064449430152e-11,
+          "residual_dt0.025_over_depth": 2.195743661564205e-11,
+          "passed": true
+        }
+      },
+      "passed": true
+    },
+    "ideal_transport": {
+      "e_final_uK": -279.9568986633448,
+      "finite": true,
+      "retained": true,
+      "near_numerical_zero": false,
+      "passed": true
+    },
+    "mc_dt_paired": {
+      "label_flips_0.10_vs_0.05": 0.0,
+      "max_final_energy_diff_uK": 0.0017479989498099258,
+      "median_work_residual_uK": 1.3395657609244772e-05,
+      "passed": true
+    },
+    "hold_segment": {
+      "max_peak_to_peak_over_depth": 0.0,
+      "passed": true
+    },
+    "config_values": {
+      "values_finite": true,
+      "frozen_validation_conditions": {
+        "paper_anchor_diagonal": {
+          "geometry": "diagonal",
+          "profile": "adiabatic_sine",
+          "distance_um": 610.0,
+          "duration_us": 1600.0
+        },
+        "paper_anchor_constant_jerk": {
+          "geometry": "diagonal",
+          "profile": "constant_jerk",
+          "distance_um": 610.0,
+          "duration_us": 1600.0
+        },
+        "straight_control": {
+          "geometry": "straight",
+          "profile": "adiabatic_sine",
+          "distance_um": 510.0,
+          "duration_us": 1600.0
+        },
+        "straight_control_constant_jerk": {
+          "geometry": "straight",
+          "profile": "constant_jerk",
+          "distance_um": 510.0,
+          "duration_us": 1600.0
+        },
+        "nonzero_severity": 1.0
+      },
+      "passed": true
+    },
+    "all_passed": true,
+    "critical_checks": [
+      "existing_tests",
+      "level0_slice",
+      "curvature_frequencies",
+      "lensing_zero_limit",
+      "force_gradient",
+      "profile_endpoints",
+      "constant_jerk_constants",
+      "straight_split_critical",
+      "diagonal_single_minimum",
+      "static_integrator",
+      "work_energy_convergence",
+      "ideal_transport",
+      "mc_dt_paired",
+      "hold_segment",
+      "config_values"
+    ],
+    "elapsed_s": 89.08238005638123
+  },
+  "coarse_scan": {
+    "n_grid": 96,
+    "failed": 0
+  },
+  "validation": {
+    "summaries": {
+      "paper_anchor_diagonal|sev0.0": {
+        "name": "adiabatic_sine|diagonal|0.0",
+        "retained": 2000,
+        "shots": 2000,
+        "retention_fraction": 1.0,
+        "wilson_low": 0.9980829527187469,
+        "wilson_high": 0.9999999999999998,
+        "split_fraction": 0.0,
+        "median_delta_eps_uK_retained": -0.00036030654623120384,
+        "max_abs_w_residual_over_depth": 4.6017751592938085e-06,
+        "max_hold_pp_over_depth": 5.0004699783027245e-06,
+        "retained_mismatch_with_hold": 0
+      },
+      "paper_anchor_diagonal|sev1.0": {
+        "name": "adiabatic_sine|diagonal|1.0",
+        "retained": 2000,
+        "shots": 2000,
+        "retention_fraction": 1.0,
+        "wilson_low": 0.9980829527187469,
+        "wilson_high": 0.9999999999999998,
+        "split_fraction": 0.0,
+        "median_delta_eps_uK_retained": 0.0508649785660058,
+        "max_abs_w_residual_over_depth": 3.567475403947846e-06,
+        "max_hold_pp_over_depth": 5.002159351913767e-06,
+        "retained_mismatch_with_hold": 0
+      },
+      "paper_anchor_constant_jerk|sev0.0": {
+        "name": "constant_jerk|diagonal|0.0",
+        "retained": 2000,
+        "shots": 2000,
+        "retention_fraction": 1.0,
+        "wilson_low": 0.9980829527187469,
+        "wilson_high": 0.9999999999999998,
+        "split_fraction": 0.0,
+        "median_delta_eps_uK_retained": -0.00042219043331037653,
+        "max_abs_w_residual_over_depth": 4.7273357273976465e-06,
+        "max_hold_pp_over_depth": 4.971756531803429e-06,
+        "retained_mismatch_with_hold": 0
+      },
+      "paper_anchor_constant_jerk|sev1.0": {
+        "name": "constant_jerk|diagonal|1.0",
+        "retained": 2000,
+        "shots": 2000,
+        "retention_fraction": 1.0,
+        "wilson_low": 0.9980829527187469,
+        "wilson_high": 0.9999999999999998,
+        "split_fraction": 0.0,
+        "median_delta_eps_uK_retained": 0.02161797482777361,
+        "max_abs_w_residual_over_depth": 3.5449668436215664e-06,
+        "max_hold_pp_over_depth": 4.967556945886102e-06,
+        "retained_mismatch_with_hold": 0
+      },
+      "straight_control|sev0.0": {
+        "name": "adiabatic_sine|straight|0.0",
+        "retained": 2000,
+        "shots": 2000,
+        "retention_fraction": 1.0,
+        "wilson_low": 0.9980829527187469,
+        "wilson_high": 0.9999999999999998,
+        "split_fraction": 0.0,
+        "median_delta_eps_uK_retained": -0.0004618199982409088,
+        "max_abs_w_residual_over_depth": 4.802879462763879e-06,
+        "max_hold_pp_over_depth": 5.027896360121032e-06,
+        "retained_mismatch_with_hold": 0
+      },
+      "straight_control|sev1.0": {
+        "name": "adiabatic_sine|straight|1.0",
+        "retained": 2000,
+        "shots": 2000,
+        "retention_fraction": 1.0,
+        "wilson_low": 0.9980829527187469,
+        "wilson_high": 0.9999999999999998,
+        "split_fraction": 0.2537313432835821,
+        "median_delta_eps_uK_retained": 15.675535550313285,
+        "max_abs_w_residual_over_depth": 3.713211815872107e-06,
+        "max_hold_pp_over_depth": 4.903032051840732e-06,
+        "retained_mismatch_with_hold": 0
+      },
+      "straight_control_constant_jerk|sev0.0": {
+        "name": "constant_jerk|straight|0.0",
+        "retained": 2000,
+        "shots": 2000,
+        "retention_fraction": 1.0,
+        "wilson_low": 0.9980829527187469,
+        "wilson_high": 0.9999999999999998,
+        "split_fraction": 0.0,
+        "median_delta_eps_uK_retained": -0.0001577897853941579,
+        "max_abs_w_residual_over_depth": 4.7480073137678056e-06,
+        "max_hold_pp_over_depth": 5.0047022623784845e-06,
+        "retained_mismatch_with_hold": 0
+      },
+      "straight_control_constant_jerk|sev1.0": {
+        "name": "constant_jerk|straight|1.0",
+        "retained": 2000,
+        "shots": 2000,
+        "retention_fraction": 1.0,
+        "wilson_low": 0.9980829527187469,
+        "wilson_high": 0.9999999999999998,
+        "split_fraction": 0.2736318407960199,
+        "median_delta_eps_uK_retained": 12.727027106141794,
+        "max_abs_w_residual_over_depth": 3.2678899695253366e-06,
+        "max_hold_pp_over_depth": 4.869877101992321e-06,
+        "retained_mismatch_with_hold": 0
+      }
+    },
+    "comparisons": {
+      "sine_vs_constant_jerk_diagonal_sev1.0": {
+        "paired_counts": {
+          "both_captured": 2000,
+          "only_a_captured": 0,
+          "only_b_captured": 0,
+          "both_failed": 0,
+          "shots": 2000
+        },
+        "bootstrap": {
+          "difference": 0.0,
+          "ci_low": 0.0,
+          "ci_high": 0.0,
+          "num_bootstrap": 2000,
+          "seed": 31002,
+          "ci_excludes_zero": false
+        }
+      },
+      "sine_vs_constant_jerk_straight_sev1.0": {
+        "paired_counts": {
+          "both_captured": 2000,
+          "only_a_captured": 0,
+          "only_b_captured": 0,
+          "both_failed": 0,
+          "shots": 2000
+        },
+        "bootstrap": {
+          "difference": 0.0,
+          "ci_low": 0.0,
+          "ci_high": 0.0,
+          "num_bootstrap": 2000,
+          "seed": 31002,
+          "ci_excludes_zero": false
+        }
+      },
+      "straight_vs_diagonal_sine_sev1.0": {
+        "paired_counts": {
+          "both_captured": 2000,
+          "only_a_captured": 0,
+          "only_b_captured": 0,
+          "both_failed": 0,
+          "shots": 2000
+        },
+        "bootstrap": {
+          "difference": 0.0,
+          "ci_low": 0.0,
+          "ci_high": 0.0,
+          "num_bootstrap": 2000,
+          "seed": 31002,
+          "ci_excludes_zero": false
+        }
+      },
+      "lensing_off_vs_sev1.0_paper_anchor": {
+        "paired_counts": {
+          "both_captured": 2000,
+          "only_a_captured": 0,
+          "only_b_captured": 0,
+          "both_failed": 0,
+          "shots": 2000
+        },
+        "bootstrap": {
+          "difference": 0.0,
+          "ci_low": 0.0,
+          "ci_high": 0.0,
+          "num_bootstrap": 2000,
+          "seed": 31002,
+          "ci_excludes_zero": false
+        }
+      }
+    },
+    "convergence_rows": [
+      {
+        "dt_us": 0.1,
+        "max_final_energy_diff_uK": 0.0,
+        "max_abs_w_residual_over_depth": 1.107591527484639e-05,
+        "label_flip_rate": 0.0,
+        "retention_fraction": 1.0
+      },
+      {
+        "dt_us": 0.05,
+        "max_final_energy_diff_uK": 0.0028154311507933016,
+        "max_abs_w_residual_over_depth": 2.769588716967404e-06,
+        "label_flip_rate": 0.0,
+        "retention_fraction": 1.0
+      },
+      {
+        "dt_us": 0.025,
+        "max_final_energy_diff_uK": 0.0035194409318819453,
+        "max_abs_w_residual_over_depth": 6.924302901615384e-07,
+        "label_flip_rate": 0.0,
+        "retention_fraction": 1.0
+      }
+    ],
+    "initial_state_meta": {
+      "seed": 31002,
+      "shots": 2000,
+      "attempts": 4000,
+      "acceptance_rate": 0.5,
+      "sigma_r_m": 7.817391325938412e-08,
+      "sigma_z_m": 3.8517680393568904e-07,
+      "mean_pos_m": [
+        9.21426632362431e-11,
+        -9.815381943226297e-10,
+        9.382173028593537e-09
+      ],
+      "std_pos_m": [
+        7.866360452898842e-08,
+        7.646027802171767e-08,
+        3.900691278571553e-07
+      ],
+      "mean_vel_m_per_s": [
+        -3.30412734595736e-05,
+        -7.71985355223679e-05,
+        -0.00011044928758789913
+      ],
+      "std_vel_m_per_s": [
+        0.017793666134228715,
+        0.017708848121908167,
+        0.017261119633873976
+      ],
+      "sampler": "harmonic_3d_proposal_with_bound_rejection"
+    }
+  },
+  "sensitivity": {
+    "rows": [
+      {
+        "scan": "temperature",
+        "value": 3.0,
+        "shots": 500,
+        "retained": 500,
+        "retention_fraction": 1.0,
+        "wilson_low": 0.9923756595384479,
+        "wilson_high": 1.0,
+        "median_delta_eps_uK_retained": 0.031249943280927006,
+        "split_fraction": 0.0
+      },
+      {
+        "scan": "temperature",
+        "value": 5.0,
+        "shots": 500,
+        "retained": 500,
+        "retention_fraction": 1.0,
+        "wilson_low": 0.9923756595384479,
+        "wilson_high": 1.0,
+        "median_delta_eps_uK_retained": 0.012411035043546903,
+        "split_fraction": 0.0
+      },
+      {
+        "scan": "temperature",
+        "value": 10.0,
+        "shots": 500,
+        "retained": 500,
+        "retention_fraction": 1.0,
+        "wilson_low": 0.9923756595384479,
+        "wilson_high": 1.0,
+        "median_delta_eps_uK_retained": 0.04067612314502966,
+        "split_fraction": 0.0
+      },
+      {
+        "scan": "depth",
+        "value": 160.0,
+        "shots": 500,
+        "retained": 500,
+        "retention_fraction": 1.0,
+        "wilson_low": 0.9923756595384479,
+        "wilson_high": 1.0,
+        "median_delta_eps_uK_retained": 0.1151826170252086,
+        "split_fraction": 0.0
+      },
+      {
+        "scan": "depth",
+        "value": 280.0,
+        "shots": 500,
+        "retained": 500,
+        "retention_fraction": 1.0,
+        "wilson_low": 0.9923756595384479,
+        "wilson_high": 1.0,
+        "median_delta_eps_uK_retained": 0.08868158905175338,
+        "split_fraction": 0.0
+      },
+      {
+        "scan": "depth",
+        "value": 920.0,
+        "shots": 500,
+        "retained": 500,
+        "retention_fraction": 1.0,
+        "wilson_low": 0.9923756595384479,
+        "wilson_high": 1.0,
+        "median_delta_eps_uK_retained": -0.004635493950512881,
+        "split_fraction": 0.0
+      },
+      {
+        "scan": "waist",
+        "value": 1.11,
+        "shots": 500,
+        "retained": 500,
+        "retention_fraction": 1.0,
+        "wilson_low": 0.9923756595384479,
+        "wilson_high": 1.0,
+        "median_delta_eps_uK_retained": 0.013540294125644836,
+        "split_fraction": 0.0
+      },
+      {
+        "scan": "waist",
+        "value": 1.17,
+        "shots": 500,
+        "retained": 500,
+        "retention_fraction": 1.0,
+        "wilson_low": 0.9923756595384479,
+        "wilson_high": 1.0,
+        "median_delta_eps_uK_retained": 0.06334034154653745,
+        "split_fraction": 0.0
+      },
+      {
+        "scan": "waist",
+        "value": 1.23,
+        "shots": 500,
+        "retained": 500,
+        "retention_fraction": 1.0,
+        "wilson_low": 0.9923756595384479,
+        "wilson_high": 1.0,
+        "median_delta_eps_uK_retained": 0.012726389265369065,
+        "split_fraction": 0.0
+      },
+      {
+        "scan": "severity",
+        "value": 0.5,
+        "shots": 500,
+        "retained": 500,
+        "retention_fraction": 1.0,
+        "wilson_low": 0.9923756595384479,
+        "wilson_high": 1.0,
+        "median_delta_eps_uK_retained": -0.0004900195677319807,
+        "split_fraction": 0.0
+      },
+      {
+        "scan": "severity",
+        "value": 0.75,
+        "shots": 500,
+        "retained": 500,
+        "retention_fraction": 1.0,
+        "wilson_low": 0.9923756595384479,
+        "wilson_high": 1.0,
+        "median_delta_eps_uK_retained": 0.007559761734439618,
+        "split_fraction": 0.0
+      },
+      {
+        "scan": "severity",
+        "value": 1.0,
+        "shots": 500,
+        "retained": 500,
+        "retention_fraction": 1.0,
+        "wilson_low": 0.9923756595384479,
+        "wilson_high": 1.0,
+        "median_delta_eps_uK_retained": 5.29508122149025e-05,
+        "split_fraction": 0.0
+      },
+      {
+        "scan": "severity",
+        "value": 1.25,
+        "shots": 500,
+        "retained": 500,
+        "retention_fraction": 1.0,
+        "wilson_low": 0.9923756595384479,
+        "wilson_high": 1.0,
+        "median_delta_eps_uK_retained": 0.05674283634031774,
+        "split_fraction": 0.0
+      },
+      {
+        "scan": "axis_signs_opposite",
+        "value": 1.0,
+        "shots": 500,
+        "retained": 472,
+        "retention_fraction": 0.944,
+        "wilson_low": 0.920255206353293,
+        "wilson_high": 0.9609743793168485,
+        "median_delta_eps_uK_retained": 43.061890212029844,
+        "split_fraction": 0.4925373134328358
+      }
+    ]
+  },
+  "image_validation_all_passed": true,
+  "visual_review_performed": false
+}

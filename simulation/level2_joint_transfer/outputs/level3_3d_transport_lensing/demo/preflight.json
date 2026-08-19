@@ -1,0 +1,167 @@
+{
+  "existing_tests": {
+    "exit_code": 0,
+    "summary_line": "83 passed, 4 deselected in 54.48s",
+    "passed": true
+  },
+  "level0_slice": {
+    "potential_match": true,
+    "force_match": true,
+    "passed": true
+  },
+  "curvature_frequencies": {
+    "omega_r_analytic": 226239.7143983896,
+    "omega_r_numeric": 226239.71380906156,
+    "omega_z_analytic": 45916.689760374284,
+    "omega_z_numeric": 45916.692504608895,
+    "passed": true
+  },
+  "lensing_zero_limit": {
+    "potential_match": true,
+    "force_match": true,
+    "passed": true
+  },
+  "force_gradient": {
+    "max_relative_error": 1.3049679678064162e-09,
+    "passed": true
+  },
+  "profile_endpoints": {
+    "profiles": {
+      "adiabatic_sine": {
+        "q0": 0.0,
+        "q1": 1.0,
+        "v0": 0.0,
+        "v1": 0.0,
+        "a0": 0.0,
+        "a1": -1.5389365549774318e-15,
+        "monotone": true,
+        "passed": true
+      },
+      "constant_jerk": {
+        "q0": 0.0,
+        "q1": 1.0,
+        "v0": 0.0,
+        "v1": 0.0,
+        "a0": 0.0,
+        "a1": 0.0,
+        "monotone": true,
+        "passed": true
+      },
+      "minimum_jerk": {
+        "q0": 0.0,
+        "q1": 1.0,
+        "v0": 0.0,
+        "v1": 0.0,
+        "a0": 0.0,
+        "a1": 0.0,
+        "monotone": true,
+        "passed": true
+      }
+    },
+    "passed": true
+  },
+  "constant_jerk_constants": {
+    "jerk_magnitude_ok": true,
+    "sign_pattern_ok": true,
+    "displacement_ok": true,
+    "passed": true
+  },
+  "straight_split_critical": {
+    "n_minima_at_1.8zR": 1,
+    "n_minima_at_2.0zR": 1,
+    "n_minima_at_2.2zR": 2,
+    "passed": true
+  },
+  "diagonal_single_minimum": {
+    "n_minima": 1,
+    "passed": true
+  },
+  "static_integrator": {
+    "error_dt_0.05us_J": 3.527049607525338e-33,
+    "error_dt_0.025us_J": 8.813246876294967e-34,
+    "convergence_order": 2.0007163437327447,
+    "passed": true
+  },
+  "work_energy_convergence": {
+    "cases": {
+      "lensing_off": {
+        "residual_dt0.05_over_depth": 2.953032168704205e-11,
+        "residual_dt0.025_over_depth": 7.544274859992636e-12,
+        "passed": true
+      },
+      "lensing_ref1.00": {
+        "residual_dt0.05_over_depth": 8.936064449430152e-11,
+        "residual_dt0.025_over_depth": 2.195743661564205e-11,
+        "passed": true
+      }
+    },
+    "passed": true
+  },
+  "ideal_transport": {
+    "e_final_uK": -279.9568986633448,
+    "finite": true,
+    "retained": true,
+    "near_numerical_zero": false,
+    "passed": true
+  },
+  "mc_dt_paired": {
+    "label_flips_0.10_vs_0.05": 0.0,
+    "max_final_energy_diff_uK": 0.0017479989498099258,
+    "median_work_residual_uK": 1.3395657609244772e-05,
+    "passed": true
+  },
+  "hold_segment": {
+    "max_peak_to_peak_over_depth": 0.0,
+    "passed": true
+  },
+  "config_values": {
+    "values_finite": true,
+    "frozen_validation_conditions": {
+      "paper_anchor_diagonal": {
+        "geometry": "diagonal",
+        "profile": "adiabatic_sine",
+        "distance_um": 610.0,
+        "duration_us": 1600.0
+      },
+      "paper_anchor_constant_jerk": {
+        "geometry": "diagonal",
+        "profile": "constant_jerk",
+        "distance_um": 610.0,
+        "duration_us": 1600.0
+      },
+      "straight_control": {
+        "geometry": "straight",
+        "profile": "adiabatic_sine",
+        "distance_um": 510.0,
+        "duration_us": 1600.0
+      },
+      "straight_control_constant_jerk": {
+        "geometry": "straight",
+        "profile": "constant_jerk",
+        "distance_um": 510.0,
+        "duration_us": 1600.0
+      },
+      "nonzero_severity": 1.0
+    },
+    "passed": true
+  },
+  "all_passed": true,
+  "critical_checks": [
+    "existing_tests",
+    "level0_slice",
+    "curvature_frequencies",
+    "lensing_zero_limit",
+    "force_gradient",
+    "profile_endpoints",
+    "constant_jerk_constants",
+    "straight_split_critical",
+    "diagonal_single_minimum",
+    "static_integrator",
+    "work_energy_convergence",
+    "ideal_transport",
+    "mc_dt_paired",
+    "hold_segment",
+    "config_values"
+  ],
+  "elapsed_s": 89.08238005638123
+}

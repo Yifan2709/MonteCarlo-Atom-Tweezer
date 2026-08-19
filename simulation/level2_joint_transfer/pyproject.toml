@@ -23,6 +23,7 @@ dev = ["pytest>=7.4"]
 level0-static-trap = "level0_static_trap.cli:main"
 level1-transfer-1d = "level1_transfer_1d.cli:main"
 level2-joint-transfer = "level2_joint_transfer.cli:main"
+level3-3d-transport = "level3_3d_transport_lensing.level3_cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
