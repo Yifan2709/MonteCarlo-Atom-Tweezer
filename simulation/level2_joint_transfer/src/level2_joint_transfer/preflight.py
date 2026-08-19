@@ -21,6 +21,10 @@ MC_RESIDUAL_MEDIAN_TOLERANCE = 1.0e-3
 LABEL_FLIP_TOLERANCE = 0.02
 HOLD_PEAK_TO_PEAK_TOLERANCE = 1.0e-4
 
+# 测试目录与 Level 1 配置属于包本身，按包位置解析，避免依赖 config 文件所在目录
+PACKAGE_ROOT = Path(__file__).resolve().parents[2]
+LEVEL1_CONFIG = PACKAGE_ROOT / "configs" / "transfer_1d.yaml"
+
 
 def _check_static_limit(physics: dict, dt_s: float) -> dict:
     """时变积分器退化为静态力时应与 Level 0 积分器逐点一致。"""
@@ -37,8 +41,13 @@ def _check_static_limit(physics: dict, dt_s: float) -> dict:
 
 
 def _check_existing_tests(project_root: Path) -> dict:
-    """运行现有 Level 0/Level 1 测试并记录通过数。"""
-    result = subprocess.run([sys.executable, "-m", "pytest", "tests", "-q", "--no-header"],
+    """运行现有 Level 0/Level 1 测试并记录通过数。
+
+    排除 slow 标记的集成测试：它们内部会调用本 CLI 的 preflight/all stage，
+    不排除会在 CLI 冒烟测试中造成递归 pytest。
+    """
+    result = subprocess.run([sys.executable, "-m", "pytest", str(PACKAGE_ROOT / "tests"), "-q",
+                             "--no-header", "-m", "not slow"],
                             cwd=project_root, capture_output=True, text=True, timeout=1800)
     tail = result.stdout.strip().splitlines()[-1] if result.stdout.strip() else ""
     return {"exit_code": result.returncode, "summary_line": tail,
@@ -49,7 +58,7 @@ def _check_level1_reproduction(cfg: Level2Config) -> dict:
     """用固定种子复现 Level 1 sequential 600 us 的蒙特卡洛结果。"""
     from level1_transfer_1d.config import load_config as load_level1
     from level1_transfer_1d.simulation import monte_carlo as level1_monte_carlo
-    level1_cfg = load_level1(cfg.project_root / "configs" / "transfer_1d.yaml")
+    level1_cfg = load_level1(LEVEL1_CONFIG)
     records = level1_monte_carlo(level1_cfg)
     captured = sum(r["captured_in_slm"] for r in records)
     fraction = captured / len(records)

@@ -114,18 +114,28 @@ def _row_sort_key(row):
     return (0, (row["captured_count"], row["objective_total"]))
 
 
+def _load_stage_rows(checkpoint_path: Path, signature: str, stage: str) -> list[dict] | None:
+    """从检查点读取某阶段已完成的候选行；签名不符或缺失返回 None。"""
+    if not checkpoint_path.exists():
+        return None
+    try:
+        payload = json.loads(checkpoint_path.read_text())
+    except json.JSONDecodeError:
+        return None
+    if payload.get("signature") != signature:
+        return None
+    rows = payload.get("stages", {}).get(stage, {}).get("rows")
+    return rows if isinstance(rows, list) else None
+
+
 def run_stage1(cfg: Level2Config, states: dict, physics: dict, output_dir: Path,
                checkpoint_path: Path, history_rows: list) -> list[dict]:
     """阶段 1：LHS 候选探索（optimization_pool, dt=0.10 us），支持断点续跑。"""
     constraint = cfg.waveforms.as_constraint_dict()
     signature = _config_signature(cfg)
     done_ids = set()
-    rows: list[dict] = []
-    if checkpoint_path.exists():
-        payload = json.loads(checkpoint_path.read_text())
-        if payload.get("signature") == signature and "stage1" in payload.get("stages", {}):
-            rows = payload["stages"]["stage1"]["rows"]
-            done_ids = {r["candidate_id"] for r in rows}
+    rows: list[dict] = _load_stage_rows(checkpoint_path, signature, "stage1") or []
+    done_ids = {r["candidate_id"] for r in rows}
     table = lhs_parameter_table(cfg)
     jobs = []
     for index, params in enumerate(table):
@@ -180,14 +190,19 @@ def _perturb(params: dict, sigma: float, rng) -> dict:
 
 def run_stage2(cfg: Level2Config, stage1_rows: list[dict], states: dict, physics: dict,
                output_dir: Path, checkpoint_path: Path, history_rows: list) -> list[dict]:
-    """阶段 2：入围者在 selection_pool 上精修（dt=0.05 us）。"""
+    """阶段 2：入围者在 selection_pool 上精修（dt=0.05 us），支持断点续跑。"""
     opt = cfg.optimization
-    constraint = cfg.waveforms.as_constraint_dict()
+    # 先在 stage1 行上标记入围（续跑路径也必须执行，否则恢复的候选表缺 is_finalist）
     ok_rows = [r for r in stage1_rows if r.get("status") == "ok"]
     ok_rows.sort(key=_row_sort_key, reverse=True)
     finalists = ok_rows[:opt.finalists]
     for row in finalists:
         row["is_finalist"] = True
+    cached = _load_stage_rows(checkpoint_path, _config_signature(cfg), "stage2")
+    if cached is not None:
+        print(f"[stage2] restored {len(cached)} rows from checkpoint")
+        return cached
+    constraint = cfg.waveforms.as_constraint_dict()
     rng = np.random.default_rng(opt.lhs_seed + 1)
     jobs = []
     for row in finalists:
@@ -224,10 +239,14 @@ def run_stage2(cfg: Level2Config, stage1_rows: list[dict], states: dict, physics
 
 def run_spline_refinement(cfg: Level2Config, best_row: dict, states: dict, physics: dict,
                           checkpoint_path: Path, history_rows: list) -> list[dict]:
-    """由低维最优波形初始化 8 控制点 PCHIP 单调样条，在 selection_pool 上精修。"""
+    """由低维最优波形初始化 8 控制点 PCHIP 单调样条，在 selection_pool 上精修，支持断点续跑。"""
     opt = cfg.optimization
     if not opt.enable_monotone_spline_refinement:
         return []
+    cached = _load_stage_rows(checkpoint_path, _config_signature(cfg), "spline")
+    if cached is not None:
+        print(f"[spline] restored {len(cached)} rows from checkpoint")
+        return cached
     base_spec = {"type": "overlapped", "duration_s": cfg.waveforms.optimized_duration_s,
                  "move_start_fraction": best_row["move_start_fraction"],
                  "move_end_fraction": best_row["move_end_fraction"],
