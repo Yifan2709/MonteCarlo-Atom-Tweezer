@@ -9,6 +9,7 @@ from pptx.util import Emu, Inches, Pt
 
 REPO = Path(__file__).resolve().parent
 FIG = REPO / "level2_figures"
+DEMO = REPO / "simulation" / "level2_joint_transfer" / "outputs" / "level2_joint_transfer" / "demo"
 OUT = REPO / "Level2_同步波形优化_总结报告.pptx"
 
 BLUE = RGBColor(0x1F, 0x77, 0xB4)
@@ -115,7 +116,7 @@ add_textbox(slide, 1.0, 5.4, 11.3, 0.5,
             "600 μs 顺序基线 vs 400 μs 压缩基线 vs 400 μs 优化同步波形",
             size=16, color=RGBColor(0xBB, 0xD3, 0xE8), align=PP_ALIGN.CENTER)
 add_textbox(slide, 1.0, 6.6, 11.3, 0.4,
-            "70 项测试全部通过 · 257 个优化候选 · 2000 shots 独立验证",
+            "88 项测试全部通过 · 257 个优化候选 · 2000 shots 独立验证",
             size=13, color=RGBColor(0x88, 0xA8, 0xC8), align=PP_ALIGN.CENTER)
 
 # ================================================================ 2 要解决什么问题
@@ -240,14 +241,14 @@ panel.line.color.rgb = RED
 add_textbox(slide, 9.5, 1.45, 3.3, 5.0,
             "为什么重要？\n\n"
             "· 时变势中 E(t) 变化\n  ≠ 积分器漂移，\n  必须用功-能关系区分\n\n"
-            "· 步长减半收敛 +\n  128 shots 配对标签\n  不一致率 ≤2%\n\n"
+            "· 步长减半收敛 +\n  MC 配对标签翻转率\n  实测 = 0\n\n"
             "· 任一项失败即终止，\n  不会生成『看似完整』\n  的最优结果\n\n"
-            "本次：10/10 全部通过\n（336 s，含旧测试）",
+            "本次：9/9 关键检查通过\n（284 s，含 88 项旧测试）",
             size=13)
 
 # ================================================================ 12 测试与代码质量
 slide = add_slide()
-title_bar(slide, "测试与代码质量", "70 项测试全部通过")
+title_bar(slide, "测试与代码质量", "88 项测试全部通过")
 add_bullets(slide, 0.7, 1.3, 7.3, 5.4, [
     ("波形", "端点严格正确、单调有界、非法参数/奇异端点拒绝、解析导数 vs 有限差分"),
     ("复现", "sequential_600us 与 Level 1 轨迹逐点一致；时变积分器静态极限与 Level 0 一致"),
@@ -263,12 +264,30 @@ add_textbox(slide, 8.55, 1.5, 4.0, 4.8,
             "复现命令\n\n"
             "$ pip install -e \".[dev]\"\n"
             "$ pytest -q\n"
-            "→ 70 passed\n\n"
+            "→ 88 passed\n\n"
             "$ level2-joint-transfer \\\n"
             "    --config configs/…yaml \\\n"
             "    --stage all\n\n"
             "阶段：preflight / optimize /\nvalidate / robustness / all",
             size=12)
+
+# ================================================================ 12.5 功-能平衡
+slide = add_slide()
+title_bar(slide, "功-能核算：转移期间外部做功的显式验证", "demo 输出 · 多条代表轨迹")
+add_picture_fit(slide, DEMO / "work_energy_balance.png", 0.25, 1.0, 12.8, 5.3)
+add_textbox(slide, 0.7, 6.45, 12.0, 0.8,
+            "黑线 ΔE(t) 与绿线外部总功 W_ext(t) 逐点重合，残差 R_W（红线）远小于 1e-3·D_SLM；"
+            "深度功在降深段把能量取走，移动功在移动段注入能量，两者符号与量级符合物理直觉。",
+            size=13, color=GRAY)
+
+# ================================================================ 12.6 步长收敛
+slide = add_slide()
+title_bar(slide, "步长收敛与俘获标签稳定性", "demo 输出 · dt = 0.10 / 0.05 / 0.025 μs")
+add_picture_fit(slide, DEMO / "timestep_convergence.png", 0.25, 1.0, 12.8, 5.3)
+add_textbox(slide, 0.7, 6.45, 12.0, 0.8,
+            "左：末态能量最大偏差随 dt 减小呈二阶下降（对数坐标）；右：三种波形俘获标签翻转率 ≈ 0，"
+            "说明 dt=0.05 μs 的验证结果不是积分误差的产物。",
+            size=13, color=GRAY)
 
 # ================================================================ 13 结论
 slide = add_slide()
