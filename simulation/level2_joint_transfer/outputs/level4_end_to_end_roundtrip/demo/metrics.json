@@ -1,0 +1,963 @@
+{
+  "level4": {
+    "name": "end_to_end_roundtrip_coherence",
+    "stage": "single_round"
+  },
+  "upstream_manifest": {
+    "files": {
+      "level2_best_waveform": {
+        "role": "level2_best_waveform",
+        "absolute_path": "/Users/imok/work/Monte Carlo/monte-carlo-for-aodslm/simulation/level2_joint_transfer/outputs/level2_joint_transfer/demo/best_waveform.yaml",
+        "sha256": "0126ccf3fec12c95febd0490eb16b2d9f849df76cfcfd8ec42b59062dce8a734",
+        "size_bytes": 356,
+        "mtime_utc": "2026-08-20T02:01:49.330048+00:00",
+        "note": "Level 2 最终 transfer 波形（Protocol B pickup/dropoff）"
+      },
+      "level2_metrics": {
+        "role": "level2_metrics",
+        "absolute_path": "/Users/imok/work/Monte Carlo/monte-carlo-for-aodslm/simulation/level2_joint_transfer/outputs/level2_joint_transfer/demo/metrics.json",
+        "sha256": "bd807b67c8b6058cffab24ae635cfda34cc250b8a5cc7c5d4a5deb5a84ae57ab",
+        "size_bytes": 25798,
+        "mtime_utc": "2026-08-20T02:27:18.211450+00:00",
+        "note": "Level 2 配置/验证摘要与随机种子记录"
+      },
+      "level2_config_used": {
+        "role": "level2_config_used",
+        "absolute_path": "/Users/imok/work/Monte Carlo/monte-carlo-for-aodslm/simulation/level2_joint_transfer/outputs/level2_joint_transfer/demo/config_used.yaml",
+        "sha256": "f20e6ecfcb6ebf24f9e5909b4dd076e6e9e010f6a1b073796e05eb500165a7c1",
+        "size_bytes": 2227,
+        "mtime_utc": "2026-08-20T01:57:05.808442+00:00",
+        "note": "Level 2 解析配置（代码版本与冻结条件）"
+      },
+      "level3_metrics": {
+        "role": "level3_metrics",
+        "absolute_path": "/Users/imok/work/Monte Carlo/monte-carlo-for-aodslm/simulation/level2_joint_transfer/outputs/level3_3d_transport_lensing/demo/metrics.json",
+        "sha256": "29e74b9fc1ab83e66a6b89cfc7cbb79c0ac93d5ee5f430392aa77d9b6ba8e3b5",
+        "size_bytes": 30443,
+        "mtime_utc": "2026-08-20T02:01:52.388306+00:00",
+        "note": "Level 3 三维 lensing 配置与冻结验证摘要"
+      },
+      "level3_config_used": {
+        "role": "level3_config_used",
+        "absolute_path": "/Users/imok/work/Monte Carlo/monte-carlo-for-aodslm/simulation/level2_joint_transfer/outputs/level3_3d_transport_lensing/demo/config_used.yaml",
+        "sha256": "2f17172efabb0279ab69851cbce7df25faffc0e71b60c98d518a0615e706200c",
+        "size_bytes": 1421,
+        "mtime_utc": "2026-08-20T01:50:46.023314+00:00",
+        "note": "Level 3 解析配置"
+      }
+    },
+    "level3_lensing": {
+      "calibration_mode": "normalized_reference_scan",
+      "fixed_vs_m_per_s": {
+        "0.5": 1.0783378413094848,
+        "0.75": 0.7188918942063233,
+        "1.0": 0.5391689206547424,
+        "1.25": 0.43133513652379396
+      },
+      "nominal_vs_m_per_s": 0.5391689206547424,
+      "scenario_note": "v_s 沿用 Level 3 normalized_reference_scan 冻结值，无量纲场景参数，非论文测量值",
+      "level3_preflight_all_passed": true
+    },
+    "level2_waveform": {
+      "type": "overlapped",
+      "name": "overlapped_optimized_400us",
+      "duration_us": 400.0,
+      "params": {
+        "move_start_fraction": 0.01945549969117366,
+        "move_end_fraction": 1.0,
+        "ramp_start_fraction": 0.6069511239907726,
+        "ramp_end_fraction": 1.0,
+        "ramp_power": 1.1121764674723393
+      },
+      "provenance": {
+        "candidate_id": "ref_lhs_0150_3",
+        "pool": "selection",
+        "objective_total": 1.0485033249904498,
+        "selection_capture_rate": 1.0
+      }
+    },
+    "reconstructed_from_config": false
+  },
+  "preflight": null,
+  "frozen_validation_protocols": {
+    "frozen_at_stage": "before_single_round",
+    "upstream_nominal_vs_m_per_s": 0.5391689206547424,
+    "single_round_conditions": [
+      {
+        "name": "protocol_a_nominal_lensing",
+        "protocol": "protocol_a",
+        "lensing": true
+      },
+      {
+        "name": "protocol_a_lensing_off",
+        "protocol": "protocol_a",
+        "lensing": false
+      },
+      {
+        "name": "protocol_b_frozen",
+        "protocol": "protocol_b",
+        "lensing": true
+      },
+      {
+        "name": "static_idle_same_duration",
+        "protocol": "static_idle",
+        "lensing": false
+      }
+    ],
+    "dd_modes": [
+      "none",
+      "spin_echo",
+      "xy4_per_long_move"
+    ],
+    "eta_slm": 0.00013,
+    "eta_aod": 0.00013,
+    "validation_dt_us": 0.05,
+    "single_round_seed": 41001,
+    "single_round_shots": 2000,
+    "repeated_round": {
+      "protocols": [
+        "protocol_a",
+        "protocol_b"
+      ],
+      "dd_modes": [
+        "none",
+        "xy4_per_long_move"
+      ],
+      "shots": 500,
+      "max_rounds": 10,
+      "dt_us": 0.1,
+      "seed": 41002
+    },
+    "long_tail": {
+      "shots": 128,
+      "max_rounds": 40,
+      "dt_us": 0.1,
+      "seed": 41003
+    },
+    "note": "validation 数据只读；开发/敏感性种子与 validation 种子隔离，不得依据 validation 结果调参后重跑"
+  },
+  "single_round": {
+    "summaries": {
+      "protocol_a_nominal_lensing": {
+        "name": "protocol_a_nominal_lensing",
+        "successes": 2000,
+        "shots": 2000,
+        "probability": 1.0,
+        "wilson_low": 0.9980829527187469,
+        "wilson_high": 0.9999999999999998,
+        "final_retained": 2000,
+        "final_retained_fraction": 1.0,
+        "recaptured": 0,
+        "absorbing_failure": 0,
+        "first_failure_counts": {
+          "none": 2000
+        },
+        "max_abs_residual_uK": 0.0007222398705001147
+      },
+      "protocol_a_lensing_off": {
+        "name": "protocol_a_lensing_off",
+        "successes": 2000,
+        "shots": 2000,
+        "probability": 1.0,
+        "wilson_low": 0.9980829527187469,
+        "wilson_high": 0.9999999999999998,
+        "final_retained": 2000,
+        "final_retained_fraction": 1.0,
+        "recaptured": 0,
+        "absorbing_failure": 0,
+        "first_failure_counts": {
+          "none": 2000
+        },
+        "max_abs_residual_uK": 0.0008055536887808942
+      },
+      "protocol_b_frozen": {
+        "name": "protocol_b_frozen",
+        "successes": 2000,
+        "shots": 2000,
+        "probability": 1.0,
+        "wilson_low": 0.9980829527187469,
+        "wilson_high": 0.9999999999999998,
+        "final_retained": 2000,
+        "final_retained_fraction": 1.0,
+        "recaptured": 0,
+        "absorbing_failure": 0,
+        "first_failure_counts": {
+          "none": 2000
+        },
+        "max_abs_residual_uK": 0.0005536525773085951
+      },
+      "static_idle_same_duration": {
+        "name": "static_idle_same_duration",
+        "successes": 2000,
+        "shots": 2000,
+        "probability": 1.0,
+        "wilson_low": 0.9980829527187469,
+        "wilson_high": 0.9999999999999998,
+        "final_retained": 2000,
+        "final_retained_fraction": 1.0,
+        "recaptured": 0,
+        "absorbing_failure": 0,
+        "first_failure_counts": {
+          "none": 2000
+        },
+        "max_abs_residual_uK": 0.0006198824959959479
+      }
+    },
+    "comparisons": {
+      "lensing_off_vs_nominal": {
+        "pair": [
+          "protocol_a_lensing_off",
+          "protocol_a_nominal_lensing"
+        ],
+        "paired_counts": {
+          "both_captured": 2000,
+          "only_a_captured": 0,
+          "only_b_captured": 0,
+          "both_failed": 0,
+          "shots": 2000
+        },
+        "bootstrap": {
+          "difference": 0.0,
+          "ci_low": 0.0,
+          "ci_high": 0.0,
+          "num_bootstrap": 10000,
+          "seed": 41020,
+          "ci_excludes_zero": false
+        }
+      },
+      "protocol_b_vs_a": {
+        "pair": [
+          "protocol_b_frozen",
+          "protocol_a_nominal_lensing"
+        ],
+        "paired_counts": {
+          "both_captured": 2000,
+          "only_a_captured": 0,
+          "only_b_captured": 0,
+          "both_failed": 0,
+          "shots": 2000
+        },
+        "bootstrap": {
+          "difference": 0.0,
+          "ci_low": 0.0,
+          "ci_high": 0.0,
+          "num_bootstrap": 10000,
+          "seed": 41020,
+          "ci_excludes_zero": false
+        }
+      },
+      "static_idle_vs_a": {
+        "pair": [
+          "static_idle_same_duration",
+          "protocol_a_nominal_lensing"
+        ],
+        "paired_counts": {
+          "both_captured": 2000,
+          "only_a_captured": 0,
+          "only_b_captured": 0,
+          "both_failed": 0,
+          "shots": 2000
+        },
+        "bootstrap": {
+          "difference": 0.0,
+          "ci_low": 0.0,
+          "ci_high": 0.0,
+          "num_bootstrap": 10000,
+          "seed": 41020,
+          "ci_excludes_zero": false
+        }
+      }
+    },
+    "contrast": {
+      "protocol_a_nominal_lensing|none": {
+        "n": 2000,
+        "contrast": 0.8797402660280186,
+        "mean_direction": -0.36437129448783495,
+        "circular_std": 0.5062184653225683,
+        "phase_mean": -25.46577338561419,
+        "phase_std": 0.5256453584799134,
+        "mode": "none",
+        "condition": "protocol_a_nominal_lensing",
+        "bootstrap_ci": {
+          "ci_low": 0.8704345030833072,
+          "ci_high": 0.8890142420135813,
+          "n_bootstrap": 2000,
+          "seed": 41020
+        }
+      },
+      "protocol_a_nominal_lensing|spin_echo": {
+        "n": 2000,
+        "contrast": 0.9999582743589464,
+        "mean_direction": -0.0008643260294050733,
+        "circular_std": 0.009135262622653349,
+        "phase_mean": -0.0008643347246811644,
+        "phase_std": 0.009135402040858939,
+        "mode": "spin_echo",
+        "condition": "protocol_a_nominal_lensing",
+        "bootstrap_ci": {
+          "ci_low": 0.9999532976941778,
+          "ci_high": 0.9999624206341938,
+          "n_bootstrap": 2000,
+          "seed": 41020
+        }
+      },
+      "protocol_a_nominal_lensing|xy4_per_long_move": {
+        "n": 2000,
+        "contrast": 0.9695196190076426,
+        "mean_direction": 0.4495614238829429,
+        "circular_std": 0.24881546693108894,
+        "phase_mean": -12.113141650627046,
+        "phase_std": 0.25101463351058684,
+        "mode": "xy4_per_long_move",
+        "condition": "protocol_a_nominal_lensing",
+        "bootstrap_ci": {
+          "ci_low": 0.9667110694604277,
+          "ci_high": 0.9723499169523728,
+          "n_bootstrap": 2000,
+          "seed": 41020
+        }
+      },
+      "protocol_a_lensing_off|none": {
+        "n": 2000,
+        "contrast": 0.8797687935127014,
+        "mean_direction": -0.3655703317235224,
+        "circular_std": 0.5061544046540261,
+        "phase_mean": -25.467066394851535,
+        "phase_std": 0.5254475658423127,
+        "mode": "none",
+        "condition": "protocol_a_lensing_off",
+        "bootstrap_ci": {
+          "ci_low": 0.8705911485690773,
+          "ci_high": 0.8890192729380747,
+          "n_bootstrap": 2000,
+          "seed": 41020
+        }
+      },
+      "protocol_a_lensing_off|spin_echo": {
+        "n": 2000,
+        "contrast": 0.9999971803795838,
+        "mean_direction": -0.00025125791270093296,
+        "circular_std": 0.002374710252341222,
+        "phase_mean": -0.0002512572039688705,
+        "phase_std": 0.0023747139529691334,
+        "mode": "spin_echo",
+        "condition": "protocol_a_lensing_off",
+        "bootstrap_ci": {
+          "ci_low": 0.999996785530448,
+          "ci_high": 0.9999975216064205,
+          "n_bootstrap": 2000,
+          "seed": 41020
+        }
+      },
+      "protocol_a_lensing_off|xy4_per_long_move": {
+        "n": 2000,
+        "contrast": 0.9694784113652553,
+        "mean_direction": 0.448936840607568,
+        "circular_std": 0.24898623395717967,
+        "phase_mean": -12.113755723071892,
+        "phase_std": 0.2511970243705834,
+        "mode": "xy4_per_long_move",
+        "condition": "protocol_a_lensing_off",
+        "bootstrap_ci": {
+          "ci_low": 0.9666503971667633,
+          "ci_high": 0.9723222564697367,
+          "n_bootstrap": 2000,
+          "seed": 41020
+        }
+      },
+      "protocol_b_frozen|none": {
+        "n": 2000,
+        "contrast": 0.9307825501492414,
+        "mean_direction": 1.126445914597048,
+        "circular_std": 0.37876006886558716,
+        "phase_mean": -17.70936549161189,
+        "phase_std": 0.3871289678539795,
+        "mode": "none",
+        "condition": "protocol_b_frozen",
+        "bootstrap_ci": {
+          "ci_low": 0.9247304427813202,
+          "ci_high": 0.9369970916662365,
+          "n_bootstrap": 2000,
+          "seed": 41020
+        }
+      },
+      "protocol_b_frozen|spin_echo": {
+        "n": 2000,
+        "contrast": 0.9999767025208613,
+        "mean_direction": -0.0011185453893698414,
+        "circular_std": 0.006826089734120573,
+        "phase_mean": -0.001118575243457155,
+        "phase_std": 0.006826133750683376,
+        "mode": "spin_echo",
+        "condition": "protocol_b_frozen",
+        "bootstrap_ci": {
+          "ci_low": 0.9999743114751937,
+          "ci_high": 0.999978914434949,
+          "n_bootstrap": 2000,
+          "seed": 41020
+        }
+      },
+      "protocol_b_frozen|xy4_per_long_move": {
+        "n": 2000,
+        "contrast": 0.9954217209195652,
+        "mean_direction": 1.913133494817978,
+        "circular_std": 0.09579970248628628,
+        "phase_mean": -4.369836571327156,
+        "phase_std": 0.0959271192011858,
+        "mode": "xy4_per_long_move",
+        "condition": "protocol_b_frozen",
+        "bootstrap_ci": {
+          "ci_low": 0.9949718922619033,
+          "ci_high": 0.9958827610515741,
+          "n_bootstrap": 2000,
+          "seed": 41020
+        }
+      },
+      "static_idle_same_duration|none": {
+        "n": 2000,
+        "contrast": 0.9164648635865875,
+        "mean_direction": 2.227881033064634,
+        "circular_std": 0.41768780216944085,
+        "phase_mean": -16.604145973004993,
+        "phase_std": 0.42843852351681727,
+        "mode": "none",
+        "condition": "static_idle_same_duration",
+        "bootstrap_ci": {
+          "ci_low": 0.9095887295631846,
+          "ci_high": 0.9233375330042273,
+          "n_bootstrap": 2000,
+          "seed": 41020
+        }
+      },
+      "static_idle_same_duration|spin_echo": {
+        "n": 2000,
+        "contrast": 0.9999988035341759,
+        "mean_direction": -0.00011858573106614663,
+        "circular_std": 0.0015469108182751975,
+        "phase_mean": -0.00011858575842217832,
+        "phase_std": 0.0015469133174058282,
+        "mode": "spin_echo",
+        "condition": "static_idle_same_duration",
+        "bootstrap_ci": {
+          "ci_low": 0.9999985636345581,
+          "ci_high": 0.9999990062754742,
+          "n_bootstrap": 2000,
+          "seed": 41020
+        }
+      },
+      "static_idle_same_duration|xy4_per_long_move": {
+        "n": 2000,
+        "contrast": 0.9164648635865875,
+        "mean_direction": 2.227881033064634,
+        "circular_std": 0.41768780216944085,
+        "phase_mean": -16.604145973004993,
+        "phase_std": 0.42843852351681727,
+        "mode": "xy4_per_long_move",
+        "condition": "static_idle_same_duration",
+        "bootstrap_ci": {
+          "ci_low": 0.9095887295631846,
+          "ci_high": 0.9233375330042273,
+          "n_bootstrap": 2000,
+          "seed": 41020
+        }
+      }
+    },
+    "checkpoint_stats": {
+      "protocol_a_nominal_lensing": [
+        {
+          "checkpoint": "pickup_end",
+          "conditional": 1.0,
+          "cumulative": 1.0,
+          "cumulative_wilson_low": 0.9980829527187469,
+          "cumulative_wilson_high": 0.9999999999999998,
+          "n_at_risk": 2000,
+          "n_fail_here": 0
+        },
+        {
+          "checkpoint": "split_end",
+          "conditional": 1.0,
+          "cumulative": 1.0,
+          "cumulative_wilson_low": 0.9980829527187469,
+          "cumulative_wilson_high": 0.9999999999999998,
+          "n_at_risk": 2000,
+          "n_fail_here": 0
+        },
+        {
+          "checkpoint": "outbound_end",
+          "conditional": 1.0,
+          "cumulative": 1.0,
+          "cumulative_wilson_low": 0.9980829527187469,
+          "cumulative_wilson_high": 0.9999999999999998,
+          "n_at_risk": 2000,
+          "n_fail_here": 0
+        },
+        {
+          "checkpoint": "remote_hold_end",
+          "conditional": 1.0,
+          "cumulative": 1.0,
+          "cumulative_wilson_low": 0.9980829527187469,
+          "cumulative_wilson_high": 0.9999999999999998,
+          "n_at_risk": 2000,
+          "n_fail_here": 0
+        },
+        {
+          "checkpoint": "inbound_end",
+          "conditional": 1.0,
+          "cumulative": 1.0,
+          "cumulative_wilson_low": 0.9980829527187469,
+          "cumulative_wilson_high": 0.9999999999999998,
+          "n_at_risk": 2000,
+          "n_fail_here": 0
+        },
+        {
+          "checkpoint": "merge_end",
+          "conditional": 1.0,
+          "cumulative": 1.0,
+          "cumulative_wilson_low": 0.9980829527187469,
+          "cumulative_wilson_high": 0.9999999999999998,
+          "n_at_risk": 2000,
+          "n_fail_here": 0
+        },
+        {
+          "checkpoint": "dropoff_end",
+          "conditional": 1.0,
+          "cumulative": 1.0,
+          "cumulative_wilson_low": 0.9980829527187469,
+          "cumulative_wilson_high": 0.9999999999999998,
+          "n_at_risk": 2000,
+          "n_fail_here": 0
+        },
+        {
+          "checkpoint": "final_hold_end",
+          "conditional": 1.0,
+          "cumulative": 1.0,
+          "cumulative_wilson_low": 0.9980829527187469,
+          "cumulative_wilson_high": 0.9999999999999998,
+          "n_at_risk": 2000,
+          "n_fail_here": 0
+        }
+      ],
+      "protocol_a_lensing_off": [
+        {
+          "checkpoint": "pickup_end",
+          "conditional": 1.0,
+          "cumulative": 1.0,
+          "cumulative_wilson_low": 0.9980829527187469,
+          "cumulative_wilson_high": 0.9999999999999998,
+          "n_at_risk": 2000,
+          "n_fail_here": 0
+        },
+        {
+          "checkpoint": "split_end",
+          "conditional": 1.0,
+          "cumulative": 1.0,
+          "cumulative_wilson_low": 0.9980829527187469,
+          "cumulative_wilson_high": 0.9999999999999998,
+          "n_at_risk": 2000,
+          "n_fail_here": 0
+        },
+        {
+          "checkpoint": "outbound_end",
+          "conditional": 1.0,
+          "cumulative": 1.0,
+          "cumulative_wilson_low": 0.9980829527187469,
+          "cumulative_wilson_high": 0.9999999999999998,
+          "n_at_risk": 2000,
+          "n_fail_here": 0
+        },
+        {
+          "checkpoint": "remote_hold_end",
+          "conditional": 1.0,
+          "cumulative": 1.0,
+          "cumulative_wilson_low": 0.9980829527187469,
+          "cumulative_wilson_high": 0.9999999999999998,
+          "n_at_risk": 2000,
+          "n_fail_here": 0
+        },
+        {
+          "checkpoint": "inbound_end",
+          "conditional": 1.0,
+          "cumulative": 1.0,
+          "cumulative_wilson_low": 0.9980829527187469,
+          "cumulative_wilson_high": 0.9999999999999998,
+          "n_at_risk": 2000,
+          "n_fail_here": 0
+        },
+        {
+          "checkpoint": "merge_end",
+          "conditional": 1.0,
+          "cumulative": 1.0,
+          "cumulative_wilson_low": 0.9980829527187469,
+          "cumulative_wilson_high": 0.9999999999999998,
+          "n_at_risk": 2000,
+          "n_fail_here": 0
+        },
+        {
+          "checkpoint": "dropoff_end",
+          "conditional": 1.0,
+          "cumulative": 1.0,
+          "cumulative_wilson_low": 0.9980829527187469,
+          "cumulative_wilson_high": 0.9999999999999998,
+          "n_at_risk": 2000,
+          "n_fail_here": 0
+        },
+        {
+          "checkpoint": "final_hold_end",
+          "conditional": 1.0,
+          "cumulative": 1.0,
+          "cumulative_wilson_low": 0.9980829527187469,
+          "cumulative_wilson_high": 0.9999999999999998,
+          "n_at_risk": 2000,
+          "n_fail_here": 0
+        }
+      ],
+      "protocol_b_frozen": [
+        {
+          "checkpoint": "pickup_end",
+          "conditional": 1.0,
+          "cumulative": 1.0,
+          "cumulative_wilson_low": 0.9980829527187469,
+          "cumulative_wilson_high": 0.9999999999999998,
+          "n_at_risk": 2000,
+          "n_fail_here": 0
+        },
+        {
+          "checkpoint": "outbound_end",
+          "conditional": 1.0,
+          "cumulative": 1.0,
+          "cumulative_wilson_low": 0.9980829527187469,
+          "cumulative_wilson_high": 0.9999999999999998,
+          "n_at_risk": 2000,
+          "n_fail_here": 0
+        },
+        {
+          "checkpoint": "remote_hold_end",
+          "conditional": 1.0,
+          "cumulative": 1.0,
+          "cumulative_wilson_low": 0.9980829527187469,
+          "cumulative_wilson_high": 0.9999999999999998,
+          "n_at_risk": 2000,
+          "n_fail_here": 0
+        },
+        {
+          "checkpoint": "inbound_end",
+          "conditional": 1.0,
+          "cumulative": 1.0,
+          "cumulative_wilson_low": 0.9980829527187469,
+          "cumulative_wilson_high": 0.9999999999999998,
+          "n_at_risk": 2000,
+          "n_fail_here": 0
+        },
+        {
+          "checkpoint": "dropoff_end",
+          "conditional": 1.0,
+          "cumulative": 1.0,
+          "cumulative_wilson_low": 0.9980829527187469,
+          "cumulative_wilson_high": 0.9999999999999998,
+          "n_at_risk": 2000,
+          "n_fail_here": 0
+        },
+        {
+          "checkpoint": "final_hold_end",
+          "conditional": 1.0,
+          "cumulative": 1.0,
+          "cumulative_wilson_low": 0.9980829527187469,
+          "cumulative_wilson_high": 0.9999999999999998,
+          "n_at_risk": 2000,
+          "n_fail_here": 0
+        }
+      ],
+      "static_idle_same_duration": [
+        {
+          "checkpoint": "final_hold_end",
+          "conditional": 1.0,
+          "cumulative": 1.0,
+          "cumulative_wilson_low": 0.9980829527187469,
+          "cumulative_wilson_high": 0.9999999999999998,
+          "n_at_risk": 2000,
+          "n_fail_here": 0
+        }
+      ]
+    },
+    "first_failure_distribution": {
+      "protocol_a_nominal_lensing": {
+        "none": 2000
+      },
+      "protocol_a_lensing_off": {
+        "none": 2000
+      },
+      "protocol_b_frozen": {
+        "none": 2000
+      },
+      "static_idle_same_duration": {
+        "none": 2000
+      }
+    },
+    "initial_states_meta": {
+      "seed": 41001,
+      "shots": 2000,
+      "attempts": 4000,
+      "acceptance_rate": 1.0,
+      "surplus_accepted_discarded": 2000,
+      "sampling_note": "简谐提议 + E_i<0 束缚拒绝；D/kT=56 时几乎无拒绝，物理接受率≈1。attempts 含 2 倍批超采样；这不是完整有限深高斯阱的三维正则系综。",
+      "sigma_r_m": 9.749999999999998e-08,
+      "sigma_z_m": 4.77683196202088e-07,
+      "mean_pos_m": [
+        -4.4293396849938497e-10,
+        -6.528239972229672e-10,
+        -6.130856414711835e-09
+      ],
+      "std_pos_m": [
+        9.669874451501391e-08,
+        9.568500218983818e-08,
+        4.803868117049502e-07
+      ],
+      "mean_vel_m_per_s": [
+        -0.0007038657065629039,
+        0.00021833177188348903,
+        -0.00021969438601781462
+      ],
+      "std_vel_m_per_s": [
+        0.01768595989676768,
+        0.017544865264462615,
+        0.01772654982028849
+      ],
+      "sampler": "harmonic_3d_proposal_with_bound_rejection",
+      "temperature_uK": 5.0,
+      "trap_depth_uK": 180.0,
+      "sampler_note": "Level 3 三维简谐提议 + 完整势 E<0 束缚拒绝；非有限深高斯阱的严格正则系综（高斯尾部截断 + 简谐速度提议引入轻微偏差）。"
+    },
+    "stress_pool": {
+      "outcome_counts": {
+        "success": 3,
+        "fail_split": 3,
+        "fail_outbound_transport": 3,
+        "recaptured": 1,
+        "fail_inbound_transport": 2
+      },
+      "success_rate": 0.9609375,
+      "temperature_uK": 50.0,
+      "note": "高温压力池仅用于采集失败阶段代表轨迹（诊断种子池，非 validation 数据）"
+    }
+  },
+  "repeated_rounds": null,
+  "ablations": null,
+  "sensitivity": null,
+  "work_energy": {
+    "ledger_summary": [
+      {
+        "segment": "initial_slm_hold",
+        "mean_delta_e_uK": -154.89652866912257,
+        "mean_w_ext_uK": -154.89634659800367,
+        "max_abs_residual_uK": 0.002649859932267883,
+        "mean_abs_residual_uK": 0.00039767801025428483,
+        "mean_w_move_uK": 0.0,
+        "mean_w_shift_uK": 0.0,
+        "mean_w_aod_depth_uK": -271.04472008691715,
+        "mean_w_slm_depth_uK": 116.14837348891345
+      },
+      {
+        "segment": "pickup",
+        "mean_delta_e_uK": 58.25243260879354,
+        "mean_w_ext_uK": 58.25231372230772,
+        "max_abs_residual_uK": 0.0025329234815408795,
+        "mean_abs_residual_uK": 0.0005251620980025027,
+        "mean_w_move_uK": 58.17643179386721,
+        "mean_w_shift_uK": 0.0758819284405116,
+        "mean_w_aod_depth_uK": 0.0,
+        "mean_w_slm_depth_uK": 0.0
+      },
+      {
+        "segment": "split",
+        "mean_delta_e_uK": -0.01715833522529912,
+        "mean_w_ext_uK": -0.017032060296185543,
+        "max_abs_residual_uK": 0.002221881638572301,
+        "mean_abs_residual_uK": 0.0004740779832747512,
+        "mean_w_move_uK": 0.016347318087537716,
+        "mean_w_shift_uK": -0.033379378383723256,
+        "mean_w_aod_depth_uK": 0.0,
+        "mean_w_slm_depth_uK": 0.0
+      },
+      {
+        "segment": "outbound_long_move",
+        "mean_delta_e_uK": -7.647030118431256e-05,
+        "mean_w_ext_uK": -6.736847085045396e-20,
+        "max_abs_residual_uK": 0.0019646863679823484,
+        "mean_abs_residual_uK": 0.0004132809380794131,
+        "mean_w_move_uK": 0.0,
+        "mean_w_shift_uK": -6.736847085045396e-20,
+        "mean_w_aod_depth_uK": 0.0,
+        "mean_w_slm_depth_uK": 0.0
+      },
+      {
+        "segment": "remote_operation_hold",
+        "mean_delta_e_uK": 0.015606322195534914,
+        "mean_w_ext_uK": 0.015401414872416181,
+        "max_abs_residual_uK": 0.0023465914294903225,
+        "mean_abs_residual_uK": 0.000476170470516025,
+        "mean_w_move_uK": -0.020741504688514125,
+        "mean_w_shift_uK": 0.03614291956093031,
+        "mean_w_aod_depth_uK": 0.0,
+        "mean_w_slm_depth_uK": 0.0
+      },
+      {
+        "segment": "inbound_long_move",
+        "mean_delta_e_uK": -58.24976357427976,
+        "mean_w_ext_uK": -58.24959325726485,
+        "max_abs_residual_uK": 0.003172484176856372,
+        "mean_abs_residual_uK": 0.0005609768060391034,
+        "mean_w_move_uK": -58.21266136490024,
+        "mean_w_shift_uK": -0.03693189236460345,
+        "mean_w_aod_depth_uK": 0.0,
+        "mean_w_slm_depth_uK": 0.0
+      },
+      {
+        "segment": "merge",
+        "mean_delta_e_uK": 154.89514662591327,
+        "mean_w_ext_uK": 154.89500518119837,
+        "max_abs_residual_uK": 0.003975041934934,
+        "mean_abs_residual_uK": 0.0005249814782896163,
+        "mean_w_move_uK": 0.0,
+        "mean_w_shift_uK": 0.0,
+        "mean_w_aod_depth_uK": 271.0423181485206,
+        "mean_w_slm_depth_uK": -116.14731296732224
+      },
+      {
+        "segment": "dropoff",
+        "mean_delta_e_uK": 9.048755705048891e-05,
+        "mean_w_ext_uK": 0.0,
+        "max_abs_residual_uK": 0.0016713311558006587,
+        "mean_abs_residual_uK": 0.0002945575090362112,
+        "mean_w_move_uK": 0.0,
+        "mean_w_shift_uK": 0.0,
+        "mean_w_aod_depth_uK": 0.0,
+        "mean_w_slm_depth_uK": 0.0
+      },
+      {
+        "segment": "final_slm_hold",
+        "mean_delta_e_uK": 0.0,
+        "mean_w_ext_uK": 0.0,
+        "max_abs_residual_uK": 0.0,
+        "mean_abs_residual_uK": 0.0,
+        "mean_w_move_uK": 0.0,
+        "mean_w_shift_uK": 0.0,
+        "mean_w_aod_depth_uK": 0.0,
+        "mean_w_slm_depth_uK": 0.0
+      }
+    ]
+  },
+  "comparability": {
+    "comparable_to_paper": [
+      "分段时长锚点（Extended Data Fig. 10e）、2.4 μm 分离、375 μm 对角运输距离、深度量级"
+    ],
+    "not_comparable": [
+      "经典成功概率 ≠ 论文 IRB/transport fidelity",
+      "C_cond 与 usable_coherent_fraction ≠ 量子过程保真度",
+      "lensing severity 为 Level 3 无量纲场景，非论文测量值",
+      "η、噪声参数为假设值"
+    ]
+  },
+  "image_validation_all_passed": true,
+  "visual_review_performed": true,
+  "visual_review_by": "zcode-visual-review",
+  "visual_review_findings": {
+    "protocol_timeline.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "trap_path_and_depths.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "initial_ensemble.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "upstream_provenance.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "preflight_checks.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "representative_roundtrips.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "checkpoint_survival.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "basin_classification.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "checkpoint_energy_evolution.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "failure_stage_breakdown.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "segment_phase_breakdown.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "paired_comparisons.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "survival_vs_round.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "long_tail_survival.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "heating_vs_round.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "phase_and_contrast.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "usable_coherent_fraction.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "dd_toggling_and_phase.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "energy_ledger.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "noise_model_diagnostic.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "ablation_comparison.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "timestep_convergence.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "sensitivity_panels.png": {
+      "layout_ok": true,
+      "issues": ""
+    }
+  },
+  "visual_review_all_ok": true,
+  "visual_review_summary": {
+    "reviewed_images": 23,
+    "issues": {},
+    "note": "逐图视觉检查 23/23 张：布局清晰、标签无重叠；初态/噪声/代表轨迹图经三轮修正后定稿。failure_events_by_round.png 因全程零失败事件无数据而未生成（设计行为，summary.md 已标注）。"
+  }
+}

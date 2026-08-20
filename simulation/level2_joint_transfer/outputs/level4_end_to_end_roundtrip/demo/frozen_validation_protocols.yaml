@@ -1,0 +1,41 @@
+frozen_at_stage: before_single_round
+upstream_nominal_vs_m_per_s: 0.5391689206547424
+single_round_conditions:
+- name: protocol_a_nominal_lensing
+  protocol: protocol_a
+  lensing: true
+- name: protocol_a_lensing_off
+  protocol: protocol_a
+  lensing: false
+- name: protocol_b_frozen
+  protocol: protocol_b
+  lensing: true
+- name: static_idle_same_duration
+  protocol: static_idle
+  lensing: false
+dd_modes:
+- none
+- spin_echo
+- xy4_per_long_move
+eta_slm: 0.00013
+eta_aod: 0.00013
+validation_dt_us: 0.05
+single_round_seed: 41001
+single_round_shots: 2000
+repeated_round:
+  protocols:
+  - protocol_a
+  - protocol_b
+  dd_modes:
+  - none
+  - xy4_per_long_move
+  shots: 500
+  max_rounds: 10
+  dt_us: 0.1
+  seed: 41002
+long_tail:
+  shots: 128
+  max_rounds: 40
+  dt_us: 0.1
+  seed: 41003
+note: validation 数据只读；开发/敏感性种子与 validation 种子隔离，不得依据 validation 结果调参后重跑

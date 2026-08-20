@@ -1,0 +1,256 @@
+{
+  "all_passed": true,
+  "critical_checks": [
+    "existing_tests",
+    "upstream_artifacts",
+    "segment_continuity",
+    "control_roundtrip",
+    "level2_regression",
+    "level3_regression",
+    "protocol_b_no_duplicate_split_merge",
+    "ideal_center_protocol",
+    "control_time_reversal",
+    "work_energy_residual",
+    "static_hold_bounded",
+    "basin_classification",
+    "first_failure_state_machine",
+    "round_state_continuity",
+    "analytic_phase",
+    "dd_cancellation",
+    "pulse_grid_handling",
+    "ensemble_contrast_cases",
+    "dt_convergence",
+    "frozen_validation_conditions"
+  ],
+  "elapsed_s": 298.1352229118347,
+  "existing_tests": {
+    "exit_code": 0,
+    "summary_line": "117 passed, 7 deselected in 121.86s (0:02:01)",
+    "scoped_to": "level0-level4（test_level5 并行开发中，另行验证）",
+    "passed": true,
+    "elapsed_s": 122.21
+  },
+  "upstream_artifacts": {
+    "files_present": true,
+    "sha256_present": true,
+    "level3_preflight_passed": true,
+    "passed": true,
+    "elapsed_s": 0.0
+  },
+  "segment_continuity": {
+    "issues": [],
+    "passed": true,
+    "elapsed_s": 0.01
+  },
+  "control_roundtrip": {
+    "per_protocol": {
+      "protocol_a": {
+        "max_diff": 0.0,
+        "rel": 0.0
+      },
+      "protocol_b": {
+        "max_diff": 0.0,
+        "rel": 0.0
+      }
+    },
+    "passed": true,
+    "elapsed_s": 0.0
+  },
+  "level2_regression": {
+    "shots": 256,
+    "capture_rate": 1.0,
+    "level2_reference": 1.0,
+    "passed": true,
+    "elapsed_s": 0.48
+  },
+  "level3_regression": {
+    "shots": 256,
+    "retention_fraction": 1.0,
+    "level3_reference": 1.0,
+    "passed": true,
+    "elapsed_s": 1.96
+  },
+  "protocol_b_no_duplicate_split_merge": {
+    "no_split_segment": true,
+    "no_merge_segment": true,
+    "l2_waveform_contains_move": true,
+    "passed": true,
+    "elapsed_s": 0.0
+  },
+  "ideal_center_protocol": {
+    "per_protocol": {
+      "protocol_a": {
+        "success": true,
+        "residual_uK": 2.9766535929637667e-08
+      },
+      "protocol_b": {
+        "success": true,
+        "residual_uK": 2.1958720032019677e-08
+      }
+    },
+    "passed": true,
+    "elapsed_s": 9.49
+  },
+  "control_time_reversal": {
+    "errors": {
+      "0.1": {
+        "pos_err_m": 2.986384668298484e-18,
+        "vel_err_m_s": 4.801849629531759e-13
+      },
+      "0.05": {
+        "pos_err_m": 6.140227238967073e-18,
+        "vel_err_m_s": 6.982745611124356e-13
+      },
+      "0.025": {
+        "pos_err_m": 3.31924067790991e-18,
+        "vel_err_m_s": 7.260043827118445e-13
+      }
+    },
+    "reversal_exact": true,
+    "final_pos_err_um": 3.3192406779099102e-12,
+    "passed": true,
+    "elapsed_s": 78.19
+  },
+  "work_energy_residual": {
+    "per_segment_max_residual_uK": 0.005396233801730891,
+    "full_cycle_max_residual_uK": 0.0009733310321457386,
+    "relative_to_depth": 1.9272263577610324e-05,
+    "passed": true,
+    "elapsed_s": 5.61
+  },
+  "static_hold_bounded": {
+    "hold_checks": {
+      "static_idle": {
+        "max_abs_w_ext_over_depth": 0.0,
+        "max_abs_w_ext_J": 0.0
+      }
+    },
+    "max_w_ext_uK": 0.0,
+    "passed": true,
+    "elapsed_s": 5.68
+  },
+  "basin_classification": {
+    "atom_in_aod_basin": true,
+    "atom_in_slm_basin": true,
+    "coincident_shared": true,
+    "above_barrier_ambiguous": true,
+    "far_away_unbound": true,
+    "basins_found": [
+      "bound_to_aod",
+      "bound_to_slm",
+      "shared_or_ambiguous",
+      "shared_or_ambiguous",
+      "unbound"
+    ],
+    "passed": true,
+    "elapsed_s": 0.0
+  },
+  "first_failure_state_machine": {
+    "first_failure_stages": [
+      "none",
+      "split",
+      "pickup",
+      "final_hold"
+    ],
+    "stages_correct": true,
+    "absorbing_correct": true,
+    "recaptured_correct": true,
+    "final_retained_respected": true,
+    "passed": true,
+    "elapsed_s": 0.0
+  },
+  "round_state_continuity": {
+    "max_pos_diff_m": 0.0,
+    "no_resampling": true,
+    "passed": true,
+    "elapsed_s": 21.96
+  },
+  "analytic_phase": {
+    "none_phase": -0.4770656601000365,
+    "echo_phase": -0.00023853283005004222,
+    "max_relative_error": 1.908228636570634e-12,
+    "passed": true,
+    "elapsed_s": 0.04
+  },
+  "dd_cancellation": {
+    "per_mode": {
+      "echo": {
+        "dd_phase": -6.783782815035928e-11,
+        "none_phase": -7339.471693847066,
+        "cancelled": true
+      },
+      "xy4": {
+        "dd_phase": -3.8951935995856935e-11,
+        "none_phase": -14678.943387693555,
+        "cancelled": true
+      }
+    },
+    "passed": true,
+    "elapsed_s": 0.29
+  },
+  "pulse_grid_handling": {
+    "relative_error": 1.4429199758736823e-14,
+    "passed": true,
+    "elapsed_s": 0.04
+  },
+  "ensemble_contrast_cases": {
+    "identical_contrast": 1.0,
+    "uniform_contrast": 0.11528508764022778,
+    "two_point_contrast": 0.9553364891256062,
+    "two_point_expected": 0.955336489125606,
+    "passed": true,
+    "elapsed_s": 0.0
+  },
+  "dt_convergence": {
+    "rows": [
+      {
+        "dt_us": 0.1,
+        "max_pos_diff_um": null,
+        "max_vel_diff": null,
+        "label_flips": null,
+        "max_work_diff_uK": null,
+        "max_phase_diff_rad": null,
+        "success_rate": 1.0
+      },
+      {
+        "dt_us": 0.05,
+        "max_pos_diff_um": 0.005729505147346081,
+        "max_vel_diff": 0.0010192144736091465,
+        "label_flips": 0,
+        "max_work_diff_uK": 0.001289880829939682,
+        "max_phase_diff_rad": 0.00026241211243189936,
+        "success_rate": 1.0
+      },
+      {
+        "dt_us": 0.025,
+        "max_pos_diff_um": 0.007161148426262047,
+        "max_vel_diff": 0.0012742199113457424,
+        "label_flips": 0,
+        "max_work_diff_uK": 0.0016125311065089464,
+        "max_phase_diff_rad": 0.00038694260097203866,
+        "success_rate": 1.0
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 52.17
+  },
+  "frozen_validation_conditions": {
+    "seeds_distinct": true,
+    "validation_pool_isolated": true,
+    "frozen_protocol_names": [
+      "protocol_a_nominal_lensing",
+      "protocol_a_lensing_off",
+      "protocol_b_frozen",
+      "static_idle_same_duration"
+    ],
+    "frozen_dd_modes": [
+      "none",
+      "spin_echo",
+      "xy4_per_long_move"
+    ],
+    "no_tuning_access_to_validation": "validation 阶段仅读取 frozen_validation_protocols.yaml；开发池种子与 validation 种子互不相同",
+    "passed": true,
+    "elapsed_s": 0.0
+  },
+  "elapsed_s_total": 298.13523507118225
+}

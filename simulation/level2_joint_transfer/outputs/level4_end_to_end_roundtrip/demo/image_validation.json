@@ -1,0 +1,494 @@
+{
+  "all_passed": true,
+  "visual_review_performed": true,
+  "visual_review_findings": {
+    "protocol_timeline.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "trap_path_and_depths.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "initial_ensemble.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "upstream_provenance.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "preflight_checks.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "representative_roundtrips.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "checkpoint_survival.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "basin_classification.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "checkpoint_energy_evolution.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "failure_stage_breakdown.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "segment_phase_breakdown.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "paired_comparisons.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "survival_vs_round.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "long_tail_survival.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "heating_vs_round.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "phase_and_contrast.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "usable_coherent_fraction.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "dd_toggling_and_phase.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "energy_ledger.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "noise_model_diagnostic.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "ablation_comparison.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "timestep_convergence.png": {
+      "layout_ok": true,
+      "issues": ""
+    },
+    "sensitivity_panels.png": {
+      "layout_ok": true,
+      "issues": ""
+    }
+  },
+  "programmatic_checks_scope": "文件有效性、像素非空、数据有限性、非零范围、坐标覆盖、图例数量与 figure 关闭；不证明文字无重叠、曲线易读或布局美观。",
+  "images": {
+    "upstream_provenance.png": {
+      "exists": true,
+      "file_size_over_5k": true,
+      "reopen_success": true,
+      "dimensions_valid": true,
+      "pixel_variance": 2008.240368542899,
+      "not_nearly_monochrome": true,
+      "data_finite": true,
+      "data_x_range_nonzero": true,
+      "data_y_range_nonzero": true,
+      "axes_cover_data": true,
+      "legend_matches_series": true,
+      "figure_closed": true,
+      "width_px": 2860,
+      "height_px": 1034,
+      "passed": true
+    },
+    "initial_ensemble.png": {
+      "exists": true,
+      "file_size_over_5k": true,
+      "reopen_success": true,
+      "dimensions_valid": true,
+      "pixel_variance": 3261.790990728962,
+      "not_nearly_monochrome": true,
+      "data_finite": true,
+      "data_x_range_nonzero": true,
+      "data_y_range_nonzero": true,
+      "axes_cover_data": true,
+      "legend_matches_series": true,
+      "figure_closed": true,
+      "width_px": 2860,
+      "height_px": 1584,
+      "passed": true
+    },
+    "protocol_timeline.png": {
+      "exists": true,
+      "file_size_over_5k": true,
+      "reopen_success": true,
+      "dimensions_valid": true,
+      "pixel_variance": 1642.8163938481214,
+      "not_nearly_monochrome": true,
+      "data_finite": true,
+      "data_x_range_nonzero": true,
+      "data_y_range_nonzero": true,
+      "axes_cover_data": true,
+      "legend_matches_series": true,
+      "figure_closed": true,
+      "width_px": 2860,
+      "height_px": 1496,
+      "passed": true
+    },
+    "trap_path_and_depths.png": {
+      "exists": true,
+      "file_size_over_5k": true,
+      "reopen_success": true,
+      "dimensions_valid": true,
+      "pixel_variance": 1442.1248346645377,
+      "not_nearly_monochrome": true,
+      "data_finite": true,
+      "data_x_range_nonzero": true,
+      "data_y_range_nonzero": true,
+      "axes_cover_data": true,
+      "legend_matches_series": true,
+      "figure_closed": true,
+      "width_px": 3300,
+      "height_px": 1584,
+      "passed": true
+    },
+    "checkpoint_survival.png": {
+      "exists": true,
+      "file_size_over_5k": true,
+      "reopen_success": true,
+      "dimensions_valid": true,
+      "pixel_variance": 854.0572716650056,
+      "not_nearly_monochrome": true,
+      "data_finite": true,
+      "data_x_range_nonzero": true,
+      "data_y_range_nonzero": true,
+      "axes_cover_data": true,
+      "legend_matches_series": true,
+      "figure_closed": true,
+      "width_px": 3168,
+      "height_px": 1936,
+      "passed": true
+    },
+    "failure_stage_breakdown.png": {
+      "exists": true,
+      "file_size_over_5k": true,
+      "reopen_success": true,
+      "dimensions_valid": true,
+      "pixel_variance": 932.4037445195213,
+      "not_nearly_monochrome": true,
+      "data_finite": true,
+      "data_x_range_nonzero": true,
+      "data_y_range_nonzero": true,
+      "axes_cover_data": true,
+      "legend_matches_series": true,
+      "figure_closed": true,
+      "width_px": 2420,
+      "height_px": 1100,
+      "passed": true
+    },
+    "paired_comparisons.png": {
+      "exists": true,
+      "file_size_over_5k": true,
+      "reopen_success": true,
+      "dimensions_valid": true,
+      "pixel_variance": 1215.2203774381233,
+      "not_nearly_monochrome": true,
+      "data_finite": true,
+      "data_x_range_nonzero": true,
+      "data_y_range_nonzero": true,
+      "axes_cover_data": true,
+      "legend_matches_series": true,
+      "figure_closed": true,
+      "width_px": 2640,
+      "height_px": 2684,
+      "passed": true
+    },
+    "basin_classification.png": {
+      "exists": true,
+      "file_size_over_5k": true,
+      "reopen_success": true,
+      "dimensions_valid": true,
+      "pixel_variance": 4675.0850299874555,
+      "not_nearly_monochrome": true,
+      "data_finite": true,
+      "data_x_range_nonzero": true,
+      "data_y_range_nonzero": true,
+      "axes_cover_data": true,
+      "legend_matches_series": true,
+      "figure_closed": true,
+      "width_px": 3080,
+      "height_px": 2200,
+      "passed": true
+    },
+    "checkpoint_energy_evolution.png": {
+      "exists": true,
+      "file_size_over_5k": true,
+      "reopen_success": true,
+      "dimensions_valid": true,
+      "pixel_variance": 1090.8511091069008,
+      "not_nearly_monochrome": true,
+      "data_finite": true,
+      "data_x_range_nonzero": true,
+      "data_y_range_nonzero": true,
+      "axes_cover_data": true,
+      "legend_matches_series": true,
+      "figure_closed": true,
+      "width_px": 2860,
+      "height_px": 1210,
+      "passed": true
+    },
+    "segment_phase_breakdown.png": {
+      "exists": true,
+      "file_size_over_5k": true,
+      "reopen_success": true,
+      "dimensions_valid": true,
+      "pixel_variance": 3524.5458385304796,
+      "not_nearly_monochrome": true,
+      "data_finite": true,
+      "data_x_range_nonzero": true,
+      "data_y_range_nonzero": true,
+      "axes_cover_data": true,
+      "legend_matches_series": true,
+      "figure_closed": true,
+      "width_px": 3960,
+      "height_px": 1012,
+      "passed": true
+    },
+    "representative_roundtrips.png": {
+      "exists": true,
+      "file_size_over_5k": true,
+      "reopen_success": true,
+      "dimensions_valid": true,
+      "pixel_variance": 1568.7135970320014,
+      "not_nearly_monochrome": true,
+      "data_finite": true,
+      "data_x_range_nonzero": true,
+      "data_y_range_nonzero": true,
+      "axes_cover_data": true,
+      "legend_matches_series": true,
+      "figure_closed": true,
+      "width_px": 2860,
+      "height_px": 3432,
+      "passed": true
+    },
+    "dd_toggling_and_phase.png": {
+      "exists": true,
+      "file_size_over_5k": true,
+      "reopen_success": true,
+      "dimensions_valid": true,
+      "pixel_variance": 1353.4181724110858,
+      "not_nearly_monochrome": true,
+      "data_finite": true,
+      "data_x_range_nonzero": true,
+      "data_y_range_nonzero": true,
+      "axes_cover_data": true,
+      "legend_matches_series": true,
+      "figure_closed": true,
+      "width_px": 2640,
+      "height_px": 2090,
+      "passed": true
+    },
+    "energy_ledger.png": {
+      "exists": true,
+      "file_size_over_5k": true,
+      "reopen_success": true,
+      "dimensions_valid": true,
+      "pixel_variance": 2313.023568764917,
+      "not_nearly_monochrome": true,
+      "data_finite": true,
+      "data_x_range_nonzero": true,
+      "data_y_range_nonzero": true,
+      "axes_cover_data": true,
+      "legend_matches_series": true,
+      "figure_closed": true,
+      "width_px": 2640,
+      "height_px": 2200,
+      "passed": true
+    },
+    "phase_and_contrast.png": {
+      "exists": true,
+      "file_size_over_5k": true,
+      "reopen_success": true,
+      "dimensions_valid": true,
+      "pixel_variance": 720.9337069331167,
+      "not_nearly_monochrome": true,
+      "data_finite": true,
+      "data_x_range_nonzero": true,
+      "data_y_range_nonzero": true,
+      "axes_cover_data": true,
+      "legend_matches_series": true,
+      "figure_closed": true,
+      "width_px": 2860,
+      "height_px": 1100,
+      "passed": true
+    },
+    "preflight_checks.png": {
+      "exists": true,
+      "file_size_over_5k": true,
+      "reopen_success": true,
+      "dimensions_valid": true,
+      "pixel_variance": 3540.086176474007,
+      "not_nearly_monochrome": true,
+      "data_finite": true,
+      "data_x_range_nonzero": true,
+      "data_y_range_nonzero": true,
+      "axes_cover_data": true,
+      "legend_matches_series": true,
+      "figure_closed": true,
+      "width_px": 3080,
+      "height_px": 1980,
+      "passed": true
+    },
+    "survival_vs_round.png": {
+      "exists": true,
+      "file_size_over_5k": true,
+      "reopen_success": true,
+      "dimensions_valid": true,
+      "pixel_variance": 626.7547963007991,
+      "not_nearly_monochrome": true,
+      "data_finite": true,
+      "data_x_range_nonzero": true,
+      "data_y_range_nonzero": true,
+      "axes_cover_data": true,
+      "legend_matches_series": true,
+      "figure_closed": true,
+      "width_px": 2200,
+      "height_px": 1210,
+      "passed": true
+    },
+    "long_tail_survival.png": {
+      "exists": true,
+      "file_size_over_5k": true,
+      "reopen_success": true,
+      "dimensions_valid": true,
+      "pixel_variance": 827.235925280404,
+      "not_nearly_monochrome": true,
+      "data_finite": true,
+      "data_x_range_nonzero": true,
+      "data_y_range_nonzero": true,
+      "axes_cover_data": true,
+      "legend_matches_series": true,
+      "figure_closed": true,
+      "width_px": 2200,
+      "height_px": 1100,
+      "passed": true
+    },
+    "usable_coherent_fraction.png": {
+      "exists": true,
+      "file_size_over_5k": true,
+      "reopen_success": true,
+      "dimensions_valid": true,
+      "pixel_variance": 1209.951107630453,
+      "not_nearly_monochrome": true,
+      "data_finite": true,
+      "data_x_range_nonzero": true,
+      "data_y_range_nonzero": true,
+      "axes_cover_data": true,
+      "legend_matches_series": true,
+      "figure_closed": true,
+      "width_px": 3080,
+      "height_px": 1056,
+      "passed": true
+    },
+    "noise_model_diagnostic.png": {
+      "exists": true,
+      "file_size_over_5k": true,
+      "reopen_success": true,
+      "dimensions_valid": true,
+      "pixel_variance": 3014.7084190806117,
+      "not_nearly_monochrome": true,
+      "data_finite": true,
+      "data_x_range_nonzero": true,
+      "data_y_range_nonzero": true,
+      "axes_cover_data": true,
+      "legend_matches_series": true,
+      "figure_closed": true,
+      "width_px": 3080,
+      "height_px": 968,
+      "passed": true
+    },
+    "timestep_convergence.png": {
+      "exists": true,
+      "file_size_over_5k": true,
+      "reopen_success": true,
+      "dimensions_valid": true,
+      "pixel_variance": 1211.897318416638,
+      "not_nearly_monochrome": true,
+      "data_finite": true,
+      "data_x_range_nonzero": true,
+      "data_y_range_nonzero": true,
+      "axes_cover_data": true,
+      "legend_matches_series": true,
+      "figure_closed": true,
+      "width_px": 3520,
+      "height_px": 968,
+      "passed": true
+    },
+    "sensitivity_panels.png": {
+      "exists": true,
+      "file_size_over_5k": true,
+      "reopen_success": true,
+      "dimensions_valid": true,
+      "pixel_variance": 4763.923646152902,
+      "not_nearly_monochrome": true,
+      "data_finite": true,
+      "data_x_range_nonzero": true,
+      "data_y_range_nonzero": true,
+      "axes_cover_data": true,
+      "legend_matches_series": true,
+      "figure_closed": true,
+      "width_px": 3168,
+      "height_px": 3344,
+      "passed": true
+    },
+    "ablation_comparison.png": {
+      "exists": true,
+      "file_size_over_5k": true,
+      "reopen_success": true,
+      "dimensions_valid": true,
+      "pixel_variance": 5623.678932476545,
+      "not_nearly_monochrome": true,
+      "data_finite": true,
+      "data_x_range_nonzero": true,
+      "data_y_range_nonzero": true,
+      "axes_cover_data": true,
+      "legend_matches_series": true,
+      "figure_closed": true,
+      "width_px": 3080,
+      "height_px": 1870,
+      "passed": true
+    },
+    "heating_vs_round.png": {
+      "exists": true,
+      "file_size_over_5k": true,
+      "reopen_success": true,
+      "dimensions_valid": true,
+      "pixel_variance": 1096.9245566413845,
+      "not_nearly_monochrome": true,
+      "data_finite": true,
+      "data_x_range_nonzero": true,
+      "data_y_range_nonzero": true,
+      "axes_cover_data": true,
+      "legend_matches_series": true,
+      "figure_closed": true,
+      "width_px": 2200,
+      "height_px": 1210,
+      "passed": true
+    }
+  },
+  "visual_review_by": "zcode-visual-review",
+  "visual_review_all_ok": true
+}

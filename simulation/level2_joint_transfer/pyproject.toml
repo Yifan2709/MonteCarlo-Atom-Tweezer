@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "level2-joint-transfer"
-version = "0.3.0"
-description = "Level 2 同步移动-降深波形优化与鲁棒蒙特卡洛验证"
+version = "0.4.0"
+description = "Level 2 同步移动-降深波形优化与鲁棒蒙特卡洛验证（含 Level 4 往返协议）"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
@@ -24,6 +24,7 @@ level0-static-trap = "level0_static_trap.cli:main"
 level1-transfer-1d = "level1_transfer_1d.cli:main"
 level2-joint-transfer = "level2_joint_transfer.cli:main"
 level3-3d-transport = "level3_3d_transport_lensing.level3_cli:main"
+level4-roundtrip = "level4_roundtrip_coherence.level4_cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

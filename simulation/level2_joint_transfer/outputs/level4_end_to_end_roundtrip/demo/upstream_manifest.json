@@ -1,0 +1,87 @@
+{
+  "generated_utc": "2026-08-20T08:20:20.789442+00:00",
+  "require_sha256_manifest": true,
+  "reconstructed_from_config": false,
+  "files": {
+    "level2_best_waveform": {
+      "role": "level2_best_waveform",
+      "absolute_path": "/Users/imok/work/Monte Carlo/monte-carlo-for-aodslm/simulation/level2_joint_transfer/outputs/level2_joint_transfer/demo/best_waveform.yaml",
+      "sha256": "0126ccf3fec12c95febd0490eb16b2d9f849df76cfcfd8ec42b59062dce8a734",
+      "size_bytes": 356,
+      "mtime_utc": "2026-08-20T02:01:49.330048+00:00",
+      "note": "Level 2 最终 transfer 波形（Protocol B pickup/dropoff）"
+    },
+    "level2_metrics": {
+      "role": "level2_metrics",
+      "absolute_path": "/Users/imok/work/Monte Carlo/monte-carlo-for-aodslm/simulation/level2_joint_transfer/outputs/level2_joint_transfer/demo/metrics.json",
+      "sha256": "bd807b67c8b6058cffab24ae635cfda34cc250b8a5cc7c5d4a5deb5a84ae57ab",
+      "size_bytes": 25798,
+      "mtime_utc": "2026-08-20T02:27:18.211450+00:00",
+      "note": "Level 2 配置/验证摘要与随机种子记录"
+    },
+    "level2_config_used": {
+      "role": "level2_config_used",
+      "absolute_path": "/Users/imok/work/Monte Carlo/monte-carlo-for-aodslm/simulation/level2_joint_transfer/outputs/level2_joint_transfer/demo/config_used.yaml",
+      "sha256": "f20e6ecfcb6ebf24f9e5909b4dd076e6e9e010f6a1b073796e05eb500165a7c1",
+      "size_bytes": 2227,
+      "mtime_utc": "2026-08-20T01:57:05.808442+00:00",
+      "note": "Level 2 解析配置（代码版本与冻结条件）"
+    },
+    "level3_metrics": {
+      "role": "level3_metrics",
+      "absolute_path": "/Users/imok/work/Monte Carlo/monte-carlo-for-aodslm/simulation/level2_joint_transfer/outputs/level3_3d_transport_lensing/demo/metrics.json",
+      "sha256": "29e74b9fc1ab83e66a6b89cfc7cbb79c0ac93d5ee5f430392aa77d9b6ba8e3b5",
+      "size_bytes": 30443,
+      "mtime_utc": "2026-08-20T02:01:52.388306+00:00",
+      "note": "Level 3 三维 lensing 配置与冻结验证摘要"
+    },
+    "level3_config_used": {
+      "role": "level3_config_used",
+      "absolute_path": "/Users/imok/work/Monte Carlo/monte-carlo-for-aodslm/simulation/level2_joint_transfer/outputs/level3_3d_transport_lensing/demo/config_used.yaml",
+      "sha256": "2f17172efabb0279ab69851cbce7df25faffc0e71b60c98d518a0615e706200c",
+      "size_bytes": 1421,
+      "mtime_utc": "2026-08-20T01:50:46.023314+00:00",
+      "note": "Level 3 解析配置"
+    }
+  },
+  "level3_lensing": {
+    "calibration_mode": "normalized_reference_scan",
+    "fixed_vs_m_per_s": {
+      "0.5": 1.0783378413094848,
+      "0.75": 0.7188918942063233,
+      "1.0": 0.5391689206547424,
+      "1.25": 0.43133513652379396
+    },
+    "nominal_vs_m_per_s": 0.5391689206547424,
+    "scenario_note": "v_s 沿用 Level 3 normalized_reference_scan 冻结值，无量纲场景参数，非论文测量值",
+    "level3_preflight_all_passed": true
+  },
+  "level2_waveform": {
+    "type": "overlapped",
+    "name": "overlapped_optimized_400us",
+    "duration_us": 400.0,
+    "params": {
+      "move_start_fraction": 0.01945549969117366,
+      "move_end_fraction": 1.0,
+      "ramp_start_fraction": 0.6069511239907726,
+      "ramp_end_fraction": 1.0,
+      "ramp_power": 1.1121764674723393
+    },
+    "provenance": {
+      "candidate_id": "ref_lhs_0150_3",
+      "pool": "selection",
+      "objective_total": 1.0485033249904498,
+      "selection_capture_rate": 1.0
+    }
+  },
+  "parameter_provenance": {
+    "durations_us": "paper_anchor (Extended Data Fig. 10e 组合操作锚点)",
+    "depths_uK": "paper_anchor + level4_assumption (ramp 形状 smootherstep 为模型假设)",
+    "split_distance_um": "level2_frozen (2.4 μm 初始 AOD-SLM 分离)",
+    "long_profile": "level3_frozen (adiabatic_sine)",
+    "split_profile": "level3_frozen (constant_jerk)",
+    "vs_m_per_s": "level3_frozen (severity 1.0 场景)",
+    "eta_slm/eta_aod": "level4_assumption (nominal 1.3e-4，敏感性对照 1.5e-4 等)",
+    "protocol_b_slm_depth_uK": "level2_frozen (恒定 140 μK)"
+  }
+}

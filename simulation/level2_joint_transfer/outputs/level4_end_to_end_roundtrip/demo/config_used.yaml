@@ -1,0 +1,139 @@
+level4:
+  name: end_to_end_roundtrip_coherence
+atom:
+  isotope: Cs-133
+  mass_u: 132.90545196
+slm:
+  wavelength_nm: 1061.0
+  waist_um: 1.17
+  initial_depth_uK: 180.0
+  transport_depth_uK: 60.0
+  center_um:
+  - 0.0
+  - 0.0
+  protocol_b_depth_uK: 140.0
+aod:
+  wavelength_nm: 1055.0
+  waist_um: 1.17
+  transport_depth_uK: 280.0
+  split_distance_um: 2.4
+protocol_anchor:
+  initial_hold_us: 100.0
+  pickup_us: 850.0
+  split_us: 400.0
+  long_distance_um: 375.0
+  outbound_us: 1450.0
+  remote_operation_hold_us: 54.0
+  inbound_us: 1450.0
+  merge_us: 400.0
+  dropoff_us: 850.0
+  final_hold_us: 100.0
+  long_geometry: diagonal
+  long_profile: adiabatic_sine
+  split_profile: constant_jerk
+lensing:
+  inherit_from_level3: true
+  nominal_vs_m_per_s: null
+  axis_signs:
+  - 1
+  - 1
+  sensitivity_vs_m_per_s:
+  - 0.7188918942063233
+  - 0.43133513652379396
+initial_ensemble:
+  temperature_uK: 5.0
+  single_round_validation_shots: 2000
+  repeated_round_shots: 500
+  long_tail_shots: 128
+  sensitivity_shots: 500
+  single_round_seed: 41001
+  repeated_round_seed: 41002
+  long_tail_seed: 41003
+  sensitivity_seed: 41004
+  development_seed: 40999
+integration:
+  validation_dt_us: 0.05
+  repeated_dt_us: 0.1
+  convergence_dt_us: 0.025
+  max_rounds: 10
+  long_tail_max_rounds: 40
+  checkpoint_rounds:
+  - 1
+  - 2
+  - 5
+  - 10
+  - 20
+  - 40
+coherence:
+  enabled: true
+  eta_slm: 0.00013
+  eta_aod: 0.00013
+  eta_sensitivity:
+  - 0.00012
+  - 0.00015
+  - 0.00016
+  dd_modes:
+  - none
+  - spin_echo
+  - xy4_per_long_move
+  dd_pulse_offset_us: 0.025
+  custom_pulse_times_us: []
+intensity_noise:
+  enabled_nominal: false
+  model: ornstein_uhlenbeck
+  rms_grid:
+  - 0.001
+  - 0.05
+  tau_us_grid:
+  - 50.0
+  - 500.0
+  - null
+  cross_correlation: 0.0
+  noise_seed: 41999
+  provenance: assumed_sensitivity_only
+classification:
+  energy_threshold_J: 0.0
+  near_threshold_fraction_of_depth: 0.001
+  ambiguous_basin_tolerance: 0.001
+  absorbing_protocol_success: true
+upstream:
+  level2_best_waveform: auto_discover
+  level2_metrics: auto_discover
+  level3_metrics: auto_discover
+  level3_config: auto_discover
+  require_sha256_manifest: true
+  allow_reconstruction_without_reoptimization: true
+output:
+  directory: outputs/level4_end_to_end_roundtrip/demo
+  save_all_checkpoint_states: true
+  save_representative_trajectories: true
+  representative_shots_per_failure_stage: 3
+  bootstrap_samples: 10000
+  bootstrap_seed: 41020
+resolved_upstream:
+  nominal_vs_m_per_s: 0.5391689206547424
+  level2_waveform:
+    type: overlapped
+    name: overlapped_optimized_400us
+    duration_us: 400.0
+    params:
+      move_start_fraction: 0.01945549969117366
+      move_end_fraction: 1.0
+      ramp_start_fraction: 0.6069511239907726
+      ramp_end_fraction: 1.0
+      ramp_power: 1.1121764674723393
+    provenance:
+      candidate_id: ref_lhs_0150_3
+      pool: selection
+      objective_total: 1.0485033249904498
+      selection_capture_rate: 1.0
+  level3_lensing:
+    calibration_mode: normalized_reference_scan
+    fixed_vs_m_per_s:
+      '0.5': 1.0783378413094848
+      '0.75': 0.7188918942063233
+      '1.0': 0.5391689206547424
+      '1.25': 0.43133513652379396
+    nominal_vs_m_per_s: 0.5391689206547424
+    scenario_note: v_s 沿用 Level 3 normalized_reference_scan 冻结值，无量纲场景参数，非论文测量值
+    level3_preflight_all_passed: true

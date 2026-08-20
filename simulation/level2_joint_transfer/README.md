@@ -59,3 +59,37 @@ python3 -m venv --system-site-packages .venv
 量子内态与相干性、加热/损失随机过程、多原子相互作用、反向 pick-up 与
 610 μm 长距离运输。经典俘获率不是实验存活率或转移保真度，不可直接对标
 文献 99.81%。
+
+## Level 4：端到端往返协议与半经典相干性
+
+`level4_roundtrip_coherence` 包在同一个三维势实现（SLM 三维高斯 + Level 3
+crossed-AOD 透镜势）上编排完整 pick-up—split—375 μm 对角长运输—54 μs 远端
+保持—返回—merge—drop-off 往返协议：
+
+```bash
+level4-roundtrip --config configs/level4_roundtrip.yaml --stage all \
+  --output-dir outputs/level4_end_to_end_roundtrip/demo
+```
+
+- **Protocol A**（论文 Extended Data Fig. 10e 时序锚点）：100+850+400+1450
+  +54+1450+400+850+100 μs，SLM 180→60→180 μK、AOD 0→280→0 μK，
+  smootherstep 深度 ramp（模型假设）；**Protocol B**：冻结 Level 2
+  `best_waveform.yaml` 的时间反向 pickup + 正向 dropoff（自带 2.4 μm 短
+  移动，不重复 split/merge）+ Level 3 冻结 v_s 长运输，SLM 恒 140 μK；
+- 上游产物（Level 2 波形/指标、Level 3 指标/配置）以 SHA-256 冻结进
+  `upstream_manifest.json`，参数来源逐项标注（论文锚点/冻结/假设）；
+- checkpoint basin 归属（`bound_to_slm/bound_to_aod/shared_or_ambiguous/
+  unbound`，连线最低点+势垒+相空间可达性）、first-failure 状态机、
+  absorbing 与非吸收生存、recaptured 区分；
+- 分段功-能账本（SLM 深度功/AOD 深度功/移动功/lensing 偏移功四通道，
+  ΔE=W_ext+R_W 逐段校验）；
+- 半经典差分光移相位 φ=∫y(t)·(ηU)/ħ dt 以 A_SLM/A_AOD 分离累积（η 线性
+  可重算），理想瞬时 none/spin-echo/XY4 toggling（脉冲自动避开网格与分段
+  边界），条件相干对比度与 usable coherent fraction；
+- preflight 20 项（含 Level 0-3 全部测试、Level 2/3 三维回归、控制时间
+  反演到机器精度、0.10/0.05/0.025 μs 收敛）通过后才开放 2000-shot
+  validation；500-shot×10-round 重复、128-shot×40-round 长尾、8 项消融、
+  温度/深度/对准/lensing/η/噪声/脉冲时序敏感性。
+
+经典成功概率与 C_cond 不可等同论文 IRB fidelity；未包含有限脉冲、自旋
+哈密顿量、Clifford/IRB、Raman 散射与多原子相互作用（Level 5 范围）。
