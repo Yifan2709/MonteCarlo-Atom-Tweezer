@@ -102,13 +102,16 @@ def fig1_pipeline(data: dict, out: Path):
     counts = metrics.get("optimization") or {}
     val = metrics["validation"]["summaries"]
     frozen = data["frozen"]
+    lhs_n = sum(1 for r in data["candidates"] if r["candidate_id"].startswith("lhs_"))
+    later_n = counts.get("total", 0) - lhs_n
 
     boxes = [
         (0.3, 7.6, "① 预检查 preflight\n10 项数值自检\n(静态极限/功-能/步长收敛…)",
          f"全部通过\n耗时 {data['preflight'].get('elapsed_s', 0):.0f} s"),
         (2.75, 7.6, "② 阶段1 候选探索\noptimization_pool 128 shots\n拉丁超立方 + dt=0.10 μs",
-         f"评估 {counts.get('total', '?')} 个候选\n有效 {counts.get('ok', '?')} / "
-         f"无效 {counts.get('invalid', '?')} / 失败 {counts.get('failed', '?')}"),
+         f"LHS 探索 {lhs_n} 候选\n后续入围/精修/样条 {max(later_n, 0)} 候选\n"
+         f"（有效 {counts.get('ok', '?')} / 无效 {counts.get('invalid', '?')}"
+         f" / 失败 {counts.get('failed', '?')}）"),
         (5.2, 7.6, "③ 阶段2 精修与选择\nselection_pool 512 shots\ndt=0.05 μs + PCHIP 样条",
          "唯一最终波形冻结\n→ best_waveform.yaml"),
         (7.65, 7.6, "④ 独立验证 validation_pool\n2000 shots × 3 波形\n同一初态数组(CRN)",
@@ -191,7 +194,7 @@ def fig2_waveforms(data: dict, out: Path):
         ax.plot(t_us[t_us <= 600], w[f"{name}_aod_center_um"][t_us <= 600],
                 color=WF_COLOR[name], label=WF_LABEL[name], lw=2)
     ax.axvspan(frozen["move_start_fraction"] * 400, frozen["move_end_fraction"] * 400,
-               color="#d62728", alpha=0.08)
+               color="#1f77b4", alpha=0.06, label="移动窗口")
     ax.set_xlabel("时间 (μs)")
     ax.set_ylabel("AOD 中心 (μm)")
     ax.set_title("AOD 中心位置 c(t)：从 2.4 μm 移动到 SLM 中心 0")
@@ -201,7 +204,8 @@ def fig2_waveforms(data: dict, out: Path):
     for name in WAVEFORMS:
         ax.plot(t_us[t_us <= 600], w[f"{name}_aod_depth_uK"][t_us <= 600],
                 color=WF_COLOR[name], label=WF_LABEL[name], lw=2)
-    ax.axvspan(frozen["ramp_start_fraction"] * 400, 400, color="#9467bd", alpha=0.10)
+    ax.axvspan(frozen["ramp_start_fraction"] * 400, frozen["ramp_end_fraction"] * 400,
+               color="#9467bd", alpha=0.08, label="降深窗口")
     ax.set_xlabel("时间 (μs)")
     ax.set_ylabel("AOD 深度 (μK)")
     ax.set_title("AOD 深度 D(t)：从 280 μK 降到 0")
@@ -223,11 +227,18 @@ def fig2_waveforms(data: dict, out: Path):
                 color=WF_COLOR[name], label=WF_LABEL[name], lw=1.8)
     ax.set_xlabel("时间 (μs)")
     ax.set_ylabel("深度变化率 (μK/s)")
-    ax.set_title("深度一阶导数 Ḋ(t)：红色阴影区为移动/降深重叠区")
     ax.legend(fontsize=9)
 
     ov = max(0.0, min(frozen["move_end_fraction"], frozen["ramp_end_fraction"])
              - max(frozen["move_start_fraction"], frozen["ramp_start_fraction"]))
+    ov_t0 = max(frozen["move_start_fraction"], frozen["ramp_start_fraction"]) * 400
+    ov_t1 = min(frozen["move_end_fraction"], frozen["ramp_end_fraction"]) * 400
+    for ax in axes.flat:
+        ax.axvspan(ov_t0, ov_t1, color="#d62728", alpha=0.07, zorder=0)
+    axes[0, 0].text((ov_t0 + ov_t1) / 2, 1.5, "重叠区", ha="center", fontsize=8,
+                    color="#d62728")
+    axes[0, 0].text(120, 1.5, "← 仅移动", ha="center", fontsize=8, color="#666")
+    axes[1, 1].set_title("深度一阶导数 Ḋ(t)：浅红竖带为移动/降深重叠区")
     fig.text(0.5, 0.005,
              f"优化波形关键特征：移动窗口几乎全程（s∈[{
                  frozen['move_start_fraction']:.3f}, 1]），降深在 s≥"
@@ -359,22 +370,22 @@ def fig5_validation(data: dict, out: Path):
     fig.suptitle("图5 独立验证（validation_pool, 2000 shots, 三波形共用同一初态）",
                  fontsize=14, fontweight="bold")
 
-    # (a) 俘获率 + Wilson CI
+    # (a) 俘获率 + Wilson CI：三波形均 1.0，改为展示更有信息量的 CI 下限柱
     ax = fig.add_subplot(gs[0, 0])
     for i, name in enumerate(WAVEFORMS):
         s = metrics["validation"]["summaries"][name]
-        ax.errorbar(i, s["capture_fraction"],
-                    yerr=[[max(0.0, s["capture_fraction"] - s["wilson_low"])],
-                          [max(0.0, s["wilson_high"] - s["capture_fraction"])]],
-                    fmt="o", ms=9, capsize=6, color=WF_COLOR[name])
-        ax.annotate(f"{s['capture_fraction']:.4f}", (i, s["capture_fraction"]),
-                    textcoords="offset points", xytext=(12, 4), fontsize=9)
+        lo = s["wilson_low"]
+        ax.bar(i, 1.0 - lo, bottom=lo, width=0.55, color=WF_COLOR[name], alpha=0.85)
+        ax.annotate(f"{s['captured']}/{s['shots']}\nCI 下限 {lo:.4f}", (i, lo),
+                    textcoords="offset points", xytext=(0, 8), fontsize=8,
+                    ha="center", color="#333")
     ax.axhline(1.0, color="gray", ls="--", lw=1)
+    ax.text(2.42, 1.0, " 1.0", va="center", fontsize=8, color="gray")
     ax.set_xticks(range(3))
     ax.set_xticklabels([WF_LABEL[n] for n in WAVEFORMS], rotation=12, fontsize=8.5)
-    ax.set_ylim(0.99, 1.001)
-    ax.set_ylabel("俘获率")
-    ax.set_title("(a) 俘获率与 Wilson 95% CI：三者重叠，无显著差异")
+    ax.set_ylim(0.9975, 1.002)
+    ax.set_ylabel("俘获率（柱体 = Wilson 95% CI 范围）")
+    ax.set_title("(a) 俘获率 1.0000，最坏 CI 下限 0.9981：三波形无显著差异")
 
     # (b) 配对计数
     ax = fig.add_subplot(gs[0, 1])
@@ -575,23 +586,32 @@ def fig8_preflight(data: dict, out: Path):
     ax.axis("off")
     ax.set_title("图8 Preflight 预检查：10 项数值自检，全部通过才允许开始优化",
                  fontsize=14, fontweight="bold")
+    # 键名必须与 preflight.json 实际字段一致；waveform_constraints / ideal_runs
+    # 无顶层 passed 字段，需从子项汇总。
     describe = {
-        "existing_tests": "运行现有 Level 0/1 测试套件",
-        "static_limit": "时变积分器在静态极限下与 Level 0 一致",
-        "level1_reproduction": "固定种子复现 Level 1 sequential_600us",
-        "waveform_constraints": "三类波形端点/范围/单调性/导数检查",
-        "ideal_runs": "理想初态 (x₀=c_AOD, v₀=0) 下运行三波形",
-        "ideal_work_energy": "理想轨迹功-能平衡残差 < 5e-4",
-        "ideal_convergence": "步长 0.05→0.025 μs 二阶收敛",
-        "mc_dt_paired": "128 shots 配对步长检查（标签不一致率 ≤ 2%）",
-        "mc_work_energy": "MC 子集功-能残差中位数 < 1e-3",
-        "hold_segment": "100 μs 纯 SLM 保持段能量误差有界",
+        "existing_tests": ("existing_tests", "运行现有 Level 0/1 测试套件"),
+        "static_limit": ("static_limit", "时变积分器在静态极限下与 Level 0 一致"),
+        "level1_reproduction": ("level1_reproduction", "固定种子复现 Level 1 sequential_600us"),
+        "waveform_constraints": ("waveform_constraints", "三类波形端点/范围/单调性/导数检查"),
+        "ideal_runs": ("ideal_runs", "理想初态 (x₀=c_AOD, v₀=0) 下运行三波形"),
+        "ideal_work_energy": ("ideal_work_energy", "理想轨迹功-能平衡残差 < 5e-4"),
+        "ideal_timestep_convergence": ("ideal_timestep_convergence", "步长 0.05→0.025 μs 二阶收敛"),
+        "mc_timestep_paired": ("mc_timestep_paired", "128 shots 配对步长检查（标签不一致率 ≤ 2%）"),
+        "mc_work_energy_residual": ("mc_work_energy_residual", "MC 子集功-能残差中位数 < 1e-3"),
+        "hold_segment": ("hold_segment", "100 μs 纯 SLM 保持段能量误差有界"),
     }
     rows = []
-    for key, desc in describe.items():
+    for key, desc in describe.values():
         entry = pf.get(key, {})
         if isinstance(entry, bool):
             passed, detail = entry, ""
+        elif key == "waveform_constraints":
+            passed = bool(pf.get("waveform_constraints_all_valid",
+                                 all(v.get("valid", False) for v in entry.values())))
+            detail = "三波形均满足约束"
+        elif key == "ideal_runs":
+            passed = all(v.get("captured", False) for v in entry.values())
+            detail = "三波形理想轨迹均被 SLM 俘获"
         else:
             passed = bool(entry.get("passed", False))
             detail = entry.get("summary_line", "")
