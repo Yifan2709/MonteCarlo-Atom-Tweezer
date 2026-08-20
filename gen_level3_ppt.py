@@ -158,7 +158,7 @@ add_textbox(slide, 1.0, 4.9, 11.3, 0.9,
             "直线 vs 对角 · 三类轨迹 · 热初态蒙特卡洛 · 独立 2000-shot 验证",
             size=16, color=RGBColor(0xBB, 0xD3, 0xE8), align=PP_ALIGN.CENTER)
 add_textbox(slide, 1.0, 6.5, 11.3, 0.5,
-            "preflight 16 项全通过 · 96 个粗扫描格点 · 30 项 Level 3 测试",
+            "preflight 16 项全通过 · 96 个粗扫描格点 · 22 项 Level 3 测试",
             size=13, color=RGBColor(0x88, 0xA8, 0xC8), align=PP_ALIGN.CENTER)
 
 # ================================================================ 2 背景与定位
@@ -400,7 +400,7 @@ add_textbox(slide, 8.2, 1.4, 4.9, 5.2,
 # ================================================================ 16 软件工程
 slide = add_slide()
 title_bar(slide, "实现与质量保障",
-          "simulation/level2_joint_transfer/src/level3_3d_transport_lensing/，约 2200 行")
+          "simulation/level2_joint_transfer/src/level3_3d_transport_lensing/，共 2619 行")
 add_table(slide, 0.55, 1.2, 12.2, [
     ["模块", "职责"],
     ["gaussian_3d.py / aod_lensing.py", "三维势、力、频率；G₁G₂ 透镜势、∂U/∂t 三分解、数值极值诊断、v_s 反解"],
@@ -411,9 +411,9 @@ add_table(slide, 0.55, 1.2, 12.2, [
     ["level3_cli.py / level3_visualization.py", "CLI 六个 stage；12 张诊断图 + 程序化验收记录（有限性/图例/坐标覆盖）"],
 ], col_widths=[4.2, 8.0], size=12)
 add_bullets(slide, 0.55, 4.6, 12.2, 2.4, [
-    ("测试", "test_level3.py 共 30 项，覆盖任务书 25 项要求：势/力/轨迹/采样/"
+    ("测试", "test_level3.py 共 22 项测试函数，覆盖任务书 25 项要求：势/力/轨迹/采样/"
      "功-能/判据/种子隔离/CLI 冒烟/JSON 严格性/sources 保护"),
-    ("产物", "24 个文件：CSV×5、JSON×3、Markdown、PNG×12、config_used.yaml，"
+    ("产物", "26 个文件：CSV×8、PNG×12、JSON×4、Markdown×1、YAML×1，"
      "全部程序化复检 schema 与有限值；支持事后合并视觉审阅（--apply-visual-review）"),
 ], size=13)
 
