@@ -246,7 +246,7 @@ def test_stage_optimize_never_samples_validation_pool(tmp_path, monkeypatch):
     tiny_cfg = load_config(_tiny_config(tmp_path))
     output = tmp_path / "outputs" / "level2_joint_transfer" / "tiny_test"
     output.mkdir(parents=True, exist_ok=True)
-    level2_cli.stage_optimize(tiny_cfg, output)
+    level2_cli.stage_optimize(tiny_cfg, output, [])
     assert requested_seeds == [tiny_cfg.initial_ensemble.optimization_seed,
                                tiny_cfg.initial_ensemble.selection_seed]
 
@@ -346,7 +346,7 @@ def test_cli_stages_smoke(tmp_path):
     output = tmp_path / "outputs" / "level2_joint_transfer" / "tiny_test"
     required = ["config_used.yaml", "candidates.csv", "best_waveform.yaml", "waveforms.csv",
                 "validation_shots.csv", "robustness.csv", "metrics.json",
-                "image_validation.json", "summary.md"]
+                "image_validation.json", "summary.md", "optimization_history.png"]
     for name in required:
         assert (output / name).is_file(), name
     with (output / "validation_shots.csv").open(newline="", encoding="utf-8") as handle:
@@ -397,11 +397,19 @@ def test_optimize_checkpoint_resume(tmp_path):
         with (output / "candidates.csv").open(newline="", encoding="utf-8") as handle:
             return list(csv.DictReader(handle))
 
+    def read_history():
+        with (output / "optimization_history.csv").open(newline="", encoding="utf-8") as handle:
+            return list(csv.DictReader(handle))
+
     first = read_candidates()
+    history_first = read_history()
+    assert history_first, "评估历史不得为空"
+    assert {row["candidate_id"] for row in history_first} == {row["candidate_id"] for row in first}
     assert {"stage1", "stage2", "spline"} <= set(checkpoint["stages"])
     assert level2_cli.main(["--config", str(config_path), "--stage", "optimize"]) == 0
     second = read_candidates()
     assert first == second
+    assert read_history() == history_first
     checkpoint2 = json.loads((output / "optimization_checkpoint.json").read_text())
     for stage in ("stage1", "stage2", "spline"):
         assert checkpoint["stages"][stage]["rows"] == checkpoint2["stages"][stage]["rows"]

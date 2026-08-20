@@ -42,6 +42,8 @@ class Level3Config:
     commanded_depth_mode: str
     enable_exploratory_lensing_compensation: bool
     max_power_multiplier: float
+    compensation_shots: int
+    compensation_seed_offset: int
     retained_energy_threshold_J: float
     near_threshold_fraction_of_depth: float
     output_directory: str
@@ -108,6 +110,8 @@ def load_config(path: Path) -> Level3Config:
         enable_exploratory_lensing_compensation=bool(
             depth.get("enable_exploratory_lensing_compensation", False)),
         max_power_multiplier=float(depth.get("max_power_multiplier", 2.0)),
+        compensation_shots=int(depth.get("compensation_shots", 500)),
+        compensation_seed_offset=int(depth.get("compensation_seed_offset", 9500)),
         retained_energy_threshold_J=float(cls["retained_energy_threshold_J"]),
         near_threshold_fraction_of_depth=float(
             cls["near_threshold_fraction_of_depth"]),
@@ -152,7 +156,9 @@ def config_as_dict(cfg: Level3Config) -> dict:
             "commanded_depth_mode": cfg.commanded_depth_mode,
             "enable_exploratory_lensing_compensation":
                 cfg.enable_exploratory_lensing_compensation,
-            "max_power_multiplier": cfg.max_power_multiplier},
+            "max_power_multiplier": cfg.max_power_multiplier,
+            "compensation_shots": cfg.compensation_shots,
+            "compensation_seed_offset": cfg.compensation_seed_offset},
         "classification": {
             "retained_energy_threshold_J": cfg.retained_energy_threshold_J,
             "near_threshold_fraction_of_depth":

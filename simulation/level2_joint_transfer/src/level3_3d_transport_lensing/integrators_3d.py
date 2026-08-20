@@ -67,6 +67,8 @@ def run_trajectory(pos0, vel0, t_grid, control_at, mass_kg, depth_j, waist_m, z_
     max_radial = np.zeros(len(pos))   # 相对瞬时阱中心的横向位移 sqrt(ξ²+η²)
     max_axial = np.zeros(len(pos))    # 相对两柱面焦点中点的轴向位移 |z−(zs1+zs2)/2|
     times_rec, pos_rec, vel_rec = [], [], []
+    w_rec = []      # 记录时刻的累计外部功（全 shot），供功-能曲线绘制
+    e_rec = []      # 记录时刻的机械能
     z_sum = np.zeros(len(pos))        # 用于运输期间 z 的时间平均（分支诊断）
     p_old = power(pos, t_grid[0])
     for i in range(n_steps):
@@ -94,6 +96,8 @@ def run_trajectory(pos0, vel0, t_grid, control_at, mass_kg, depth_j, waist_m, z_
             times_rec.append(t_grid[i + 1])
             pos_rec.append(pos.copy())
             vel_rec.append(vel.copy())
+            w_rec.append(w_total.copy())
+            e_rec.append(energy(t_grid[i + 1]))
     e_final = energy(t_grid[-1])
     residual = e_final - e0 - w_total
     result = {
@@ -108,6 +112,8 @@ def run_trajectory(pos0, vel0, t_grid, control_at, mass_kg, depth_j, waist_m, z_
             "time_s": np.array(times_rec),
             "position_m": np.array(pos_rec),
             "velocity_m_per_s": np.array(vel_rec),
+            "w_total_cum_j": np.array(w_rec),
+            "energy_j": np.array(e_rec),
         }
     return result
 

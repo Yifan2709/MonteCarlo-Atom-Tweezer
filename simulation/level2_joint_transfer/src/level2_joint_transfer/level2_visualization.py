@@ -219,12 +219,19 @@ def plot_optimization_history(history_rows: list, path):
                        for r in history_rows], dtype=float)
     index = np.arange(len(history_rows))
     valid = np.isfinite(scores)
-    ax.scatter(index[valid], scores[valid], s=14, alpha=0.6, color=C_AOD, label="valid candidate")
-    ax.scatter(index[~valid], np.zeros(int((~valid).sum())), s=14, alpha=0.6, color=C_SLM,
-               label="invalid/failed")
+    # marker-only Line2D（而非 scatter）：候选点进入 _finish 的数据范围检查，
+    # 否则 running-best 为水平线时 data_y_range_nonzero 会误报失败
+    ax.plot(index[valid], scores[valid], "o", ms=5, alpha=0.6, color=C_AOD,
+            label="valid candidate")
+    ax.plot(index[~valid], np.zeros(int((~valid).sum())), "o", ms=5, alpha=0.6, color=C_SLM,
+            label="invalid/failed")
     if valid.any():
-        running = np.maximum.accumulate(np.where(valid, scores, -np.inf))
-        ax.plot(index, running, color=C_OPT, lw=1.8, label="running best")
+        # 从首个有效候选起画累计最优，避免前导无效候选产生 -inf 污染 data_finite 检查
+        first_valid = int(np.argmax(valid))
+        tail_valid = valid[first_valid:]
+        tail_scores = scores[first_valid:]
+        running = np.maximum.accumulate(np.where(tail_valid, tail_scores, -np.inf))
+        ax.plot(index[first_valid:], running, color=C_OPT, lw=1.8, label="running best")
         arrays = [index, running]
     else:
         arrays = [index]

@@ -82,16 +82,21 @@ def split_fraction(profile, geometry, distance_m, duration_s, v_s, signs, z_r_m,
 
 def run_condition(physics, states, profile, geometry, distance_um, duration_us,
                   severity, v_s, signs, dt_us, hold_us, cfg: Level3Config,
-                  keep_trajectory_ids=(), trajectory_stride=200):
-    """运行一个运输条件的一批初态，返回逐 shot 记录与摘要。"""
+                  keep_trajectory_ids=(), trajectory_stride=200,
+                  control_override=None):
+    """运行一个运输条件的一批初态，返回逐 shot 记录与摘要。
+
+    control_override 允许替换默认控制量（供探索性深度补偿等用途）；
+    记录与判据仍相对基准深度 D_base 计算（补偿在端点 mult=1，端态一致）。
+    """
     mass = physics["mass_kg"]
     depth_j = physics["depth_j"]
     waist_m = physics["waist_m"]
     z_r = physics["z_r_m"]
     distance_m = distance_um * 1e-6
     duration_s = duration_us * 1e-6
-    control_at = make_control(profile, geometry, distance_m, duration_s, v_s, signs,
-                              depth_j, z_r)
+    control_at = control_override or make_control(
+        profile, geometry, distance_m, duration_s, v_s, signs, depth_j, z_r)
     n_transport = int(round(duration_s / (dt_us * 1e-6)))
     t_grid = np.arange(n_transport + 1) * dt_us * 1e-6
     pos0 = states["pos_m"].copy()
@@ -249,3 +254,21 @@ def compare_paired(records_a, records_b, seed, n_boot=2000):
         "paired_counts": paired_counts(a, b),
         "bootstrap": paired_bootstrap_difference(a, b, n_boot, seed),
     }
+
+
+def capture_lost_trajectories(cfg: Level3Config, physics, shots=64, keep=6):
+    """复跑一个粗扫描已知失败条件，捕获 lost 代表轨迹（诊断用）。
+
+    条件固定为 straight/510 μm/600 μs/adiabatic-sine/severity 1.25
+    （粗扫描留阱率 0.0 的格点）。使用独立诊断种子 scan_seed+9100，
+    不与 scan/validation/convergence 池混用。返回 (run_condition 输出,
+    条件标签)；输出含全部 keep 个 shot 的轨迹时序。
+    """
+    severity = 1.25
+    label = "coarse_lost_straight_510um_600us_sev1.25"
+    states = sample_states(cfg, physics, cfg.scan_seed + 9100, shots)
+    out = run_condition(physics, states, "adiabatic_sine", "straight", 510.0,
+                        600.0, severity, resolve_vs(cfg, severity), cfg.axis_signs,
+                        cfg.scan_dt_us, cfg.post_transport_hold_us, cfg,
+                        keep_trajectory_ids=tuple(range(keep)))
+    return out, label

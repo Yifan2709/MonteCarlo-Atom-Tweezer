@@ -14,12 +14,16 @@ import yaml
 from level0_static_trap.io_utils import (ensure_output_directory, save_json,
                                          save_markdown, save_yaml, validate_pngs)
 from . import level3_visualization as viz
+from .aod_lensing import axial_minima
+from .depth_compensation import (build_compensation_schedule,
+                                 make_compensated_control)
 from .gaussian_3d import KB
 from .integrators_3d import run_trajectory
 from .level3_config import Level3Config, config_as_dict, load_config
-from .level3_simulation import (compare_paired, deterministic_scan,
-                                make_control, physics_from_config, resolve_vs,
-                                run_condition, sample_states)
+from .level3_simulation import (capture_lost_trajectories, compare_paired,
+                                deterministic_scan, make_control,
+                                physics_from_config, resolve_vs, run_condition,
+                                sample_states)
 from .preflight3 import run_preflight
 from .transport_statistics import summarize_retention
 
@@ -40,9 +44,12 @@ def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Level 3 三维 AOD 长距离运输与柱面透镜")
     parser.add_argument("--config", required=True)
     parser.add_argument("--stage", choices=("preflight", "potential_scan", "coarse_mc",
-                                            "validate", "sensitivity", "all"),
+                                            "validate", "sensitivity", "compensation",
+                                            "all"),
                         default="all")
     parser.add_argument("--output-dir", help="覆盖输出目录")
+    parser.add_argument("--apply-visual-review", metavar="JSON",
+                        help="只把视觉审阅结论合并进既有产物，不重跑任何阶段")
     return parser
 
 
@@ -186,18 +193,27 @@ def stage_validate(cfg: Level3Config, output_dir: Path, plot_records: list) -> d
             "label_flip_rate": float(np.mean(labels != base_labels)),
             "retention_fraction": out["summary"]["retention_fraction"],
         })
-    # 代表轨迹（成功 / 丢失 / 双阱经历）保存
+    # 代表轨迹（成功 / 双阱经历 / 粗扫描 lost）保存
     rep_rows = []
     anchor = [r for r in all_records
               if r["condition"] == "paper_anchor_diagonal|sev1.0"]
+    n_pick = cfg.sensitivity_shots // 100 + 1
     for label, pred in (("retained", lambda r: r["retained"]),
-                        ("lost", lambda r: not r["retained"]),
                         ("split_exposed", lambda r: r["split_exposed"])):
-        picks = [r for r in anchor if pred(r)][:cfg.sensitivity_shots // 100 + 1]
-        for r in picks:
-            rep_rows.append({"class": label, "shot_id": r["shot_id"],
-                             "branch": r["branch"], "mean_z_um": r["mean_z_um"],
+        for r in [r for r in anchor if pred(r)][:n_pick]:
+            rep_rows.append({"class": label,
+                             "condition": "paper_anchor_diagonal|sev1.0",
+                             "shot_id": r["shot_id"], "branch": r["branch"],
+                             "mean_z_um": r["mean_z_um"],
                              "e_final_uK": r["e_final_uK"]})
+    # validation 全部 retained，lost 代表改由粗扫描失败条件捕获（诊断种子池）
+    lost_out, lost_label = capture_lost_trajectories(cfg, physics)
+    lost_records = [r for r in lost_out["records"] if not r["retained"]]
+    for r in lost_records[:n_pick]:
+        rep_rows.append({"class": "lost", "condition": lost_label,
+                         "shot_id": r["shot_id"], "branch": r["branch"],
+                         "mean_z_um": r["mean_z_um"],
+                         "e_final_uK": r["e_final_uK"]})
     _write_rows_csv(output_dir / "representative_trajectories.csv", rep_rows)
 
     # 配对比较
@@ -219,19 +235,36 @@ def stage_validate(cfg: Level3Config, output_dir: Path, plot_records: list) -> d
         comparisons[name] = compare_paired(by_cond[key_a], by_cond[key_b],
                                            cfg.validation_seed)
 
-    # 功-能代表曲线：从 validation 记录重建 shot 0 的 ΔE / W_ext / R_W 汇总
+    # 功-能代表曲线：重跑各工况 shot 0（与 validation 同初态），记录
+    # ΔE(t)/W_ext(t)/R_W(t) 的真实时间序列而非首末两点连线
     work_cases = {}
     for label, key in (("ideal_diagonal", "paper_anchor_diagonal|sev0.0"),
                        ("lensing_diagonal", "paper_anchor_diagonal|sev1.0"),
                        ("lensing_straight", "straight_control|sev1.0")):
         recs = by_cond.get(key, [])
-        if recs:
-            work_cases[label] = {
-                "time_us": np.array([0.0, 1600.0]),
-                "delta_E": np.array([0.0, recs[0]["e_final_uK"] - recs[0]["e0_uK"]]),
-                "W_ext": np.array([0.0, recs[0]["w_total_uK"]]),
-                "R_W": np.array([0.0, recs[0]["w_residual_uK"]]) * 100,
-            }
+        if not recs:
+            continue
+        r0 = recs[0]
+        v_s = resolve_vs(cfg, r0["severity"])
+        control = make_control(r0["profile"], r0["geometry"],
+                               r0["distance_um"] * 1e-6, r0["duration_us"] * 1e-6,
+                               v_s, cfg.axis_signs, physics["depth_j"],
+                               physics["z_r_m"])
+        n = int(round(r0["duration_us"] * 1e-6 / (cfg.validation_dt_us * 1e-6)))
+        tg = np.arange(n + 1) * cfg.validation_dt_us * 1e-6
+        single = run_trajectory(states["pos_m"][:1], states["vel_m_per_s"][:1],
+                                tg, control, physics["mass_kg"], physics["depth_j"],
+                                physics["waist_m"], physics["z_r_m"],
+                                record_stride=max(1, n // 80))
+        traj = single["trajectory"]
+        e_series = np.concatenate(([single["e0"][0]], traj["energy_j"][:, 0]))
+        w_series = np.concatenate(([0.0], traj["w_total_cum_j"][:, 0]))
+        work_cases[label] = {
+            "time_us": np.concatenate(([0.0], traj["time_s"] * 1e6)),
+            "delta_E": (e_series - single["e0"][0]) / KB * 1e6,
+            "W_ext": w_series / KB * 1e6,
+            "R_W": (e_series - single["e0"][0] - w_series) / KB * 1e6 * 100,
+        }
     plot_records.append(viz.plot_heating(all_records, output_dir / "heating_comparison.png"))
     plot_records.append(viz.plot_final_energy(all_records,
                                               output_dir / "final_energy_distributions.png"))
@@ -256,13 +289,98 @@ def stage_validate(cfg: Level3Config, output_dir: Path, plot_records: list) -> d
                 "velocity_m_per_s": trajectories["velocity_m_per_s"][:, i:i + 1, :],
             }
     if axial_trajs:
+        lost_trajs, lost_minima = {}, {}
+        if lost_out.get("trajectories"):
+            pos_lost = lost_out["trajectories"]["position_m"]
+            for i in range(min(4, pos_lost.shape[1])):
+                rec = lost_out["records"][i]
+                lost_trajs[f"shot {rec['shot_id']}(lost,{rec['branch']})"] = {
+                    "time_s": lost_out["trajectories"]["time_s"],
+                    "position_m": pos_lost[:, i:i + 1, :],
+                    "velocity_m_per_s":
+                        lost_out["trajectories"]["velocity_m_per_s"][:, i:i + 1, :],
+                }
+            v_s_lost = resolve_vs(cfg, 1.25)
+            ctrl_lost = make_control("adiabatic_sine", "straight", 510e-6, 600e-6,
+                                     v_s_lost, cfg.axis_signs, physics["depth_j"],
+                                     physics["z_r_m"])
+            cols = []
+            for t in lost_out["trajectories"]["time_s"]:
+                c = ctrl_lost(float(t))
+                z_min, _, _, _ = axial_minima(
+                    physics["depth_j"], physics["waist_m"], physics["z_r_m"],
+                    c[4], c[5])
+                row = np.full(3, np.nan)
+                row[:len(z_min)] = z_min
+                cols.append(row)
+            lost_minima[lost_label] = (lost_out["trajectories"]["time_s"],
+                                       np.array(cols))
         plot_records.append(viz.plot_axial_dynamics(
-            axial_trajs, output_dir / "axial_dynamics.png"))
+            axial_trajs, output_dir / "axial_dynamics.png",
+            lost=lost_trajs, lost_minima=lost_minima))
     return {"summaries": summaries, "comparisons": comparisons,
             "convergence_rows": convergence_rows,
             "validation_states_meta": {k: v for k, v in states.items()
                                        if not isinstance(v, np.ndarray)},
-            "conditions": [dict(c) for c in conditions]}
+            "conditions": [dict(c) for c in conditions],
+            "lost_label": lost_label,
+            "lost_count": len(lost_records)}
+
+
+def stage_compensation(cfg: Level3Config, output_dir: Path, plot_records: list) -> dict:
+    """探索性 lensing 深度补偿演示（§6）：straight_control/sev1.0 同初态对照。
+
+    明确边界：这是任务书定义的 exploratory 模式，不是论文已实现的 RF
+    功率-位置校准或完整 lensing compensation。
+    """
+    physics = physics_from_config(cfg)
+    severity = 1.0
+    profile, geometry, distance, duration = ("adiabatic_sine", "straight",
+                                             510.0, 1600.0)
+    v_s = resolve_vs(cfg, severity)
+    states = sample_states(cfg, physics,
+                           cfg.scan_seed + cfg.compensation_seed_offset,
+                           cfg.compensation_shots)
+    common = (physics, states, profile, geometry, distance, duration, severity,
+              v_s, cfg.axis_signs, cfg.validation_dt_us,
+              cfg.post_transport_hold_us, cfg)
+    base = run_condition(*common)
+    schedule, base_control = build_compensation_schedule(
+        physics, profile, geometry, distance * 1e-6, duration * 1e-6, v_s,
+        cfg.axis_signs, cfg.max_power_multiplier)
+    comp = run_condition(*common,
+                         control_override=make_compensated_control(base_control,
+                                                                   schedule))
+    rows = []
+    for mode, out in (("lensing_uncompensated", base),
+                      ("exploratory_lensing_compensation", comp)):
+        s = out["summary"]
+        rows.append({
+            "mode": mode, "shots": s["shots"], "retained": s["retained"],
+            "retention_fraction": s["retention_fraction"],
+            "wilson_low": s["wilson_low"], "wilson_high": s["wilson_high"],
+            "median_delta_eps_uK_retained": s["median_delta_eps_uK_retained"],
+            "split_fraction": s["split_fraction"],
+            "max_abs_w_residual_over_depth":
+                s["max_abs_w_residual_over_depth"],
+        })
+    _write_rows_csv(output_dir / "compensation.csv", rows)
+    t_us = schedule["t_ctl"] * 1e6
+    sched_rows = [{
+        "time_us": float(t_us[i]),
+        "multiplier": float(schedule["mult"][i]),
+        "d_cmd_uK": float(schedule["d_cmd"][i] / KB * 1e6),
+        "eff_depth_uncompensated_uK": float(schedule["eff_uncomp"][i] / KB * 1e6),
+        "eff_depth_compensated_uK": float(schedule["eff_comp"][i] / KB * 1e6),
+    } for i in range(len(t_us))]
+    _write_rows_csv(output_dir / "compensation_schedule.csv", sched_rows)
+    paired = compare_paired(base["records"], comp["records"], cfg.validation_seed)
+    print(f"[compensation] uncomp {base['summary']['retained']}/"
+          f"{base['summary']['shots']} vs comp "
+          f"{comp['summary']['retained']}/{comp['summary']['shots']}；"
+          f"峰值所需倍率 {schedule['report']['max_required_power_multiplier']:.2f}"
+          f"（上限 {cfg.max_power_multiplier}）")
+    return {"rows": rows, "schedule_report": schedule["report"], "paired": paired}
 
 
 def stage_sensitivity(cfg: Level3Config, output_dir: Path, plot_records: list) -> dict:
@@ -307,7 +425,8 @@ def stage_sensitivity(cfg: Level3Config, output_dir: Path, plot_records: list) -
     return {"rows": rows}
 
 
-def _build_summary(cfg, preflight, pot_scan, coarse, validation, sensitivity) -> str:
+def _build_summary(cfg, preflight, pot_scan, coarse, validation, sensitivity,
+                   compensation=None) -> str:
     lines = ["# Level 3 三维 AOD 长距离运输与柱面透镜效应", "",
              "隔离研究 AOD 单阱长距离搬运：三维经典模型 + 论文 SI 启发的 crossed-AOD "
              "柱面透镜势；留阱率仅指经典末态仍被束缚，不代表量子保真度。", ""]
@@ -319,6 +438,24 @@ def _build_summary(cfg, preflight, pot_scan, coarse, validation, sensitivity) ->
         lines.append(f"- preflight：{len(preflight['critical_checks'])} 项检查"
                      f"{'全部通过' if preflight['all_passed'] else '存在失败'}"
                      f"（{preflight.get('elapsed_s', 0):.0f} s）。")
+    if preflight and "heating_scaling" in preflight:
+        hs = preflight["heating_scaling"]
+        lines += ["", "## 加热标度律（§5，简谐、无透镜、小激发极限）", ""]
+        for fam, info in hs["families"].items():
+            lines.append(f"- {fam}: T 上包络斜率 {info['t_slope']:+.2f}"
+                         f"（拟合 {info['n_fit_points']} 点）。")
+        for fam, slope in hs["l_slopes"].items():
+            lines.append(f"- {fam}: L 斜率 {slope:+.2f}。")
+        for fam, slope in hs["omega_slopes_delta_eps"].items():
+            lines.append(f"- {fam}: Δε 对 ω 斜率 {slope:+.2f}"
+                         f"（ΔN = Δε/ħω 再减 1）。")
+        claim = hs["constant_jerk_vs_prompt_5B"]
+        lines += ["",
+                  f"- **与 §5B/论文声称的 T⁻⁴ 不一致**：四段 constant-jerk 实测 "
+                  f"{claim['measured_delta_eps_exponents']['t_slope']:+.2f}，"
+                  f"与其 m=2（加速度连续）定义自洽；T⁻⁴/ω³ 属于 m=1（分段恒加速、"
+                  "三角速度）族，已由 const_accel_reference 参照轨迹实测复现。"
+                  "差异如实报告，不改数据。"]
     if validation:
         lines += ["", "## 冻结主条件独立验证（validation_pool，一次性）", "",
                   "| 条件 | 留阱 | 留阱率 | Wilson 95% CI |",
@@ -333,6 +470,12 @@ def _build_summary(cfg, preflight, pot_scan, coarse, validation, sensitivity) ->
             lines.append(f"- {name}: 差 {boot['difference']:+.4f}，"
                          f"95% CI [{boot['ci_low']:+.4f}, {boot['ci_high']:+.4f}]"
                          f"{'（显著）' if boot['ci_excludes_zero'] else '（含 0，不显著）'}。")
+        meta = validation.get("validation_states_meta", {})
+        if meta:
+            lines += ["", "### 初态采样",
+                      f"- 物理接受率 {meta.get('acceptance_rate', float('nan')):.4f}"
+                      f"（提议 {meta.get('attempts')} 次，D/kT=56 时几乎无拒绝；"
+                      "简谐提议+束缚拒绝，非完整正则系综）。"]
     if sensitivity:
         lines += ["", "## 敏感性（one-factor-at-a-time，每点 "
                  f"{cfg.sensitivity_shots} shots）", ""]
@@ -340,12 +483,72 @@ def _build_summary(cfg, preflight, pot_scan, coarse, validation, sensitivity) ->
             lines.append(f"- {row['scan']} = {row['value']}: "
                          f"{row['retention_fraction']:.4f}"
                          f"（Wilson [{row['wilson_low']:.4f}, {row['wilson_high']:.4f}]）")
+    if compensation:
+        rep = compensation["schedule_report"]
+        lines += ["", "## 探索性 lensing 深度补偿（§6，非论文已实现功能）", "",
+                  f"- 条件：straight 510 μm / 1.6 ms / sine / sev1.0，"
+                  f"{cfg.compensation_shots} shots 同初态对照。",
+                  f"- 峰值所需功率倍率 {rep['max_required_power_multiplier']:.2f}，"
+                  f"实际上限 {rep['power_cap']:.0f}，饱和时间比例 "
+                  f"{rep['saturation_time_fraction']:.3f}。",
+                  f"- 未补偿最低有效阱深 {rep['min_effective_depth_uncompensated_uK']:.1f}"
+                  f" μK → 补偿后 {rep['min_effective_depth_compensated_uK']:.1f} μK"
+                  f"（基准 {rep['depth_base_uK']:.0f} μK）。",
+                  f"- 恒定阱深声明：{rep['constant_depth_claim']}。"]
+        for row in compensation["rows"]:
+            lines.append(f"- {row['mode']}: 留阱率 {row['retention_fraction']:.4f}，"
+                         f"retained 中位 Δε "
+                         f"{row['median_delta_eps_uK_retained']:.3f} μK。")
     lines += ["", "## 边界", "",
               "经典留阱率不可等同于论文的 99.953(2)% 量子通道保真度；lensing severity "
               "为无量纲扫描场景而非论文测量值。未包含：真空损失、光子散射、退相干、"
               "pick-up/drop-off 组合、重复往返。", "",
+              "## Level 4 建议", "",
+              "- pick-up—长距离运输—drop-off 组合序列（含深度 ramp 与 SLM 关断）；",
+              "- 重复往返运输与损失累计/自洽存活模型；",
+              "- 量子内态退相干（XY4、强度噪声 dephasing）与成像误差；",
+              "- 论文式 RF 功率-位置校准的 lensing 补偿（本级的补偿仅为探索模式）。", "",
               "图片完成程序化检查；未进行人工视觉审阅。", ""]
     return "\n".join(lines)
+
+
+def _apply_visual_review(output_dir: Path, findings_path: Path) -> int:
+    """把人工/模型视觉审阅结论合并进既有产物；不重跑任何计算阶段。"""
+    findings = json.loads(Path(findings_path).read_text(encoding="utf-8"))
+    per_image = findings.get("images", {})
+    issues = {k: v.get("issues", "") for k, v in per_image.items()
+              if not v.get("layout_ok", True)}
+    patch = {
+        "visual_review_performed": True,
+        "visual_review_by": findings.get("reviewer", "unspecified"),
+        "visual_review_findings": per_image,
+        "visual_review_all_ok": not issues,
+    }
+    for name in ("image_validation.json", "metrics.json"):
+        path = output_dir / name
+        if not path.is_file():
+            continue
+        data = json.loads(path.read_text(encoding="utf-8"))
+        data.update(patch)
+        if name == "metrics.json":
+            data["visual_review_summary"] = {
+                "reviewed_images": len(per_image),
+                "issues": issues,
+                "note": findings.get("note", ""),
+            }
+        save_json(path, data)
+    summary_path = output_dir / "summary.md"
+    if summary_path.is_file():
+        text = summary_path.read_text(encoding="utf-8")
+        verdict = ("全部通过" if not issues else
+                   "发现 %d 处问题：%s" % (len(issues), "; ".join(issues.values())))
+        text = text.replace(
+            "图片完成程序化检查；未进行人工视觉审阅。",
+            f"图片完成程序化检查，并经逐图视觉审阅（{len(per_image)} 张，"
+            f"{findings.get('reviewer', 'unspecified')}）：{verdict}。")
+        summary_path.write_text(text, encoding="utf-8")
+    print(f"[visual_review] merged into {output_dir}（issues={list(issues)}）")
+    return 0
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -354,18 +557,24 @@ def main(argv: Sequence[str] | None = None) -> int:
     output_dir = ensure_output_directory(
         Path(args.output_dir) if args.output_dir else
         cfg.project_root / cfg.output_directory, cfg.project_root)
+    if args.apply_visual_review:
+        return _apply_visual_review(output_dir, Path(args.apply_visual_review))
     save_yaml(output_dir / "config_used.yaml", config_as_dict(cfg))
 
     plot_records = []
     stage = args.stage
     results = {"preflight": None, "potential_scan": None, "coarse_mc": None,
-               "validation": None, "sensitivity": None}
+               "validation": None, "sensitivity": None, "compensation": None}
     physics = physics_from_config(cfg)
     # 通用诊断图（无 MC 依赖）
     plot_records.append(viz.plot_static_slices(physics,
                                                output_dir / "static_3d_trap_slices.png"))
     if stage in ("preflight", "all"):
         results["preflight"] = stage_preflight(cfg, output_dir)
+        if "heating_scaling" in results["preflight"]:
+            plot_records.append(viz.plot_heating_scaling(
+                results["preflight"]["heating_scaling"],
+                output_dir / "heating_scaling_trends.png"))
     if stage in ("potential_scan", "all"):
         results["potential_scan"] = stage_potential_scan(cfg, output_dir)
         if results["potential_scan"]["minima_rows"]:
@@ -384,6 +593,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         results["validation"] = stage_validate(cfg, output_dir, plot_records)
     if stage in ("sensitivity", "all"):
         results["sensitivity"] = stage_sensitivity(cfg, output_dir, plot_records)
+    if stage == "compensation" or (stage == "all"
+                                   and cfg.enable_exploratory_lensing_compensation):
+        results["compensation"] = stage_compensation(cfg, output_dir, plot_records)
 
     image_validation = validate_pngs([r for r in plot_records if r])
     save_json(output_dir / "image_validation.json", image_validation)
@@ -412,9 +624,18 @@ def main(argv: Sequence[str] | None = None) -> int:
             "summaries": results["validation"]["summaries"],
             "comparisons": results["validation"]["comparisons"],
             "convergence_rows": results["validation"]["convergence_rows"],
-            "initial_state_meta": results["validation"]["validation_states_meta"]},
+            "initial_state_meta": results["validation"]["validation_states_meta"],
+            "lost_representative_condition":
+                results["validation"].get("lost_label"),
+            "lost_representative_count":
+                results["validation"].get("lost_count")},
         "sensitivity": None if not results["sensitivity"] else {
             "rows": results["sensitivity"]["rows"]},
+        "compensation": None if not results["compensation"] else {
+            "rows": results["compensation"]["rows"],
+            "schedule_report": results["compensation"]["schedule_report"],
+            "paired": results["compensation"]["paired"],
+            "note": "探索性补偿演示，非论文已实现的 lensing compensation"},
         "image_validation_all_passed": image_validation["all_passed"],
         "visual_review_performed": False,
     }
@@ -422,7 +643,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     save_markdown(output_dir / "summary.md",
                   _build_summary(cfg, results["preflight"], results["potential_scan"],
                                  results["coarse_mc"], results["validation"],
-                                 results["sensitivity"]))
+                                 results["sensitivity"], results["compensation"]))
     print(f"Level 3 stage '{stage}' completed: {output_dir}")
     return 0
 

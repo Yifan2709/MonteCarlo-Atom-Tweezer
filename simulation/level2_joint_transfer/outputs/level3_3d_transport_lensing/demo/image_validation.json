@@ -1,7 +1,68 @@
 {
   "all_passed": true,
-  "visual_review_performed": false,
-  "visual_review_findings": [],
+  "visual_review_performed": true,
+  "visual_review_findings": {
+    "static_3d_trap_slices.png": {
+      "layout_ok": true,
+      "issues": "",
+      "notes": "横向/轴向切片、ω_r 与 ω_z 标题及 z_R 虚线清晰"
+    },
+    "lensing_potential_bifurcation.png": {
+      "layout_ok": true,
+      "issues": "",
+      "notes": "左图单阱→双阱分裂随 |z_s|/z_R 递增清晰；右图对角同号保持单球阱"
+    },
+    "trajectory_profile_comparison.png": {
+      "layout_ok": true,
+      "issues": "",
+      "notes": "四联图 q/q̇/q̈/jerk，constant-jerk 呈 ±32 阶梯；纵轴含义由标题隐含（次要，不影响判读）"
+    },
+    "straight_vs_diagonal.png": {
+      "layout_ok": true,
+      "issues": "",
+      "notes": "三联图速度比/焦点偏移/有效阱深对比清晰"
+    },
+    "survival_phase_diagram.png": {
+      "layout_ok": true,
+      "issues": "",
+      "notes": "straight 短时长高 severity 崩塌区与 diagonal 稳健区对比明确，色条完整"
+    },
+    "heating_comparison.png": {
+      "layout_ok": true,
+      "issues": "",
+      "notes": "8 条件直方图半透明叠加可辨，straight sev1.0 分布右移清晰"
+    },
+    "axial_dynamics.png": {
+      "layout_ok": true,
+      "issues": "",
+      "notes": "左图 retained z(t) 跟随焦点偏移；右图 lost 轨迹与瞬时最低点分支张开可见"
+    },
+    "final_energy_distributions.png": {
+      "layout_ok": true,
+      "issues": "",
+      "notes": "E_f=0 阈值虚线清晰，分布远离阈值"
+    },
+    "work_energy_balance.png": {
+      "layout_ok": true,
+      "issues": "",
+      "notes": "修复后为真实时间序列；ΔE 与 W_ext 曲线重合、R_W 近零（×100 后仍小）"
+    },
+    "timestep_convergence.png": {
+      "layout_ok": true,
+      "issues": "",
+      "notes": "三联收敛图趋势正确（残差随 dt 下降、标签翻转 0）"
+    },
+    "sensitivity_panels.png": {
+      "layout_ok": true,
+      "issues": "",
+      "notes": "四面板误差棒清晰，全 1.0 平台与说明一致"
+    },
+    "heating_scaling_trends.png": {
+      "layout_ok": true,
+      "issues": "",
+      "notes": "log-log 上包络四族曲线与 T^-6/T^-4 参考线平行；mathtext 无乱码"
+    }
+  },
   "programmatic_checks_scope": "文件有效性、像素非空、数据有限性、非零范围、坐标覆盖、图例数量与 figure 关闭；不证明文字无重叠、曲线易读或布局美观。",
   "images": {
     "static_3d_trap_slices.png": {
@@ -19,6 +80,23 @@
       "figure_closed": true,
       "width_px": 2640,
       "height_px": 1012,
+      "passed": true
+    },
+    "heating_scaling_trends.png": {
+      "exists": true,
+      "file_size_over_5k": true,
+      "reopen_success": true,
+      "dimensions_valid": true,
+      "pixel_variance": 1231.4169275334973,
+      "not_nearly_monochrome": true,
+      "data_finite": true,
+      "data_x_range_nonzero": true,
+      "data_y_range_nonzero": true,
+      "axes_cover_data": true,
+      "legend_matches_series": true,
+      "figure_closed": true,
+      "width_px": 2200,
+      "height_px": 1144,
       "passed": true
     },
     "lensing_potential_bifurcation.png": {
@@ -145,7 +223,7 @@
       "file_size_over_5k": true,
       "reopen_success": true,
       "dimensions_valid": true,
-      "pixel_variance": 936.9390501443211,
+      "pixel_variance": 981.6121372741756,
       "not_nearly_monochrome": true,
       "data_finite": true,
       "data_x_range_nonzero": true,
@@ -162,7 +240,7 @@
       "file_size_over_5k": true,
       "reopen_success": true,
       "dimensions_valid": true,
-      "pixel_variance": 982.3235725348628,
+      "pixel_variance": 1701.8125691478247,
       "not_nearly_monochrome": true,
       "data_finite": true,
       "data_x_range_nonzero": true,
@@ -170,7 +248,7 @@
       "axes_cover_data": true,
       "legend_matches_series": true,
       "figure_closed": true,
-      "width_px": 2420,
+      "width_px": 2640,
       "height_px": 1056,
       "passed": true
     },
@@ -191,5 +269,7 @@
       "height_px": 880,
       "passed": true
     }
-  }
+  },
+  "visual_review_by": "ZCode (GLM vision) 逐图视觉审阅 2026-08-19",
+  "visual_review_all_ok": true
 }

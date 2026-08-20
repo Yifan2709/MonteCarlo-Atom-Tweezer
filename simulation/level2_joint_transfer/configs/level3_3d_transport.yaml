@@ -48,8 +48,12 @@ lensing:
 
 depth_control:
   commanded_depth_mode: constant
-  enable_exploratory_lensing_compensation: false
+  # 探索性 lensing 补偿演示（§6）：仅在 --stage compensation/all 的演示阶段
+  # 生效；阶段 A-D 冻结主模型不受此开关影响。非论文已实现功能。
+  enable_exploratory_lensing_compensation: true
   max_power_multiplier: 2.0
+  compensation_shots: 500
+  compensation_seed_offset: 9500
 
 classification:
   retained_energy_threshold_J: 0.0

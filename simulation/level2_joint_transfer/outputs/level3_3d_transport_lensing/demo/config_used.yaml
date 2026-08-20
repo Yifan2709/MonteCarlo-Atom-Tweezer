@@ -59,8 +59,10 @@ lensing:
   absolute_critical_velocity_m_per_s: null
 depth_control:
   commanded_depth_mode: constant
-  enable_exploratory_lensing_compensation: false
+  enable_exploratory_lensing_compensation: true
   max_power_multiplier: 2.0
+  compensation_shots: 500
+  compensation_seed_offset: 9500
 classification:
   retained_energy_threshold_J: 0.0
   near_threshold_fraction_of_depth: 0.001

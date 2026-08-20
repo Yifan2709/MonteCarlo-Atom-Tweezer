@@ -11,6 +11,7 @@ import numpy as np
 from level0_static_trap.potentials import gaussian_force
 from .aod_lensing import axial_minima, lensing_potential_and_force
 from .gaussian_3d import KB, physics_defaults, static_force, static_potential
+from .heating_scaling import run_heating_scaling_check
 from .integrators_3d import run_trajectory, static_hold
 from .level3_config import Level3Config
 from .level3_simulation import (make_control, physics_from_config, resolve_vs,
@@ -313,6 +314,7 @@ def run_preflight(cfg: Level3Config) -> dict:
         "force_gradient": _check_force_gradient(physics),
         "profile_endpoints": _check_profiles(),
         "constant_jerk_constants": _check_constant_jerk(),
+        "heating_scaling": run_heating_scaling_check(physics),
         "straight_split_critical": _check_straight_split_critical(physics),
         "diagonal_single_minimum": _check_diagonal_single_minimum(physics),
         "static_integrator": _check_static_integrator(physics),

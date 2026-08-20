@@ -223,6 +223,8 @@ TINY_OVERRIDE = {
     "integration": {"post_transport_hold_us": 10.0},
     "transport": {"distances_um": [270.0], "durations_us": [400.0, 600.0]},
     "lensing": {"reference_axis_vmax_over_vs": [0.0, 1.0]},
+    "depth_control": {"enable_exploratory_lensing_compensation": True,
+                      "compensation_shots": 4},
     "output": {"directory": "outputs/level3_3d_transport_lensing/tiny_test"},
 }
 
@@ -249,13 +251,14 @@ def test_cli_all_stages_smoke(tmp_path):
     required = ["config_used.yaml", "preflight.json", "potential_minima_scan.csv",
                 "trajectory_profiles.csv", "coarse_scan.csv", "validation_shots.csv",
                 "sensitivity.csv", "representative_trajectories.csv", "metrics.json",
-                "image_validation.json", "summary.md",
+                "image_validation.json", "summary.md", "compensation.csv",
+                "compensation_schedule.csv",
                 "static_3d_trap_slices.png", "lensing_potential_bifurcation.png",
                 "trajectory_profile_comparison.png", "straight_vs_diagonal.png",
                 "survival_phase_diagram.png", "heating_comparison.png",
                 "final_energy_distributions.png", "timestep_convergence.png",
                 "work_energy_balance.png", "axial_dynamics.png",
-                "sensitivity_panels.png"]
+                "sensitivity_panels.png", "heating_scaling_trends.png"]
     for name in required:
         assert (output / name).is_file(), name
 
@@ -277,6 +280,15 @@ def test_cli_all_stages_smoke(tmp_path):
     image_validation = json.loads((output / "image_validation.json").read_text(),
                                   parse_constant=reject_constant)
     assert image_validation["all_passed"]
+    # 新增产物：加热标度律检验、补偿演示、lost 代表轨迹
+    assert metrics["preflight"]["heating_scaling"]["passed"]
+    assert metrics["compensation"] is not None
+    assert metrics["compensation"]["schedule_report"]["power_cap"] >= 1.0
+    with (output / "representative_trajectories.csv").open(
+            newline="", encoding="utf-8") as h:
+        rep = list(csv.DictReader(h))
+    assert any(r["class"] == "lost" for r in rep)
+    assert any(r["class"] == "retained" for r in rep)
 
 
 # 25. 输出位于 sources/ 时被拒绝（复用 level0 io_utils，已有 Level 2 测试；
@@ -285,3 +297,102 @@ def test_output_into_sources_rejected(tmp_path):
     from level0_static_trap.io_utils import ensure_output_directory
     with pytest.raises(ValueError, match="sources"):
         ensure_output_directory(tmp_path / "sources" / "out", tmp_path)
+
+
+# 26. 加热标度律（§5A/§5B）：m=2 族 T⁻⁶，恒加速参照 T⁻⁴；
+# constant_jerk 对 §5B 声称 T⁻⁴ 的不一致必须如实暴露而非迎合
+def test_heating_scaling_light():
+    from level3_3d_transport_lensing.heating_scaling import (
+        CONST_ACCEL, run_heating_scaling_check)
+    check = run_heating_scaling_check(PHYSICS, light=True)
+    assert check["passed"]
+    assert abs(check["families"]["adiabatic_sine"]["t_slope"] + 6.0) <= 1.0
+    assert abs(check["families"]["constant_jerk"]["t_slope"] + 6.0) <= 1.0
+    assert abs(check["families"][CONST_ACCEL]["t_slope"] + 4.0) <= 1.0
+    for fam, info in check["crosscheck_quadrature_vs_verlet"].items():
+        assert info["max_rel_diff"] < 0.02, fam
+    claim = check["constant_jerk_vs_prompt_5B"]
+    assert claim["consistent_with_claim"] is False
+    assert "m=1" in claim["explanation"]
+
+
+# 27. 探索性深度补偿：倍率上限、饱和报告、有效阱深恢复与端点一致
+def test_depth_compensation(cfg3):
+    from level3_3d_transport_lensing.depth_compensation import (
+        build_compensation_schedule, effective_min_depth_j,
+        make_compensated_control)
+    physics = physics_from_config(cfg3)
+    v_s = resolve_vs(cfg3, 1.0)
+    eff0 = effective_min_depth_j(physics["depth_j"], physics["waist_m"],
+                                 physics["z_r_m"], 0.0, 0.0)
+    assert eff0 == pytest.approx(physics["depth_j"])
+    common = dict(physics=physics, profile="adiabatic_sine", geometry="straight",
+                  distance_m=510e-6, duration_s=1600e-6, v_s=v_s,
+                  signs=cfg3.axis_signs)
+    sched_cap2, base_ctrl = build_compensation_schedule(
+        max_power_multiplier=2.0, **common)
+    assert sched_cap2["report"]["max_required_power_multiplier"] > 2.0
+    assert sched_cap2["report"]["saturation_time_fraction"] > 0.0
+    assert sched_cap2["report"]["constant_depth_claim"] == \
+        "not_maintained_power_cap_reached"
+    assert np.all(sched_cap2["mult"] <= 2.0 + 1e-12)
+    assert np.all(sched_cap2["mult"] >= 1.0 - 1e-12)
+    sched_cap10, _ = build_compensation_schedule(
+        max_power_multiplier=10.0, **common)
+    rep10 = sched_cap10["report"]
+    assert rep10["saturation_time_fraction"] == 0.0
+    assert rep10["constant_depth_claim"] == "maintained"
+    assert rep10["min_effective_depth_compensated_uK"] == pytest.approx(
+        cfg3.depth_uK, rel=1e-9)
+    ctrl = make_compensated_control(base_ctrl, sched_cap10)
+    assert ctrl(0.0)[8] == pytest.approx(physics["depth_j"])
+    assert ctrl(1600e-6)[8] == pytest.approx(physics["depth_j"])
+    mid = ctrl(800e-6)
+    assert mid[8] > physics["depth_j"]  # 峰值处命令深度抬升
+
+
+# 28. 采样记账：物理接受率≈1（D/kT=56），surplus 与说明字段存在
+def test_thermal_acceptance_semantics():
+    states = sample_initial_states_3d(7, 300, 5.0, PHYSICS["mass_kg"],
+                                      PHYSICS["depth_j"], PHYSICS["waist_m"],
+                                      PHYSICS["z_r_m"], PHYSICS["omega_r"],
+                                      PHYSICS["omega_z"])
+    assert states["acceptance_rate"] > 0.95
+    assert states["surplus_accepted_discarded"] >= 0
+    assert "正则系综" in states["sampling_note"]
+
+
+# 29. lost 代表轨迹捕获：失败条件、轨迹时序与分支标签
+def test_lost_capture(cfg3):
+    from level3_3d_transport_lensing.level3_simulation import (
+        capture_lost_trajectories)
+    out, label = capture_lost_trajectories(cfg3, PHYSICS, shots=16, keep=4)
+    assert label == "coarse_lost_straight_510um_600us_sev1.25"
+    lost = [r for r in out["records"] if not r["retained"]]
+    assert len(lost) >= 12  # 该粗扫格点留阱率为 0
+    assert out["trajectories"] is not None
+    assert np.all(np.isfinite(out["trajectories"]["position_m"]))
+
+
+# 30. 视觉审阅合并入口：只改报告产物，不改计算结果
+def test_apply_visual_review(tmp_path):
+    from level3_3d_transport_lensing.level3_cli import _apply_visual_review
+    (tmp_path / "metrics.json").write_text(
+        json.dumps({"visual_review_performed": False}), encoding="utf-8")
+    (tmp_path / "image_validation.json").write_text(
+        json.dumps({"all_passed": True}), encoding="utf-8")
+    (tmp_path / "summary.md").write_text(
+        "前文\n\n图片完成程序化检查；未进行人工视觉审阅。\n", encoding="utf-8")
+    findings = tmp_path / "review.json"
+    findings.write_text(json.dumps({
+        "reviewer": "test-vision",
+        "images": {"a.png": {"layout_ok": True, "issues": ""},
+                   "b.png": {"layout_ok": False, "issues": "图例遮挡"}}}),
+        encoding="utf-8")
+    assert _apply_visual_review(tmp_path, findings) == 0
+    metrics = json.loads((tmp_path / "metrics.json").read_text(encoding="utf-8"))
+    assert metrics["visual_review_performed"] is True
+    assert metrics["visual_review_summary"]["issues"] == {"b.png": "图例遮挡"}
+    summary = (tmp_path / "summary.md").read_text(encoding="utf-8")
+    assert "test-vision" in summary and "图例遮挡" in summary
+    assert "未进行人工视觉审阅" not in summary

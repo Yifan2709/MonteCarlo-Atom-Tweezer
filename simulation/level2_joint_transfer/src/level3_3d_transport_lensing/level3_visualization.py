@@ -215,9 +215,18 @@ def plot_heating(validation_records, path):
     return _finish(fig, path, 2 * len(keys), arrays)
 
 
-def plot_axial_dynamics(trajectories, path):
-    """图7：代表性轨迹的 z(t) 与瞬时最低点位置。"""
-    fig, ax = plt.subplots(figsize=(11, 4.8))
+def plot_axial_dynamics(trajectories, path, lost=None, lost_minima=None):
+    """图7：代表性轨迹的 z(t) 与瞬时最低点/分支。
+
+    左面板：validation 主条件的 retained/split 代表 z(t)；
+    右面板（若提供）：粗扫描失败条件的 lost z(t) 与瞬时轴向最低点位置
+    （单阱→双阱分支随速度演化）。lost 为 {label: traj} 字典，
+    lost_minima 为 {label: (time_s, minima_z_m[n_t, n_min])}。
+    """
+    n_panels = 2 if lost else 1
+    fig, axes = plt.subplots(1, n_panels, figsize=(6 * n_panels, 4.8),
+                             squeeze=False)
+    ax = axes[0][0]
     arrays = []
     series = 0
     for label, traj in trajectories.items():
@@ -225,8 +234,63 @@ def plot_axial_dynamics(trajectories, path):
         ax.plot(traj["time_s"] * 1e6, z, lw=1, label=label)
         arrays.append(z.ravel())
         series += z.shape[1]
+    ax.set_title("validation 主条件（retained）")
     ax.set_xlabel("时间 (μs)")
     ax.set_ylabel("轴向位置 z (μm)")
+    ax.legend(fontsize=8)
+    if lost:
+        ax2 = axes[0][1]
+        for label, traj in lost.items():
+            z = traj["position_m"][:, :, 2] * 1e6
+            ax2.plot(traj["time_s"] * 1e6, z, lw=1, label=label)
+            arrays.append(z.ravel())
+            series += z.shape[1]
+        if lost_minima:
+            for label, (t_s, zmin_m) in lost_minima.items():
+                t_us = np.asarray(t_s) * 1e6
+                for j in range(zmin_m.shape[1]):
+                    col = np.asarray(zmin_m[:, j]) * 1e6
+                    ax2.plot(t_us, col, "k--", lw=1.2, alpha=0.7,
+                             label="瞬时轴向最低点" if j == 0 else None)
+                    finite_col = col[np.isfinite(col)]
+                    if finite_col.size:
+                        arrays.append(finite_col)
+                series += 1
+        ax2.set_title("粗扫描失败条件（lost + 双阱分支）")
+        ax2.set_xlabel("时间 (μs)")
+        ax2.set_ylabel("轴向位置 z (μm)")
+        ax2.legend(fontsize=8)
+    return _finish(fig, path, series, arrays)
+
+
+def plot_heating_scaling(check, path):
+    """图 12（补充）：简谐小激发极限的加热上包络与 T 标度律。"""
+    fig, ax = plt.subplots(figsize=(10, 5.2))
+    arrays = []
+    series = 0
+    data = check["plot_data"]
+    t = np.array(data["t_grid_us"])
+    colors = {"adiabatic_sine": C_SINE, "constant_jerk": C_CJERK,
+              "minimum_jerk": C_MJERK, "const_accel_reference": C_STRAIGHT}
+    for fam, env in data["envelope_uK"].items():
+        env = np.array(env)
+        ax.plot(t, env, "o-", ms=3, lw=1.2, color=colors.get(fam, "gray"),
+                label=f"{fam}（斜率 {check['families'][fam]['t_slope']:+.1f}）")
+        arrays.append(env)
+        series += 1
+    for slope, name in ((-6.0, r"$T^{-6}$ 参考线（m=2：sine/constant-jerk/minimum-jerk）"),
+                        (-4.0, None)):
+        ref = env[0] * (t / t[0]) ** slope
+        ref = np.maximum(ref, 1e-9)
+        ax.plot(t, ref, ":", lw=1, color="gray", alpha=0.8, label=name)
+        arrays.append(ref)
+        if name:
+            series += 1  # 仅带标签的参考线计入图例匹配
+    ax.set_yscale("log")
+    ax.set_xscale("log")
+    ax.set_xlabel("运输时长 T (μs)")
+    ax.set_ylabel("末端激发上包络 (μK)")
+    ax.set_title("简谐、无透镜、小激发极限的加热标度（干涉节点取上包络）")
     ax.legend(fontsize=8)
     return _finish(fig, path, series, arrays)
 

@@ -128,6 +128,25 @@ def _load_stage_rows(checkpoint_path: Path, signature: str, stage: str) -> list[
     return rows if isinstance(rows, list) else None
 
 
+def _history_entry(row: dict) -> dict:
+    """候选行压缩为评估历史条目（与 optimization_history.csv 列一致）。"""
+    return {"candidate_id": row["candidate_id"], "status": row["status"],
+            "objective_total": row.get("objective_total"),
+            "captured_count": row.get("captured_count")}
+
+
+def restore_history(checkpoint_path: Path) -> list[dict]:
+    """续跑时恢复检查点中保存的评估历史，避免重写清空 optimization_history.csv。"""
+    if not checkpoint_path.exists():
+        return []
+    try:
+        payload = json.loads(checkpoint_path.read_text())
+    except (json.JSONDecodeError, OSError):
+        return []
+    history = payload.get("history")
+    return [_history_entry(row) for row in history] if isinstance(history, list) else []
+
+
 def run_stage1(cfg: Level2Config, states: dict, physics: dict, output_dir: Path,
                checkpoint_path: Path, history_rows: list) -> list[dict]:
     """阶段 1：LHS 候选探索（optimization_pool, dt=0.10 us），支持断点续跑。"""
@@ -154,6 +173,8 @@ def run_stage1(cfg: Level2Config, states: dict, physics: dict, output_dir: Path,
             new_rows = pool.map(_evaluate_job, jobs)
         rows.extend(new_rows)
         rows.sort(key=lambda r: r["candidate_id"])
+        for row in new_rows:
+            history_rows.append(_history_entry(row))
         _write_checkpoint(checkpoint_path, signature, "stage1", rows, history_rows)
         print(f"[stage1] done in {time.time() - started:.1f}s")
     return rows

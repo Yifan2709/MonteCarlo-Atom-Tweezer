@@ -18,8 +18,8 @@ from .config import Level2Config, config_as_dict, load_config, with_output_overr
 from .level2_simulation import (baseline_specs, build_waveform, evaluate_waveform_on_states,
                                 ideal_run, physics_from_config, run_validation,
                                 sample_initial_states)
-from .optimizer import (frozen_spec, run_spline_refinement, run_stage1, run_stage2,
-                        select_and_freeze, write_candidates_csv)
+from .optimizer import (frozen_spec, restore_history, run_spline_refinement, run_stage1,
+                        run_stage2, select_and_freeze, write_candidates_csv)
 from .preflight import run_preflight
 from .robustness import alignment_scan, temperature_scan, timestep_scan
 from .statistics import summarize_capture
@@ -63,20 +63,34 @@ def stage_preflight(cfg: Level2Config, output_dir: Path) -> dict:
     return checks
 
 
-def stage_optimize(cfg: Level2Config, output_dir: Path) -> dict:
+def stage_optimize(cfg: Level2Config, output_dir: Path, plot_records: list) -> dict:
     """三阶段优化并冻结最终波形。"""
     physics = physics_from_config(cfg)
     ens = cfg.initial_ensemble
     opt_pool = sample_initial_states(cfg, ens.optimization_seed, ens.optimization_shots)
     sel_pool = sample_initial_states(cfg, ens.selection_seed, ens.selection_shots)
     checkpoint = output_dir / "optimization_checkpoint.json"
-    history: list[dict] = []
+    # 续跑时先恢复检查点里的评估历史；阶段缓存命中不再追加，靠行数据兜底补齐
+    history: list[dict] = restore_history(checkpoint)
 
     stage1_rows = run_stage1(cfg, opt_pool, physics, output_dir, checkpoint, history)
+    known_ids = {entry.get("candidate_id") for entry in history}
+    missing_stage1 = [{"candidate_id": r["candidate_id"], "status": r["status"],
+                       "objective_total": r.get("objective_total"),
+                       "captured_count": r.get("captured_count")}
+                      for r in stage1_rows if r["candidate_id"] not in known_ids]
+    # 阶段 1 按候选 id 顺序前置，保持整体评估先后次序
+    history[:0] = missing_stage1
     stage2_rows = run_stage2(cfg, stage1_rows, sel_pool, physics, output_dir, checkpoint, history)
     best_stage2 = [r for r in stage2_rows if r.get("status") == "ok"][0]
     spline_rows = run_spline_refinement(cfg, best_stage2, sel_pool, physics, checkpoint, history)
     frozen = select_and_freeze(cfg, stage1_rows, stage2_rows, spline_rows, output_dir)
+    known_ids = {entry.get("candidate_id") for entry in history}
+    for rows in (stage2_rows, spline_rows):
+        history.extend([{"candidate_id": r["candidate_id"], "status": r["status"],
+                         "objective_total": r.get("objective_total"),
+                         "captured_count": r.get("captured_count")}
+                        for r in rows if r["candidate_id"] not in known_ids])
 
     all_rows = stage1_rows + stage2_rows + spline_rows
     if cfg.output.save_candidate_table:
@@ -88,6 +102,9 @@ def stage_optimize(cfg: Level2Config, output_dir: Path) -> dict:
         for row in history:
             writer.writerow({k: ("" if row.get(k) is None else row.get(k)) for k in
                              ["candidate_id", "status", "objective_total", "captured_count"]})
+    if history:
+        plot_records.append(viz.plot_optimization_history(history,
+                                                          output_dir / "optimization_history.png"))
     valid = sum(1 for r in all_rows if r.get("status") == "ok")
     invalid = sum(1 for r in all_rows if r.get("status") == "invalid")
     failed = sum(1 for r in all_rows if r.get("status") == "failed")
@@ -336,9 +353,17 @@ def _build_summary(cfg: Level2Config, preflight, optimize, validate, robustness,
                   f"{cfg.robustness.shots_per_condition} shots）。",
                   f"- 末端对准 ±0.10 μm 与步长 0.10/0.05/0.025 μs 敏感性已写入 robustness.csv。"]
     lines += ["", "## 边界", "",
-              "本 Level 2 仍是一维经典模型：不含二维/轴向运动、光子散射、技术噪声、量子内态、"
-              "相干性、加热/损失随机过程、多原子相互作用与长距离运输。经典俘获率不可对标实验转移保真度。",
-              "", "图片完成程序化检查；未进行人工视觉审阅（除非另行说明）。", ""]
+              "本 Level 2 仍是一维经典模型：不含二维/轴向运动、AOD 柱面透镜效应、光子散射、技术噪声、量子内态、"
+              "相干性、加热/损失随机过程、多原子相互作用与长距离运输。经典俘获率不可对标实验转移保真度。"]
+    images = image_validation.get("images", {}) if image_validation else {}
+    if images:
+        failed = sorted(name for name, record in images.items() if not record.get("passed"))
+        if failed:
+            lines.append(f"- 程序化图片检查：{len(images) - len(failed)}/{len(images)} 张通过；"
+                         f"未通过：{', '.join(failed)}。")
+        else:
+            lines.append(f"- 程序化图片检查：{len(images)}/{len(images)} 张全部通过。")
+    lines += ["- 未进行人工视觉审阅；程序化检查不能证明标签无重叠或版面美观。", ""]
     return "\n".join(lines)
 
 
@@ -356,7 +381,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     if stage in ("preflight", "all"):
         preflight_data = stage_preflight(cfg, output_dir)
     if stage in ("optimize", "all"):
-        optimize_data = stage_optimize(cfg, output_dir)
+        optimize_data = stage_optimize(cfg, output_dir, plot_records)
     if stage in ("validate", "all"):
         validate_data = stage_validate(cfg, output_dir, plot_records)
     if stage in ("robustness", "all"):

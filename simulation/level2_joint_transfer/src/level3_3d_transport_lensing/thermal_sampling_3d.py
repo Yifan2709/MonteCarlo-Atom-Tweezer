@@ -42,7 +42,13 @@ def sample_initial_states_3d(seed, shots, temperature_uK, mass_kg, depth_j, wais
                                  depth_j, waist_m, z_r_m))
     states = {
         "seed": seed, "shots": len(pos), "attempts": attempts,
-        "acceptance_rate": len(pos) / attempts,
+        # 物理接受率 = 被接受提议数 / 总提议数。批按 2 倍需求超采样，
+        # 首批即凑满并截断，被丢弃的多余接受样本不影响该比值。
+        "acceptance_rate": accepted_count / attempts,
+        "surplus_accepted_discarded": int(accepted_count - len(pos)),
+        "sampling_note": (
+            "简谐提议 + E_i<0 束缚拒绝；D/kT=56 时几乎无拒绝，物理接受率≈1。"
+            "attempts 含 2 倍批超采样；这不是完整有限深高斯阱的三维正则系综。"),
         "pos_m": pos, "vel_m_per_s": vel, "initial_energy_j": energy,
         "sigma_r_m": float(sigma_r), "sigma_z_m": float(sigma_z),
         "mean_pos_m": pos.mean(axis=0).tolist(), "std_pos_m": pos.std(axis=0).tolist(),
