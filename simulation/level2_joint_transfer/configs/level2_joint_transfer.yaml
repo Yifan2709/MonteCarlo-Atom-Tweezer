@@ -70,6 +70,21 @@ robustness:
   bootstrap_samples: 10000
   bootstrap_seed: 21020
 
+# 三类噪声的平均强度确定性加热（常数、无随机性，随时间累积使系统不稳定）。
+# 幅度参数均为 assumed_sensitivity_only；null 表示由物理常数推导：
+# 反冲 = 2·E_r·Γ_sc（Cs D2 两能级近似，标称 AOD 深度）；
+# 参量 = (π²/4)·ν₀²·S_RIN(2ν₀)，指向 = m·ω₀⁴·S_x(ν₀)/8（单边每 Hz PSD），
+# ν₀ 取 SLM 解析阱频。指向默认 1 pm/√Hz（阱频处的安静光学假设）。
+noise_mean_heating:
+  enabled: false
+  trap_wavelength_nm: 1061.0
+  recoil_scattering_rate_s: null
+  parametric_rate_s: null
+  parametric_rin_psd_per_hz: 1.0e-8
+  pointing_heating_rate_uK_per_s: null
+  pointing_position_psd_m2_per_hz: 1.0e-24
+  reference_nu0_hz: null
+
 output:
   directory: outputs/level2_joint_transfer/demo
   save_candidate_table: true

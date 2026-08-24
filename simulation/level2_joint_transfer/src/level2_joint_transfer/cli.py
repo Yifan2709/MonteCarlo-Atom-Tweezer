@@ -18,6 +18,7 @@ from .config import Level2Config, config_as_dict, load_config, with_output_overr
 from .level2_simulation import (baseline_specs, build_waveform, evaluate_waveform_on_states,
                                 ideal_run, physics_from_config, run_validation,
                                 sample_initial_states)
+from .noise_heating import heating_from_config
 from .optimizer import (frozen_spec, restore_history, run_spline_refinement, run_stage1,
                         run_stage2, select_and_freeze, write_candidates_csv)
 from .preflight import run_preflight
@@ -155,6 +156,8 @@ def _write_validation_csv(output_dir: Path, rows: list[dict]):
                   "captured", "near_threshold", "capture_margin", "final_excitation_over_depth",
                   "excitation_change_uK", "final_move_work_uK", "final_depth_work_uK",
                   "final_total_work_uK", "max_abs_work_energy_residual_over_depth",
+                  "noise_recoil_energy_uK", "noise_parametric_energy_uK",
+                  "noise_pointing_energy_uK", "noise_total_energy_uK",
                   "hold_peak_to_peak_energy_error_over_depth"]
     with (output_dir / "validation_shots.csv").open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=fieldnames, extrasaction="ignore")
@@ -169,12 +172,14 @@ def stage_validate(cfg: Level2Config, output_dir: Path, plot_records: list) -> d
     if frozen is None:
         raise RuntimeError("缺少 best_waveform.yaml；请先运行 --stage optimize")
     physics = physics_from_config(cfg)
+    heating = heating_from_config(cfg)
     specs = _main_specs(cfg, frozen)
     states = sample_initial_states(cfg, cfg.initial_ensemble.validation_seed,
                                    cfg.initial_ensemble.validation_shots)
     started = time.time()
-    results, comparisons = run_validation(cfg, specs, states, physics)
-    print(f"[validate] {len(specs)} waveforms x {states['shots']} shots in {time.time()-started:.1f}s")
+    results, comparisons = run_validation(cfg, specs, states, physics, heating=heating)
+    print(f"[validate] {len(specs)} waveforms x {states['shots']} shots in {time.time()-started:.1f}s"
+          + ("（含平均噪声加热）" if heating is not None else ""))
 
     _write_waveforms_csv(cfg, specs, physics, output_dir)
     _write_validation_csv(output_dir, _validation_records_rows(results))
@@ -192,26 +197,28 @@ def stage_validate(cfg: Level2Config, output_dir: Path, plot_records: list) -> d
     representative = evaluate_waveform_on_states(
         dict(specs["overlapped_optimized_400us"]), states, physics,
         cfg.integration.validation_dt_s, cfg.integration.post_transfer_hold_s,
-        keep_trajectory_ids=tuple(sorted(keep_ids)))
+        keep_trajectory_ids=tuple(sorted(keep_ids)), heating=heating)
 
     # 理想轨迹功-能 + 一个普通 MC 轨迹功-能
     ideal = ideal_run(dict(specs["overlapped_optimized_400us"]), physics,
-                      cfg.integration.validation_dt_s, cfg.integration.post_transfer_hold_s)
+                      cfg.integration.validation_dt_s, cfg.integration.post_transfer_hold_s,
+                      heating=heating)
     mc_shot = 0
     mc_states = {key: value[mc_shot:mc_shot + 1] for key, value in states.items()
                  if isinstance(value, np.ndarray)}
     mc_eval = evaluate_waveform_on_states(
         dict(specs["overlapped_optimized_400us"]), mc_states, physics,
         cfg.integration.validation_dt_s, cfg.integration.post_transfer_hold_s,
-        work_energy=True, keep_trajectory_ids=(0,))
+        work_energy=True, keep_trajectory_ids=(0,), heating=heating)
     from .work_energy import work_energy_along_trajectory
     mc_trajectory = mc_eval["trajectories"][0]
+    mc_noise_work = mc_trajectory.get("noise_work", {}).get("total_J")
     mc_work = work_energy_along_trajectory(mc_trajectory["time_s"], mc_trajectory["position_m"],
                                            mc_trajectory["velocity_m_per_s"],
                                            build_waveform(specs["overlapped_optimized_400us"], physics),
                                            physics["mass_kg"], physics["slm_depth_j"],
                                            physics["slm_waist_m"], physics["slm_center_m"],
-                                           physics["aod_waist_m"])
+                                           physics["aod_waist_m"], noise_work_j=mc_noise_work)
 
     # 图
     tables = {name: build_waveform(dict(spec, name=name), physics).dense_table(2001)
@@ -287,11 +294,12 @@ def stage_robustness(cfg: Level2Config, output_dir: Path, plot_records: list) ->
     if frozen is None:
         raise RuntimeError("缺少 best_waveform.yaml；请先运行 --stage optimize")
     physics = physics_from_config(cfg)
+    heating = heating_from_config(cfg)
     specs = _main_specs(cfg, frozen)
-    rows = temperature_scan(cfg, specs) + alignment_scan(cfg, specs)
+    rows = temperature_scan(cfg, specs, heating=heating) + alignment_scan(cfg, specs, heating=heating)
     validation_states = sample_initial_states(cfg, cfg.initial_ensemble.validation_seed,
                                               cfg.initial_ensemble.validation_shots)
-    rows += timestep_scan(cfg, specs, validation_states)
+    rows += timestep_scan(cfg, specs, validation_states, heating=heating)
     fieldnames = ["scan", "condition", "waveform", "shots", "captured", "capture_fraction",
                   "wilson_low", "wilson_high", "mean_capture_margin", "label_flips_vs_reference",
                   "final_energy_max_abs_diff_uK"]
@@ -312,7 +320,10 @@ def _build_summary(cfg: Level2Config, preflight, optimize, validate, robustness,
              "在 Level 0/1 的一维经典模型内，比较 600 μs 顺序基线、400 μs 压缩顺序基线与 "
              "400 μs 优化同步波形；优化只用 optimization/selection 池，validation 池只报告一次。", ""]
     if preflight:
-        lines.append(f"- 预检查：{len(preflight['critical_checks'])} 项关键检查全部通过"
+        # critical_checks 只含 9 个关键项；对外报告与图8/PPT 一致的检查总数
+        meta_keys = {"waveform_constraints_all_valid", "critical_checks", "all_passed", "elapsed_s"}
+        check_count = len([k for k in preflight if k not in meta_keys])
+        lines.append(f"- 预检查：{check_count} 项检查全部通过"
                      f"（{preflight['elapsed_s']:.0f} s，含现有 Level 0/1 测试）。")
     if optimize:
         counts = optimize["counts"]
@@ -324,6 +335,10 @@ def _build_summary(cfg: Level2Config, preflight, optimize, validate, robustness,
                          f"ramp [{frozen['ramp_start_fraction']:.3f}, {frozen['ramp_end_fraction']:.3f}]，"
                          f"ramp_power = {frozen['ramp_power']:.3f}。")
     if validate:
+        noise = cfg.noise_mean_heating
+        if noise.enabled:
+            lines.append(f"- 平均噪声加热开启（确定性常数，assumed）：注入能量随时间累积，"
+                         f"详见 metrics.json 的 noise_mean_heating 段。")
         lines += ["", "## 独立验证（validation 池，一次性）", "",
                   "| 波形 | 俘获 | 俘获率 | Wilson 95% CI | 平均激发(已俘获) |",
                   "|---|---:|---:|---|---:|"]
@@ -438,6 +453,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         "seeds": {"optimization": cfg.initial_ensemble.optimization_seed,
                   "selection": cfg.initial_ensemble.selection_seed,
                   "validation": cfg.initial_ensemble.validation_seed},
+        "noise_mean_heating": (heating_from_config(cfg).describe()
+                               if cfg.noise_mean_heating.enabled
+                               else {"enabled": False, "model": "mean_rate_deterministic"}),
         "preflight": preflight_data,
         "optimization": (optimize_data or {}).get("counts"),
         "frozen_waveform": (optimize_data or {}).get("frozen"),

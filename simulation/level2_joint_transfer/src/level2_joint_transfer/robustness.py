@@ -6,10 +6,11 @@ import numpy as np
 from .config import Level2Config
 from .level2_simulation import (evaluate_waveform_on_states, evaluate_waveform_parallel,
                                 physics_from_config, sample_initial_states)
+from .noise_heating import MeanHeating
 from .statistics import summarize_capture
 
 
-def temperature_scan(cfg: Level2Config, specs: dict) -> list[dict]:
+def temperature_scan(cfg: Level2Config, specs: dict, heating: MeanHeating | None = None) -> list[dict]:
     """在多个初态温度下比较三类主波形（独立样本，含 Wilson 区间）。"""
     physics = physics_from_config(cfg)
     rows = []
@@ -20,7 +21,7 @@ def temperature_scan(cfg: Level2Config, specs: dict) -> list[dict]:
         for name, spec in specs.items():
             evaluation = evaluate_waveform_parallel(
                 dict(spec, name=name), states, physics, cfg.integration.validation_dt_s,
-                cfg.integration.post_transfer_hold_s)
+                cfg.integration.post_transfer_hold_s, heating=heating)
             summary = summarize_capture(evaluation["captured_flags"], name)
             margins = [r["capture_margin"] for r in evaluation["records"] if r["captured"]]
             rows.append({
@@ -34,7 +35,7 @@ def temperature_scan(cfg: Level2Config, specs: dict) -> list[dict]:
     return rows
 
 
-def alignment_scan(cfg: Level2Config, specs: dict) -> list[dict]:
+def alignment_scan(cfg: Level2Config, specs: dict, heating: MeanHeating | None = None) -> list[dict]:
     """末端对准偏差敏感性：AOD 中心整体平移 offset（初态跟随实际初始中心采样）。"""
     physics = physics_from_config(cfg)
     rows = []
@@ -47,7 +48,7 @@ def alignment_scan(cfg: Level2Config, specs: dict) -> list[dict]:
         for name, spec in specs.items():
             evaluation = evaluate_waveform_parallel(
                 dict(spec, name=name), states, physics, cfg.integration.validation_dt_s,
-                cfg.integration.post_transfer_hold_s, alignment_offset_m=offset_m)
+                cfg.integration.post_transfer_hold_s, alignment_offset_m=offset_m, heating=heating)
             summary = summarize_capture(evaluation["captured_flags"], name)
             margins = [r["capture_margin"] for r in evaluation["records"] if r["captured"]]
             rows.append({
@@ -61,7 +62,8 @@ def alignment_scan(cfg: Level2Config, specs: dict) -> list[dict]:
     return rows
 
 
-def timestep_scan(cfg: Level2Config, specs: dict, validation_states: dict) -> list[dict]:
+def timestep_scan(cfg: Level2Config, specs: dict, validation_states: dict,
+                  heating: MeanHeating | None = None) -> list[dict]:
     """步长敏感性：固定 validation 子集，比较 0.10/0.05/0.025 us。
 
     连续量收敛用与最细步长的末态能量差表示；分类跳变用与最细步长的标签翻转率。
@@ -73,13 +75,14 @@ def timestep_scan(cfg: Level2Config, specs: dict, validation_states: dict) -> li
     for name, spec in specs.items():
         reference = evaluate_waveform_on_states(
             dict(spec, name=name), subset, physics, cfg.integration.convergence_dt_s,
-            cfg.integration.post_transfer_hold_s)
+            cfg.integration.post_transfer_hold_s, heating=heating)
         reference_energy = np.array([r["final_slm_energy_uK"] for r in reference["records"]])
         reference_flags = np.array(reference["captured_flags"])
         for dt in (cfg.integration.optimization_dt_s, cfg.integration.validation_dt_s,
                    cfg.integration.convergence_dt_s):
             evaluation = evaluate_waveform_on_states(
-                dict(spec, name=name), subset, physics, dt, cfg.integration.post_transfer_hold_s)
+                dict(spec, name=name), subset, physics, dt, cfg.integration.post_transfer_hold_s,
+                heating=heating)
             flags = np.array(evaluation["captured_flags"])
             energy = np.array([r["final_slm_energy_uK"] for r in evaluation["records"]])
             rows.append({

@@ -168,6 +168,24 @@ class RobustnessConfig:
 
 
 @dataclass(frozen=True)
+class NoiseMeanHeatingConfig:
+    """三类噪声的平均强度确定性加热（常数、无随机性）。
+
+    显式速率优先；为 null 时按物理常数计算：反冲取标称 AOD 深度的
+    Γ_sc（Cs D2 两能级近似），参量/指向以 SLM 解析阱频为参考频率。
+    所有幅度参数均为 assumed_sensitivity_only。
+    """
+    enabled: bool
+    trap_wavelength_nm: float
+    recoil_scattering_rate_s: float | None
+    parametric_rate_s: float | None
+    parametric_rin_psd_per_hz: float
+    pointing_heating_rate_uK_per_s: float | None
+    pointing_position_psd_m2_per_hz: float
+    reference_nu0_hz: float | None
+
+
+@dataclass(frozen=True)
 class OutputConfig:
     directory: str
     resolved_directory: Path
@@ -188,6 +206,7 @@ class Level2Config:
     optimization: OptimizationConfig
     classification: ClassificationConfig
     robustness: RobustnessConfig
+    noise_mean_heating: NoiseMeanHeatingConfig
     output: OutputConfig
     config_path: Path
     project_root: Path
@@ -215,6 +234,11 @@ _KEYS = {
     "robustness": {
         "temperatures_uK", "final_alignment_offsets_um", "shots_per_condition",
         "timestep_subset_shots", "bootstrap_samples", "bootstrap_seed",
+    },
+    "noise_mean_heating": {
+        "enabled", "trap_wavelength_nm", "recoil_scattering_rate_s", "parametric_rate_s",
+        "parametric_rin_psd_per_hz", "pointing_heating_rate_uK_per_s",
+        "pointing_position_psd_m2_per_hz", "reference_nu0_hz",
     },
     "output": {
         "directory", "save_candidate_table", "save_representative_trajectories",
@@ -259,6 +283,14 @@ def load_config(path) -> Level2Config:
     ens = raw["initial_ensemble"]
     opt = raw["optimization"]
     rob = raw["robustness"]
+    nse = raw["noise_mean_heating"]
+
+    def opt_number(section, key, label):
+        value = section[key]
+        if value is None:
+            return None
+        return _number(value, label)
+
     out = raw["output"]
     root = _root(config_path)
     config = Level2Config(
@@ -302,6 +334,15 @@ def load_config(path) -> Level2Config:
             tuple(_number(v, "robustness.final_alignment_offsets_um") for v in rob["final_alignment_offsets_um"]),
             i("robustness", "shots_per_condition"), i("robustness", "timestep_subset_shots"),
             i("robustness", "bootstrap_samples"), i("robustness", "bootstrap_seed")),
+        noise_mean_heating=NoiseMeanHeatingConfig(
+            bool(nse["enabled"]), n("noise_mean_heating", "trap_wavelength_nm"),
+            opt_number(nse, "recoil_scattering_rate_s", "noise_mean_heating.recoil_scattering_rate_s"),
+            opt_number(nse, "parametric_rate_s", "noise_mean_heating.parametric_rate_s"),
+            n("noise_mean_heating", "parametric_rin_psd_per_hz"),
+            opt_number(nse, "pointing_heating_rate_uK_per_s",
+                       "noise_mean_heating.pointing_heating_rate_uK_per_s"),
+            n("noise_mean_heating", "pointing_position_psd_m2_per_hz"),
+            opt_number(nse, "reference_nu0_hz", "noise_mean_heating.reference_nu0_hz")),
         output=OutputConfig(
             str(out["directory"]), (root / str(out["directory"])).resolve(),
             bool(out["save_candidate_table"]), bool(out["save_representative_trajectories"]),
@@ -355,6 +396,15 @@ def _validate(c: Level2Config) -> None:
         raise ValueError("ramp_power_bounds 应位于 [0.5, 4.0]")
     if c.robustness.shots_per_condition <= 0:
         raise ValueError("鲁棒性每条件样本数必须为正")
+    noise = c.noise_mean_heating
+    if noise.trap_wavelength_nm <= 0:
+        raise ValueError("noise_mean_heating.trap_wavelength_nm 必须为正")
+    for label in ("recoil_scattering_rate_s", "parametric_rate_s",
+                  "parametric_rin_psd_per_hz", "pointing_heating_rate_uK_per_s",
+                  "pointing_position_psd_m2_per_hz", "reference_nu0_hz"):
+        value = getattr(noise, label)
+        if value is not None and value < 0:
+            raise ValueError(f"noise_mean_heating.{label} 必须非负")
     # 步长合法性：最大阱频（双阱叠加的保守估计）乘最大步长需小于 0.05
     omega_max = math.sqrt(4 * (c.slm.depth_j + c.aod.initial_depth_j) /
                           (c.atom.mass_kg * min(c.slm.waist_m, c.aod.waist_m) ** 2))
@@ -384,7 +434,8 @@ def config_as_dict(c: Level2Config) -> dict:
 
     data = {}
     for field in ("level2", "atom", "initial_ensemble", "integration",
-                  "waveforms", "optimization", "classification", "robustness"):
+                  "waveforms", "optimization", "classification", "robustness",
+                  "noise_mean_heating"):
         data[field] = {k: clean(v) for k, v in vars(getattr(c, field)).items()}
     data["traps"] = {
         "slm": {k: clean(v) for k, v in vars(c.slm).items()},

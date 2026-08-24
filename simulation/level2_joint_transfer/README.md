@@ -46,6 +46,31 @@ python3 -m venv --system-site-packages .venv
 - 预检查十项（含运行 Level 0/1 测试、Level 1 复现、步长收敛、功-能平衡、
   保持段有界性）全部通过才允许启动优化。
 
+## 平均强度确定性噪声加热（`noise_mean_heating`）
+
+三类光镊噪声以**系综平均加热功率**确定性注入（无随机性、默认常数，
+随时间累积使系统越发不稳定），三个噪声均以函数形式外放为输入参数
+（`noise_heating.py`，签名 `(x_m, v_m_s, t_s, e_osc_J) -> W`，可注入任意
+时变函数；`build_mean_heating` 构造的常数模型可 pickle、支持多进程）：
+
+| 通道 | 默认平均模型 | 单次 400 μs+100 μs 转移的注入 |
+|---|---|---|
+| 光子反冲 | P = 2·E_r·Γ_sc ≈ 0.36 μK/s（1061 nm、280 μK，Cs D2 两能级） | ~2×10⁻⁴ μK（可忽略） |
+| 强度噪声（参量） | dE/dt = Γ_par·ε_osc，Γ_par = (π²/4)ν₀²S_RIN(2ν₀) ≈ 16 s⁻¹（−80 dBc/Hz） | ε_osc 增长 ~1.3% |
+| 指向噪声 | P = m·ω₀⁴S_x(ν₀)/8 ≈ 1.3 μK/s（S_x = 1 pm²/Hz @25.5 kHz） | ~7×10⁻⁴ μK（可忽略） |
+
+- 加热踢沿当前速度方向缩放 v ← sign(v)·√(v²+2ΔE/m)，逐通道累计注入能量；
+  功-能恒等式扩展为 ΔE = W_ext + W_noise + R_W，开噪后 R_W 仍处积分截断水平；
+- 配置 `noise_mean_heating.enabled: true` 后 validate/robustness 阶段生效
+  （优化阶段保持无噪声，不改变已冻结流程）；`validation_shots.csv` 新增
+  4 列注入能量（recoil/parametric/pointing/total）；
+- 幅度参数全部为 assumed_sensitivity_only；演示见 `demo_mean_heating.py`
+  （输出 `outputs/level2_joint_transfer/demo_mean_heating/`）。
+
+**已知既有问题**：`validation_shots.csv` 等处的 `*_uK` 字段数值实际单位为
+开尔文（换算 `/1.380649e-29/1e6` = J→K），沿自 Level 2 既有实现；新增噪声
+列保持同约定以便跨列运算，跨列比较时无需再换算。
+
 ## 输出
 
 `outputs/level2_joint_transfer/demo/` 下包含 `preflight.json`、`candidates.csv`
