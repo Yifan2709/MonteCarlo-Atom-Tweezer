@@ -1,0 +1,769 @@
+{
+  "level5": {
+    "name": "finite_pulse_irb_array",
+    "stage": "all",
+    "elapsed_s_total": 6849.1
+  },
+  "upstream": {
+    "manifest_files": 15,
+    "trajectory_mode": "frozen_replay",
+    "level4_output_dir": "/Users/imok/work/Monte Carlo/monte-carlo-for-aodslm/simulation/level2_joint_transfer/outputs/level4_end_to_end_roundtrip/demo"
+  },
+  "preflight": {
+    "all_passed": true
+  },
+  "pulse_clifford_noise": {
+    "rabi_khz": 24.611,
+    "family": "scrofulous",
+    "dd_transport": "xy4_per_long_move",
+    "eta_slm": 0.00013,
+    "eta_aod": 0.00013,
+    "nominal_noise_enabled": false,
+    "clifford_pulse_histogram": {
+      "0": 4,
+      "1": 16,
+      "2": 4
+    },
+    "avg_scrofulous_area_pi_per_clifford": 2.27980400716135,
+    "paper_anchor_area_pi": 2.02
+  },
+  "channel": {
+    "conditions": {
+      "static_idle|none|nominal": {
+        "survival": 1.0,
+        "f_avg": 0.47639100858486877,
+        "f_avg_survival_weighted": 0.47639100858486877,
+        "bootstrap": {
+          "f_avg_ci_low": 0.47275344994789026,
+          "f_avg_ci_high": 0.480132183582084,
+          "survival_ci_low": 1.0,
+          "survival_ci_high": 1.0,
+          "f_avg_survival_weighted_ci_low": 0.47275344994789026,
+          "f_avg_survival_weighted_ci_high": 0.480132183582084,
+          "n_bootstrap": 2000,
+          "seed": 51200
+        }
+      },
+      "static_idle|spin_echo|nominal": {
+        "survival": 1.0,
+        "f_avg": 0.33352339213635046,
+        "f_avg_survival_weighted": 0.33352339213635046,
+        "bootstrap": {
+          "f_avg_ci_low": 0.3335223789423231,
+          "f_avg_ci_high": 0.3335244099151442,
+          "survival_ci_low": 1.0,
+          "survival_ci_high": 1.0,
+          "f_avg_survival_weighted_ci_low": 0.3335223789423231,
+          "f_avg_survival_weighted_ci_high": 0.3335244099151442,
+          "n_bootstrap": 2000,
+          "seed": 51200
+        }
+      },
+      "static_idle|xy4|nominal": {
+        "survival": 1.0,
+        "f_avg": 0.9999984948565059,
+        "f_avg_survival_weighted": 0.9999984948565059,
+        "bootstrap": {
+          "f_avg_ci_low": 0.999998198121254,
+          "f_avg_ci_high": 0.9999987401497156,
+          "survival_ci_low": 1.0,
+          "survival_ci_high": 1.0,
+          "f_avg_survival_weighted_ci_low": 0.999998198121254,
+          "f_avg_survival_weighted_ci_high": 0.9999987401497156,
+          "n_bootstrap": 2000,
+          "seed": 51200
+        }
+      },
+      "static_idle|xy16|nominal": {
+        "survival": 1.0,
+        "f_avg": 0.9999964581664611,
+        "f_avg_survival_weighted": 0.9999964581664611,
+        "bootstrap": {
+          "f_avg_ci_low": 0.9999953898149097,
+          "f_avg_ci_high": 0.9999972620807699,
+          "survival_ci_low": 1.0,
+          "survival_ci_high": 1.0,
+          "f_avg_survival_weighted_ci_low": 0.9999953898149097,
+          "f_avg_survival_weighted_ci_high": 0.9999972620807699,
+          "n_bootstrap": 2000,
+          "seed": 51200
+        }
+      },
+      "transfer_only|xy4|nominal": {
+        "survival": 1.0,
+        "f_avg": 0.9935896053297262,
+        "f_avg_survival_weighted": 0.9935896053297262,
+        "bootstrap": {
+          "f_avg_ci_low": 0.9935758198507717,
+          "f_avg_ci_high": 0.9936042834087802,
+          "survival_ci_low": 1.0,
+          "survival_ci_high": 1.0,
+          "f_avg_survival_weighted_ci_low": 0.9935758198507717,
+          "f_avg_survival_weighted_ci_high": 0.9936042834087802,
+          "n_bootstrap": 2000,
+          "seed": 51200
+        }
+      },
+      "transport_only|none|nominal": {
+        "survival": 1.0,
+        "f_avg": 0.8069138985229609,
+        "f_avg_survival_weighted": 0.8069138985229609,
+        "bootstrap": {
+          "f_avg_ci_low": 0.7977998405816924,
+          "f_avg_ci_high": 0.816071506504819,
+          "survival_ci_low": 1.0,
+          "survival_ci_high": 1.0,
+          "f_avg_survival_weighted_ci_low": 0.7977998405816924,
+          "f_avg_survival_weighted_ci_high": 0.816071506504819,
+          "n_bootstrap": 2000,
+          "seed": 51200
+        }
+      },
+      "transport_only|xy4_per_long_move|nominal": {
+        "survival": 1.0,
+        "f_avg": 0.5624255469471722,
+        "f_avg_survival_weighted": 0.5624255469471722,
+        "bootstrap": {
+          "f_avg_ci_low": 0.5601131456241043,
+          "f_avg_ci_high": 0.5647387812533486,
+          "survival_ci_low": 1.0,
+          "survival_ci_high": 1.0,
+          "f_avg_survival_weighted_ci_low": 0.5601131456241043,
+          "f_avg_survival_weighted_ci_high": 0.5647387812533486,
+          "n_bootstrap": 2000,
+          "seed": 51200
+        }
+      },
+      "transport_only|xy16|nominal": {
+        "survival": 1.0,
+        "f_avg": 0.999989471043528,
+        "f_avg_survival_weighted": 0.999989471043528,
+        "bootstrap": {
+          "f_avg_ci_low": 0.9999886389109411,
+          "f_avg_ci_high": 0.9999902140262611,
+          "survival_ci_low": 1.0,
+          "survival_ci_high": 1.0,
+          "f_avg_survival_weighted_ci_low": 0.9999886389109411,
+          "f_avg_survival_weighted_ci_high": 0.9999902140262611,
+          "n_bootstrap": 2000,
+          "seed": 51200
+        }
+      },
+      "protocol_a|none|nominal": {
+        "survival": 1.0,
+        "f_avg": 0.9431898409895403,
+        "f_avg_survival_weighted": 0.9431898409895403,
+        "bootstrap": {
+          "f_avg_ci_low": 0.9405052649864231,
+          "f_avg_ci_high": 0.9456126115667962,
+          "survival_ci_low": 1.0,
+          "survival_ci_high": 1.0,
+          "f_avg_survival_weighted_ci_low": 0.9405052649864231,
+          "f_avg_survival_weighted_ci_high": 0.9456126115667962,
+          "n_bootstrap": 2000,
+          "seed": 51200
+        }
+      },
+      "protocol_a|spin_echo|nominal": {
+        "survival": 1.0,
+        "f_avg": 0.33337994442855745,
+        "f_avg_survival_weighted": 0.33337994442855745,
+        "bootstrap": {
+          "f_avg_ci_low": 0.3333779184892956,
+          "f_avg_ci_high": 0.33338217643280205,
+          "survival_ci_low": 1.0,
+          "survival_ci_high": 1.0,
+          "f_avg_survival_weighted_ci_low": 0.3333779184892956,
+          "f_avg_survival_weighted_ci_high": 0.33338217643280205,
+          "n_bootstrap": 2000,
+          "seed": 51200
+        }
+      },
+      "protocol_a|xy4_per_long_move|nominal": {
+        "survival": 1.0,
+        "f_avg": 0.9573054759688209,
+        "f_avg_survival_weighted": 0.9573054759688209,
+        "bootstrap": {
+          "f_avg_ci_low": 0.9553623873192459,
+          "f_avg_ci_high": 0.9591541095175167,
+          "survival_ci_low": 1.0,
+          "survival_ci_high": 1.0,
+          "f_avg_survival_weighted_ci_low": 0.9553623873192459,
+          "f_avg_survival_weighted_ci_high": 0.9591541095175167,
+          "n_bootstrap": 2000,
+          "seed": 51200
+        }
+      },
+      "protocol_a|xy16|nominal": {
+        "survival": 1.0,
+        "f_avg": 0.9959964862130286,
+        "f_avg_survival_weighted": 0.9959964862130286,
+        "bootstrap": {
+          "f_avg_ci_low": 0.9959894996092375,
+          "f_avg_ci_high": 0.9960031787212594,
+          "survival_ci_low": 1.0,
+          "survival_ci_high": 1.0,
+          "f_avg_survival_weighted_ci_low": 0.9959894996092375,
+          "f_avg_survival_weighted_ci_high": 0.9960031787212594,
+          "n_bootstrap": 2000,
+          "seed": 51200
+        }
+      },
+      "protocol_b|none|nominal": {
+        "survival": 1.0,
+        "f_avg": 0.7957733984713999,
+        "f_avg_survival_weighted": 0.7957733984713999,
+        "bootstrap": {
+          "f_avg_ci_low": 0.7859474290990424,
+          "f_avg_ci_high": 0.8053600787073598,
+          "survival_ci_low": 1.0,
+          "survival_ci_high": 1.0,
+          "f_avg_survival_weighted_ci_low": 0.7859474290990424,
+          "f_avg_survival_weighted_ci_high": 0.8053600787073598,
+          "n_bootstrap": 2000,
+          "seed": 51200
+        }
+      },
+      "protocol_b|xy4_per_long_move|nominal": {
+        "survival": 1.0,
+        "f_avg": 0.5538738244604833,
+        "f_avg_survival_weighted": 0.5538738244604833,
+        "bootstrap": {
+          "f_avg_ci_low": 0.5513809421131408,
+          "f_avg_ci_high": 0.5563029755395503,
+          "survival_ci_low": 1.0,
+          "survival_ci_high": 1.0,
+          "f_avg_survival_weighted_ci_low": 0.5513809421131408,
+          "f_avg_survival_weighted_ci_high": 0.5563029755395503,
+          "n_bootstrap": 2000,
+          "seed": 51200
+        }
+      },
+      "protocol_a_no_lensing|xy4_per_long_move|lensing_off": {
+        "survival": 1.0,
+        "f_avg": 0.9563680903563412,
+        "f_avg_survival_weighted": 0.9563680903563412,
+        "bootstrap": {
+          "f_avg_ci_low": 0.9521739491911421,
+          "f_avg_ci_high": 0.9603722490868083,
+          "survival_ci_low": 1.0,
+          "survival_ci_high": 1.0,
+          "f_avg_survival_weighted_ci_low": 0.9521739491911421,
+          "f_avg_survival_weighted_ci_high": 0.9603722490868083,
+          "n_bootstrap": 2000,
+          "seed": 51200
+        }
+      },
+      "protocol_a|xy4_per_long_move|noise_quasistatic": {
+        "survival": 1.0,
+        "f_avg": 0.9394391275833192,
+        "f_avg_survival_weighted": 0.9394391275833192,
+        "bootstrap": {
+          "f_avg_ci_low": 0.9363588284913313,
+          "f_avg_ci_high": 0.9422813044274349,
+          "survival_ci_low": 1.0,
+          "survival_ci_high": 1.0,
+          "f_avg_survival_weighted_ci_low": 0.9363588284913313,
+          "f_avg_survival_weighted_ci_high": 0.9422813044274349,
+          "n_bootstrap": 2000,
+          "seed": 51200
+        }
+      },
+      "protocol_a|xy4_per_long_move|noise_ou": {
+        "survival": 1.0,
+        "f_avg": 0.9567979144115586,
+        "f_avg_survival_weighted": 0.9567979144115586,
+        "bootstrap": {
+          "f_avg_ci_low": 0.9547259673131412,
+          "f_avg_ci_high": 0.9587051805143205,
+          "survival_ci_low": 1.0,
+          "survival_ci_high": 1.0,
+          "f_avg_survival_weighted_ci_low": 0.9547259673131412,
+          "f_avg_survival_weighted_ci_high": 0.9587051805143205,
+          "n_bootstrap": 2000,
+          "seed": 51200
+        }
+      }
+    }
+  },
+  "reference_rb": {
+    "formal_p": 0.9967100824486766,
+    "preferred_model": "stretched"
+  },
+  "interleaved_rb": {
+    "verdict": "IRB estimate interpretable under standard assumptions",
+    "irb_estimate": {
+      "interpretable": true,
+      "ratio": 1.0033007768349655,
+      "f_avg_interleaved": 1.0016503884174828,
+      "note": "仅在 gate-independence、Markovianity、拟合质量与loss convention 前提满足时可解释",
+      "p_ref": 0.9967100824486766,
+      "p_interleaved_combined": 0.9999999999999998,
+      "assumption_checks": {
+        "conditional_exponential_fit_ok": true,
+        "instantaneous_ratios_stable": true,
+        "survival_tail_risk_set": null
+      }
+    },
+    "survival_M80": 1.0,
+    "conditional_M80": 0.8785023813964381,
+    "joint_M80": 0.8785023813964381
+  },
+  "array": {
+    "sites_47": {
+      "n_sites": 47,
+      "array_average": 0.8746455295961176,
+      "between_site_std": 0.0010558044860786468,
+      "within_site_std": 0.11384521047038121,
+      "worst_decile": 0.8733200868943733,
+      "best_decile": 0.87609102048112,
+      "parameter_correlations": {}
+    },
+    "sites_195": {
+      "n_sites": 195,
+      "array_average": 0.878319862154575,
+      "between_site_std": 0.0006482569537405145,
+      "within_site_std": 0.10731545677812339,
+      "worst_decile": 0.8773931677908916,
+      "best_decile": 0.8791474888500321,
+      "parameter_correlations": {}
+    }
+  },
+  "paper_coherence_anchor": {
+    "enabled": true,
+    "ensemble_t2star_ms": 14.0,
+    "site_t2star_ms": 25.5,
+    "xy16_t2_s": 12.6,
+    "used_for_calibration": false
+  },
+  "coherence_level4_vs_level5": {
+    "l4_curve": {
+      "contrast_none": {
+        "rounds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "contrast": [
+          0.8957121428885072,
+          0.6951339756299784,
+          0.4923403914565313,
+          0.32357671267788785,
+          0.21984095272419424,
+          0.13713616668458725,
+          0.054767392282739684,
+          0.018502134348728005,
+          0.034184943159996733,
+          0.056754692055172654
+        ]
+      },
+      "contrast_xy4": {
+        "rounds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "contrast": [
+          0.9735163210619052,
+          0.8021235038027985,
+          0.5973322078176483,
+          0.40388897711926447,
+          0.26672524604583775,
+          0.18317474324241698,
+          0.09254582578535595,
+          0.03738347665487401,
+          0.009948175406842088,
+          0.049578767389656025
+        ]
+      },
+      "contrast_spin_echo": {
+        "rounds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "contrast": [
+          0.9999614477098835,
+          0.8949174093752494,
+          0.6953542355515434,
+          0.49234154414016945,
+          0.32324935388230136,
+          0.22082295968722232,
+          0.13676595962569651,
+          0.05486297299276388,
+          0.01943381576483438,
+          0.035124735496668016
+        ]
+      }
+    },
+    "l5_curve": {
+      "none": {
+        "rounds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "contrast": [
+          0.8859345802311684,
+          0.7735394699658493,
+          0.6740937616942061,
+          0.6035108753376154,
+          0.5371158914011281,
+          0.47334167162319957,
+          0.4211133601784316,
+          0.36167585887554815,
+          0.28721916313535845,
+          0.2567749595378102
+        ]
+      },
+      "xy4_per_long_move": {
+        "rounds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "contrast": [
+          0.9702234260892454,
+          0.9390969618139065,
+          0.9146645495518322,
+          0.8816432189273423,
+          0.864599002779804,
+          0.8381978864826348,
+          0.8189450681940967,
+          0.8111353385369224,
+          0.7741786267906966,
+          0.7581562728082892
+        ]
+      }
+    }
+  },
+  "convergence_ablation_sensitivity": {
+    "dt_convergence_rows": [
+      {
+        "dt_us": 0.1,
+        "dt_free_us": 0.5,
+        "mean_bloch_z": 0.9999972207868555
+      },
+      {
+        "dt_us": 0.05,
+        "dt_free_us": 0.25,
+        "mean_bloch_z": 0.9999972207427271,
+        "phase_dev_rad": 4.4128367626683485e-11,
+        "return_dev": -2.206412830219051e-11,
+        "fidelity_dev": -2.206412830219051e-11
+      },
+      {
+        "dt_us": 0.025,
+        "dt_free_us": 0.125,
+        "mean_bloch_z": 0.9999972207339524,
+        "phase_dev_rad": 5.290312632411087e-11,
+        "return_dev": -2.6451507650904205e-11,
+        "fidelity_dev": -2.6451507650904205e-11
+      }
+    ],
+    "sensitivity_rows": [
+      {
+        "factor": "baseline",
+        "value": "nominal",
+        "n_traj": 500,
+        "f_avg_conditional": 0.9574097498459953,
+        "survival": 1.0,
+        "f_avg_survival_weighted": 0.9574097498459953,
+        "unitarity": 0.9603933221239295,
+        "coherent_angle_rad": 0.4525073338014952,
+        "dd": "xy4_per_long_move",
+        "note": "quantum-only 因子不改变经典 survival（frozen replay）"
+      },
+      {
+        "factor": "rabi_scale",
+        "value": "0.98",
+        "n_traj": 500,
+        "f_avg_conditional": 0.959492763184689,
+        "survival": 1.0,
+        "f_avg_survival_weighted": 0.959492763184689,
+        "unitarity": 0.9602266256093648,
+        "coherent_angle_rad": 0.437255001215535,
+        "dd": "xy4_per_long_move",
+        "note": "quantum-only 因子不改变经典 survival（frozen replay）"
+      },
+      {
+        "factor": "rabi_scale",
+        "value": "1.02",
+        "n_traj": 500,
+        "f_avg_conditional": 0.9553216871019421,
+        "survival": 1.0,
+        "f_avg_survival_weighted": 0.9553216871019421,
+        "unitarity": 0.9604018809454388,
+        "coherent_angle_rad": 0.4670762396004577,
+        "dd": "xy4_per_long_move",
+        "note": "quantum-only 因子不改变经典 survival（frozen replay）"
+      },
+      {
+        "factor": "delta_drive_hz",
+        "value": "-50.0",
+        "n_traj": 500,
+        "f_avg_conditional": 0.9629491771594414,
+        "survival": 1.0,
+        "f_avg_survival_weighted": 0.9629491771594414,
+        "unitarity": 0.9604128205822725,
+        "coherent_angle_rad": 0.41161849659871885,
+        "dd": "xy4_per_long_move",
+        "note": "quantum-only 因子不改变经典 survival（frozen replay）"
+      },
+      {
+        "factor": "delta_drive_hz",
+        "value": "50.0",
+        "n_traj": 500,
+        "f_avg_conditional": 0.747883175370957,
+        "survival": 1.0,
+        "f_avg_survival_weighted": 0.747883175370957,
+        "unitarity": 0.9603748162677537,
+        "coherent_angle_rad": 1.3168444837906494,
+        "dd": "xy4_per_long_move",
+        "note": "quantum-only 因子不改变经典 survival（frozen replay）"
+      },
+      {
+        "factor": "eta",
+        "value": "0.00012",
+        "n_traj": 500,
+        "f_avg_conditional": 0.7269950470541132,
+        "survival": 1.0,
+        "f_avg_survival_weighted": 0.7269950470541132,
+        "unitarity": 0.9660448312263844,
+        "coherent_angle_rad": 1.3839318946911445,
+        "dd": "xy4_per_long_move",
+        "note": "quantum-only 因子不改变经典 survival（frozen replay）"
+      },
+      {
+        "factor": "eta",
+        "value": "0.00015",
+        "n_traj": 500,
+        "f_avg_conditional": 0.7179680320413008,
+        "survival": 1.0,
+        "f_avg_survival_weighted": 0.7179680320413008,
+        "unitarity": 0.9479820189031377,
+        "coherent_angle_rad": 1.4098163676045863,
+        "dd": "xy4_per_long_move",
+        "note": "quantum-only 因子不改变经典 survival（frozen replay）"
+      },
+      {
+        "factor": "eta",
+        "value": "0.00016",
+        "n_traj": 500,
+        "f_avg_conditional": 0.44509783309449796,
+        "survival": 1.0,
+        "f_avg_survival_weighted": 0.44509783309449796,
+        "unitarity": 0.9412534143839618,
+        "coherent_angle_rad": 2.340719576296822,
+        "dd": "xy4_per_long_move",
+        "note": "quantum-only 因子不改变经典 survival（frozen replay）"
+      },
+      {
+        "factor": "quasistatic_detuning_rms_hz",
+        "value": "10.0",
+        "n_traj": 500,
+        "f_avg_conditional": 0.9573864609614842,
+        "survival": 1.0,
+        "f_avg_survival_weighted": 0.9573864609614842,
+        "unitarity": 0.960405066466062,
+        "coherent_angle_rad": 0.45269132480706553,
+        "dd": "xy4_per_long_move",
+        "note": "quantum-only 因子不改变经典 survival（frozen replay）"
+      },
+      {
+        "factor": "quasistatic_detuning_rms_hz",
+        "value": "50.0",
+        "n_traj": 500,
+        "f_avg_conditional": 0.9574356929486221,
+        "survival": 1.0,
+        "f_avg_survival_weighted": 0.9574356929486221,
+        "unitarity": 0.9603558576245783,
+        "coherent_angle_rad": 0.452262240700917,
+        "dd": "xy4_per_long_move",
+        "note": "quantum-only 因子不改变经典 survival（frozen replay）"
+      },
+      {
+        "factor": "ou_rms_hz_tau200us",
+        "value": "5.0",
+        "n_traj": 500,
+        "f_avg_conditional": 0.9575913214536966,
+        "survival": 1.0,
+        "f_avg_survival_weighted": 0.9575913214536966,
+        "unitarity": 0.9596363281278295,
+        "coherent_angle_rad": 0.4499725535334892,
+        "dd": "xy4_per_long_move",
+        "note": "quantum-only 因子不改变经典 survival（frozen replay）"
+      },
+      {
+        "factor": "ou_rms_hz_tau200us",
+        "value": "20.0",
+        "n_traj": 500,
+        "f_avg_conditional": 0.9548247004369919,
+        "survival": 1.0,
+        "f_avg_survival_weighted": 0.9548247004369919,
+        "unitarity": 0.9500138972907438,
+        "coherent_angle_rad": 0.45370849319801587,
+        "dd": "xy4_per_long_move",
+        "note": "quantum-only 因子不改变经典 survival（frozen replay）"
+      },
+      {
+        "factor": "pulse_amp_error",
+        "value": "0.01",
+        "n_traj": 500,
+        "f_avg_conditional": 0.9563655042153931,
+        "survival": 1.0,
+        "f_avg_survival_weighted": 0.9563655042153931,
+        "unitarity": 0.9604173540133444,
+        "coherent_angle_rad": 0.4598786834995463,
+        "dd": "xy4_per_long_move",
+        "note": "quantum-only 因子不改变经典 survival（frozen replay）"
+      },
+      {
+        "factor": "pulse_amp_error",
+        "value": "0.03",
+        "n_traj": 500,
+        "f_avg_conditional": 0.9542799473695294,
+        "survival": 1.0,
+        "f_avg_survival_weighted": 0.9542799473695294,
+        "unitarity": 0.9603469141319602,
+        "coherent_angle_rad": 0.47409722846644015,
+        "dd": "xy4_per_long_move",
+        "note": "quantum-only 因子不改变经典 survival（frozen replay）"
+      },
+      {
+        "factor": "envelope",
+        "value": "cosine_edge_1us",
+        "n_traj": 500,
+        "f_avg_conditional": 0.9574121081738332,
+        "survival": 1.0,
+        "f_avg_survival_weighted": 0.9574121081738332,
+        "unitarity": 0.9603882375603633,
+        "coherent_angle_rad": 0.4524823226817568,
+        "dd": "xy4_per_long_move",
+        "note": "quantum-only 因子不改变经典 survival（frozen replay）"
+      },
+      {
+        "factor": "dd_mode",
+        "value": "none",
+        "n_traj": 500,
+        "f_avg_conditional": 0.940857697971824,
+        "survival": 1.0,
+        "f_avg_survival_weighted": 0.940857697971824,
+        "unitarity": 0.84664529329262,
+        "coherent_angle_rad": 0.35562645413039135,
+        "dd": "none",
+        "note": "quantum-only 因子不改变经典 survival（frozen replay）"
+      },
+      {
+        "factor": "dd_mode",
+        "value": "spin_echo",
+        "n_traj": 500,
+        "f_avg_conditional": 0.3333818004124979,
+        "survival": 1.0,
+        "f_avg_survival_weighted": 0.3333818004124979,
+        "unitarity": 0.9997924541173555,
+        "coherent_angle_rad": 3.132944360824071,
+        "dd": "spin_echo",
+        "note": "quantum-only 因子不改变经典 survival（frozen replay）"
+      },
+      {
+        "factor": "dd_mode",
+        "value": "xy4",
+        "n_traj": 500,
+        "f_avg_conditional": 0.5013236055957779,
+        "survival": 1.0,
+        "f_avg_survival_weighted": 0.5013236055957779,
+        "unitarity": 0.9996927990211345,
+        "coherent_angle_rad": 2.0899420541955056,
+        "dd": "xy4",
+        "note": "quantum-only 因子不改变经典 survival（frozen replay）"
+      },
+      {
+        "factor": "dd_mode",
+        "value": "xy16",
+        "n_traj": 500,
+        "f_avg_conditional": 0.9959941224872935,
+        "survival": 1.0,
+        "f_avg_survival_weighted": 0.9959941224872935,
+        "unitarity": 0.9999854308705286,
+        "coherent_angle_rad": 0.15511878517455893,
+        "dd": "xy16",
+        "note": "quantum-only 因子不改变经典 survival（frozen replay）"
+      },
+      {
+        "factor": "dd_mode",
+        "value": "xy4_per_long_move",
+        "n_traj": 500,
+        "f_avg_conditional": 0.9574097498459953,
+        "survival": 1.0,
+        "f_avg_survival_weighted": 0.9574097498459953,
+        "unitarity": 0.9603933221239295,
+        "coherent_angle_rad": 0.4525073338014952,
+        "dd": "xy4_per_long_move",
+        "note": "quantum-only 因子不改变经典 survival（frozen replay）"
+      },
+      {
+        "factor": "paper_trap_depth_std_114pct",
+        "value": "site_depth_spread",
+        "n_traj": 500,
+        "f_avg_conditional": 0.9581851045468146,
+        "survival": 1.0,
+        "f_avg_survival_weighted": 0.9581851045468146,
+        "unitarity": 0.960355081133704,
+        "coherent_angle_rad": 0.4469268476348587,
+        "dd": "xy4_per_long_move",
+        "note": "quantum-only 因子不改变经典 survival（frozen replay）"
+      }
+    ]
+  },
+  "provenance": {
+    "drive_rabi_frequency_kHz": "paper_anchor (Fig. 4a)",
+    "eta": "paper_theory_scale + level4 assumption (1.3e-4)",
+    "durations": "level4_frozen (Extended Data Fig. 10e 锚点)",
+    "noise": "assumed（nominal 关闭）"
+  },
+  "image_validation_all_passed": true,
+  "visual_review_performed": false,
+  "level6_recommendations": [
+    "Rydberg 两比特门与阻塞丢失",
+    "多体串扰与并行门",
+    "测量/SPAM 模型与读出误差",
+    "泄漏态（|F,mF⟩≠0）与 Raman 散射",
+    "逻辑层电路与纠错周期"
+  ]
+}

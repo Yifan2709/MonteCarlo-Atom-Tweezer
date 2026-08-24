@@ -1,0 +1,1352 @@
+{
+  "conditions": {
+    "static_idle|none|nominal": {
+      "ptm_m": [
+        [
+          -0.5708269742453937,
+          -0.7205948779842165,
+          0.0
+        ],
+        [
+          0.7205948779842165,
+          -0.5708269742453937,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "affine_c": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "f_avg": 0.47639100858486877,
+      "unitarity": {
+        "unitarity": 0.8967336084688262,
+        "translation_norm": 0.0,
+        "unital": true,
+        "note": "c≠0（T1 类非 unital 通道）时 Tr(M†M)/3 为广义估计"
+      },
+      "coherent": {
+        "coherent_angle_rad": 2.2407389221904417,
+        "coherent_axis": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "singular_values": [
+          1.0,
+          0.9192934312303332,
+          0.9192934312303331
+        ],
+        "contraction_anisotropy": 0.08070656876966686
+      },
+      "applicability": {
+        "affine_residual": 2.1110890813247351e-16,
+        "affine_ok": true,
+        "unital": true,
+        "mixture_of_unitaries_tp": true,
+        "note": "条件自旋通道为幺正系综平均（TP+unital）时 F_avg=1/2+Tr(M)/6 严格适用；含 Lindblad T1 时 c≠0，该值解释为 Haar 平均纯态保真度"
+      },
+      "n_realizations": 2000,
+      "survival": 1.0,
+      "f_avg_survival_weighted": 0.47639100858486877,
+      "f_avg_loss_detected_convention": 0.47639100858486877,
+      "conventions": {
+        "conditional_spin_channel": "以幸存为条件的自旋通道 PTM/F_avg",
+        "survival": "经典往返成功概率（Level 4 标签）",
+        "survival_weighted": "survival × F_avg_conditional",
+        "loss_detected": "把丢失计为返回失败 → 与 survival-weighted 数值一致，但语义为返回概率口径"
+      },
+      "bootstrap": {
+        "f_avg_ci_low": 0.47275344994789026,
+        "f_avg_ci_high": 0.480132183582084,
+        "survival_ci_low": 1.0,
+        "survival_ci_high": 1.0,
+        "f_avg_survival_weighted_ci_low": 0.47275344994789026,
+        "f_avg_survival_weighted_ci_high": 0.480132183582084,
+        "n_bootstrap": 2000,
+        "seed": 51200
+      },
+      "condition": "static_idle|none|nominal",
+      "n_trajectories": 2000,
+      "dd_pulse_count": 0,
+      "free_vs_pulse_time": {
+        "free_s": 0.0056536,
+        "pulse_s": 0.0
+      }
+    },
+    "static_idle|spin_echo|nominal": {
+      "ptm_m": [
+        [
+          0.9998477421831068,
+          0.0002687115820327977,
+          0.01570632571977985
+        ],
+        [
+          -0.00024903513155377757,
+          -0.9994286643359358,
+          0.03369892255473424
+        ],
+        [
+          0.015706689952611656,
+          -0.03369876340513492,
+          -0.9992787250290682
+        ]
+      ],
+      "affine_c": [
+        -6.819241676847696e-21,
+        9.436895709313843e-19,
+        -3.145631903104612e-19
+      ],
+      "f_avg": 0.33352339213635046,
+      "unitarity": {
+        "unitarity": 0.9999586266594562,
+        "translation_norm": 9.947595232215689e-19,
+        "unital": true,
+        "note": "c≠0（T1 类非 unital 通道）时 Tr(M†M)/3 为广义估计"
+      },
+      "coherent": {
+        "coherent_angle_rad": 3.107885875157985,
+        "coherent_axis": [
+          -0.9999691418615848,
+          -4.920887375472843e-06,
+          -0.007855908629243319
+        ],
+        "singular_values": [
+          0.9999979594159986,
+          0.9999701297141924,
+          0.999969849956282
+        ],
+        "contraction_anisotropy": 2.8109459716540997e-05
+      },
+      "applicability": {
+        "affine_residual": 2.53630449975617e-16,
+        "affine_ok": true,
+        "unital": true,
+        "mixture_of_unitaries_tp": true,
+        "note": "条件自旋通道为幺正系综平均（TP+unital）时 F_avg=1/2+Tr(M)/6 严格适用；含 Lindblad T1 时 c≠0，该值解释为 Haar 平均纯态保真度"
+      },
+      "n_realizations": 2000,
+      "survival": 1.0,
+      "f_avg_survival_weighted": 0.33352339213635046,
+      "f_avg_loss_detected_convention": 0.33352339213635046,
+      "conventions": {
+        "conditional_spin_channel": "以幸存为条件的自旋通道 PTM/F_avg",
+        "survival": "经典往返成功概率（Level 4 标签）",
+        "survival_weighted": "survival × F_avg_conditional",
+        "loss_detected": "把丢失计为返回失败 → 与 survival-weighted 数值一致，但语义为返回概率口径"
+      },
+      "bootstrap": {
+        "f_avg_ci_low": 0.3335223789423231,
+        "f_avg_ci_high": 0.3335244099151442,
+        "survival_ci_low": 1.0,
+        "survival_ci_high": 1.0,
+        "f_avg_survival_weighted_ci_low": 0.3335223789423231,
+        "f_avg_survival_weighted_ci_high": 0.3335244099151442,
+        "n_bootstrap": 2000,
+        "seed": 51200
+      },
+      "condition": "static_idle|spin_echo|nominal",
+      "n_trajectories": 2000,
+      "dd_pulse_count": 1,
+      "free_vs_pulse_time": {
+        "free_s": 0.005633283881191337,
+        "pulse_s": 2.0316118808662795e-05
+      }
+    },
+    "static_idle|xy4|nominal": {
+      "ptm_m": [
+        [
+          0.9999957870869153,
+          -0.0007810923628536011,
+          1.7775658281303753e-05
+        ],
+        [
+          0.0007815337663944957,
+          0.999995794842193,
+          -5.758564092139849e-06
+        ],
+        [
+          -1.773434085429601e-05,
+          5.81040501453546e-06,
+          0.9999993872099268
+        ]
+      ],
+      "affine_c": [
+        -2.198885002043136e-19,
+        9.251858538543147e-21,
+        -3.2150208421436843e-18
+      ],
+      "f_avg": 0.9999984948565059,
+      "unitarity": {
+        "unitarity": 0.999994386637196,
+        "translation_norm": 3.2225448894975542e-18,
+        "unital": true,
+        "note": "c≠0（T1 类非 unital 通道）时 Tr(M†M)/3 为广义估计"
+      },
+      "coherent": {
+        "coherent_angle_rad": 0.0007815393130523571,
+        "coherent_axis": [
+          0.007401428492296423,
+          0.022718050466530963,
+          0.9997145137684427
+        ],
+        "singular_values": [
+          0.9999993876118913,
+          0.9999963167336781,
+          0.9999958755947491
+        ],
+        "contraction_anisotropy": 3.5120171422153845e-06
+      },
+      "applicability": {
+        "affine_residual": 3.540835092036114e-16,
+        "affine_ok": true,
+        "unital": true,
+        "mixture_of_unitaries_tp": true,
+        "note": "条件自旋通道为幺正系综平均（TP+unital）时 F_avg=1/2+Tr(M)/6 严格适用；含 Lindblad T1 时 c≠0，该值解释为 Haar 平均纯态保真度"
+      },
+      "n_realizations": 2000,
+      "survival": 1.0,
+      "f_avg_survival_weighted": 0.9999984948565059,
+      "f_avg_loss_detected_convention": 0.9999984948565059,
+      "conventions": {
+        "conditional_spin_channel": "以幸存为条件的自旋通道 PTM/F_avg",
+        "survival": "经典往返成功概率（Level 4 标签）",
+        "survival_weighted": "survival × F_avg_conditional",
+        "loss_detected": "把丢失计为返回失败 → 与 survival-weighted 数值一致，但语义为返回概率口径"
+      },
+      "bootstrap": {
+        "f_avg_ci_low": 0.999998198121254,
+        "f_avg_ci_high": 0.9999987401497156,
+        "survival_ci_low": 1.0,
+        "survival_ci_high": 1.0,
+        "f_avg_survival_weighted_ci_low": 0.999998198121254,
+        "f_avg_survival_weighted_ci_high": 0.9999987401497156,
+        "n_bootstrap": 2000,
+        "seed": 51200
+      },
+      "condition": "static_idle|xy4|nominal",
+      "n_trajectories": 2000,
+      "dd_pulse_count": 4,
+      "free_vs_pulse_time": {
+        "free_s": 0.005572335524765349,
+        "pulse_s": 8.126447523465118e-05
+      }
+    },
+    "static_idle|xy16|nominal": {
+      "ptm_m": [
+        [
+          0.9999908392961563,
+          0.0030846265961815343,
+          -6.664857220970516e-05
+        ],
+        [
+          -0.0030868935386347746,
+          0.9999908193360725,
+          -3.93924979009293e-05
+        ],
+        [
+          6.636095079617685e-05,
+          3.9756129900561916e-05,
+          0.9999970903665384
+        ]
+      ],
+      "affine_c": [
+        1.3900361941719599e-18,
+        -8.918791631155423e-18,
+        -3.099372610411915e-19
+      ],
+      "f_avg": 0.9999964581664611,
+      "unitarity": {
+        "unitarity": 0.9999921846617622,
+        "translation_norm": 9.031783095649375e-18,
+        "unital": true,
+        "note": "c≠0（T1 类非 unital 通道）时 Tr(M†M)/3 为广义估计"
+      },
+      "coherent": {
+        "coherent_angle_rad": 0.0030867488586846232,
+        "coherent_axis": [
+          0.012820831507341696,
+          -0.021545405100917108,
+          -0.999685661494901
+        ],
+        "singular_values": [
+          0.9999971259946319,
+          0.9999966913770016,
+          0.9999944595960588
+        ],
+        "contraction_anisotropy": 2.6663985730479567e-06
+      },
+      "applicability": {
+        "affine_residual": 7.204094717851463e-16,
+        "affine_ok": true,
+        "unital": true,
+        "mixture_of_unitaries_tp": true,
+        "note": "条件自旋通道为幺正系综平均（TP+unital）时 F_avg=1/2+Tr(M)/6 严格适用；含 Lindblad T1 时 c≠0，该值解释为 Haar 平均纯态保真度"
+      },
+      "n_realizations": 2000,
+      "survival": 1.0,
+      "f_avg_survival_weighted": 0.9999964581664611,
+      "f_avg_loss_detected_convention": 0.9999964581664611,
+      "conventions": {
+        "conditional_spin_channel": "以幸存为条件的自旋通道 PTM/F_avg",
+        "survival": "经典往返成功概率（Level 4 标签）",
+        "survival_weighted": "survival × F_avg_conditional",
+        "loss_detected": "把丢失计为返回失败 → 与 survival-weighted 数值一致，但语义为返回概率口径"
+      },
+      "bootstrap": {
+        "f_avg_ci_low": 0.9999953898149097,
+        "f_avg_ci_high": 0.9999972620807699,
+        "survival_ci_low": 1.0,
+        "survival_ci_high": 1.0,
+        "f_avg_survival_weighted_ci_low": 0.9999953898149097,
+        "f_avg_survival_weighted_ci_high": 0.9999972620807699,
+        "n_bootstrap": 2000,
+        "seed": 51200
+      },
+      "condition": "static_idle|xy16|nominal",
+      "n_trajectories": 2000,
+      "dd_pulse_count": 16,
+      "free_vs_pulse_time": {
+        "free_s": 0.005328542099061395,
+        "pulse_s": 0.0003250579009386047
+      }
+    },
+    "transfer_only|xy4|nominal": {
+      "ptm_m": [
+        [
+          0.9823465648801106,
+          0.18003140955039038,
+          -0.05074319946671881
+        ],
+        [
+          -0.17688170424170116,
+          0.9823423213761753,
+          0.060876686978924094
+        ],
+        [
+          0.06080843512238606,
+          -0.05082531024617064,
+          0.9968487457220714
+        ]
+      ],
+      "affine_c": [
+        -1.5449880957918415e-18,
+        6.722053469410122e-18,
+        -8.85431774196496e-19
+      ],
+      "f_avg": 0.9935896053297262,
+      "unitarity": {
+        "unitarity": 0.9999895995732014,
+        "translation_norm": 6.953918355035808e-18,
+        "unital": true,
+        "note": "c≠0（T1 类非 unital 通道）时 Tr(M†M)/3 为广义估计"
+      },
+      "coherent": {
+        "coherent_angle_rad": 0.1963944853566589,
+        "coherent_axis": [
+          -0.2862202854686065,
+          -0.28583493185656106,
+          -0.9145361337403923
+        ],
+        "singular_values": [
+          0.9999975393589011,
+          0.9999938994006938,
+          0.999992960553794
+        ],
+        "contraction_anisotropy": 4.578805107069428e-06
+      },
+      "applicability": {
+        "affine_residual": 3.4389537658524594e-16,
+        "affine_ok": true,
+        "unital": true,
+        "mixture_of_unitaries_tp": true,
+        "note": "条件自旋通道为幺正系综平均（TP+unital）时 F_avg=1/2+Tr(M)/6 严格适用；含 Lindblad T1 时 c≠0，该值解释为 Haar 平均纯态保真度"
+      },
+      "n_realizations": 512,
+      "survival": 1.0,
+      "f_avg_survival_weighted": 0.9935896053297262,
+      "f_avg_loss_detected_convention": 0.9935896053297262,
+      "conventions": {
+        "conditional_spin_channel": "以幸存为条件的自旋通道 PTM/F_avg",
+        "survival": "经典往返成功概率（Level 4 标签）",
+        "survival_weighted": "survival × F_avg_conditional",
+        "loss_detected": "把丢失计为返回失败 → 与 survival-weighted 数值一致，但语义为返回概率口径"
+      },
+      "bootstrap": {
+        "f_avg_ci_low": 0.9935758198507717,
+        "f_avg_ci_high": 0.9936042834087802,
+        "survival_ci_low": 1.0,
+        "survival_ci_high": 1.0,
+        "f_avg_survival_weighted_ci_low": 0.9935758198507717,
+        "f_avg_survival_weighted_ci_high": 0.9936042834087802,
+        "n_bootstrap": 2000,
+        "seed": 51200
+      },
+      "condition": "transfer_only|xy4|nominal",
+      "n_trajectories": 512,
+      "dd_pulse_count": 4,
+      "free_vs_pulse_time": {
+        "free_s": 0.0018183355247653487,
+        "pulse_s": 8.126447523465118e-05
+      }
+    },
+    "transport_only|none|nominal": {
+      "ptm_m": [
+        [
+          0.4207416955688829,
+          -0.8380935277794717,
+          0.0
+        ],
+        [
+          0.8380935277794717,
+          0.4207416955688829,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "affine_c": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "f_avg": 0.8069138985229609,
+      "unitarity": {
+        "unitarity": 0.9196162237973459,
+        "translation_norm": 0.0,
+        "unital": true,
+        "note": "c≠0（T1 类非 unital 通道）时 Tr(M†M)/3 为广义估计"
+      },
+      "coherent": {
+        "coherent_angle_rad": 1.1055321343009639,
+        "coherent_axis": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "singular_values": [
+          1.0,
+          0.9377762716639927,
+          0.9377762716639927
+        ],
+        "contraction_anisotropy": 0.06222372833600731
+      },
+      "applicability": {
+        "affine_residual": 2.0361316799277773e-16,
+        "affine_ok": true,
+        "unital": true,
+        "mixture_of_unitaries_tp": true,
+        "note": "条件自旋通道为幺正系综平均（TP+unital）时 F_avg=1/2+Tr(M)/6 严格适用；含 Lindblad T1 时 c≠0，该值解释为 Haar 平均纯态保真度"
+      },
+      "n_realizations": 512,
+      "survival": 1.0,
+      "f_avg_survival_weighted": 0.8069138985229609,
+      "f_avg_loss_detected_convention": 0.8069138985229609,
+      "conventions": {
+        "conditional_spin_channel": "以幸存为条件的自旋通道 PTM/F_avg",
+        "survival": "经典往返成功概率（Level 4 标签）",
+        "survival_weighted": "survival × F_avg_conditional",
+        "loss_detected": "把丢失计为返回失败 → 与 survival-weighted 数值一致，但语义为返回概率口径"
+      },
+      "bootstrap": {
+        "f_avg_ci_low": 0.7977998405816924,
+        "f_avg_ci_high": 0.816071506504819,
+        "survival_ci_low": 1.0,
+        "survival_ci_high": 1.0,
+        "f_avg_survival_weighted_ci_low": 0.7977998405816924,
+        "f_avg_survival_weighted_ci_high": 0.816071506504819,
+        "n_bootstrap": 2000,
+        "seed": 51200
+      },
+      "condition": "transport_only|none|nominal",
+      "n_trajectories": 512,
+      "dd_pulse_count": 0,
+      "free_vs_pulse_time": {
+        "free_s": 0.0038536,
+        "pulse_s": 0.0
+      }
+    },
+    "transport_only|xy4_per_long_move|nominal": {
+      "ptm_m": [
+        [
+          -0.3127228511814011,
+          -0.9457019843449691,
+          0.00015606522226232607
+        ],
+        [
+          0.945700530324212,
+          -0.3127221728551177,
+          -0.00013427932662948017
+        ],
+        [
+          0.00017704476937703984,
+          9.755127294807818e-05,
+          0.9999983057195515
+        ]
+      ],
+      "affine_c": [
+        5.023470065849501e-18,
+        -5.068645156369731e-18,
+        -1.4094628242311552e-18
+      ],
+      "f_avg": 0.5624255469471722,
+      "unitarity": {
+        "unitarity": 0.9947630566620417,
+        "translation_norm": 7.27413229715861e-18,
+        "unital": true,
+        "note": "c≠0（T1 类非 unital 通道）时 Tr(M†M)/3 为广义估计"
+      },
+      "coherent": {
+        "coherent_angle_rad": 1.8901551042371616,
+        "coherent_axis": [
+          0.00012540321164467572,
+          -1.2997481549818736e-05,
+          0.99999999205255
+        ],
+        "singular_values": [
+          0.999998331138613,
+          0.9960661895847167,
+          0.9960645830829932
+        ],
+        "contraction_anisotropy": 0.003933748055619857
+      },
+      "applicability": {
+        "affine_residual": 4.459775815044357e-16,
+        "affine_ok": true,
+        "unital": true,
+        "mixture_of_unitaries_tp": true,
+        "note": "条件自旋通道为幺正系综平均（TP+unital）时 F_avg=1/2+Tr(M)/6 严格适用；含 Lindblad T1 时 c≠0，该值解释为 Haar 平均纯态保真度"
+      },
+      "n_realizations": 512,
+      "survival": 1.0,
+      "f_avg_survival_weighted": 0.5624255469471722,
+      "f_avg_loss_detected_convention": 0.5624255469471722,
+      "conventions": {
+        "conditional_spin_channel": "以幸存为条件的自旋通道 PTM/F_avg",
+        "survival": "经典往返成功概率（Level 4 标签）",
+        "survival_weighted": "survival × F_avg_conditional",
+        "loss_detected": "把丢失计为返回失败 → 与 survival-weighted 数值一致，但语义为返回概率口径"
+      },
+      "bootstrap": {
+        "f_avg_ci_low": 0.5601131456241043,
+        "f_avg_ci_high": 0.5647387812533486,
+        "survival_ci_low": 1.0,
+        "survival_ci_high": 1.0,
+        "f_avg_survival_weighted_ci_low": 0.5601131456241043,
+        "f_avg_survival_weighted_ci_high": 0.5647387812533486,
+        "n_bootstrap": 2000,
+        "seed": 51200
+      },
+      "condition": "transport_only|xy4_per_long_move|nominal",
+      "n_trajectories": 512,
+      "dd_pulse_count": 8,
+      "free_vs_pulse_time": {
+        "free_s": 0.0036910710495306974,
+        "pulse_s": 0.00016252895046930236
+      }
+    },
+    "transport_only|xy16|nominal": {
+      "ptm_m": [
+        [
+          0.9999701158713059,
+          0.007012929971445512,
+          -3.381294151955341e-05
+        ],
+        [
+          -0.007015900820790939,
+          0.9999700493019551,
+          -7.268974367163467e-06
+        ],
+        [
+          3.4782517105613016e-05,
+          6.615311880318788e-06,
+          0.9999966610879067
+        ]
+      ],
+      "affine_c": [
+        1.2508437728754726e-18,
+        6.830473686658669e-18,
+        -1.0715531471398416e-17
+      ],
+      "f_avg": 0.999989471043528,
+      "unitarity": {
+        "unitarity": 0.99999068694148,
+        "translation_norm": 1.2768813399952546e-17,
+        "unital": true,
+        "note": "c≠0（T1 类非 unital 通道）时 Tr(M†M)/3 为广义估计"
+      },
+      "coherent": {
+        "coherent_angle_rad": 0.00701459747483652,
+        "coherent_axis": [
+          0.0009894323984892444,
+          -0.0048893176708663414,
+          -0.9999875577207159
+        ],
+        "singular_values": [
+          0.9999971359860584,
+          0.9999956961329073,
+          0.9999931982567593
+        ],
+        "contraction_anisotropy": 3.93772929918601e-06
+      },
+      "applicability": {
+        "affine_residual": 7.569543649019823e-16,
+        "affine_ok": true,
+        "unital": true,
+        "mixture_of_unitaries_tp": true,
+        "note": "条件自旋通道为幺正系综平均（TP+unital）时 F_avg=1/2+Tr(M)/6 严格适用；含 Lindblad T1 时 c≠0，该值解释为 Haar 平均纯态保真度"
+      },
+      "n_realizations": 512,
+      "survival": 1.0,
+      "f_avg_survival_weighted": 0.999989471043528,
+      "f_avg_loss_detected_convention": 0.999989471043528,
+      "conventions": {
+        "conditional_spin_channel": "以幸存为条件的自旋通道 PTM/F_avg",
+        "survival": "经典往返成功概率（Level 4 标签）",
+        "survival_weighted": "survival × F_avg_conditional",
+        "loss_detected": "把丢失计为返回失败 → 与 survival-weighted 数值一致，但语义为返回概率口径"
+      },
+      "bootstrap": {
+        "f_avg_ci_low": 0.9999886389109411,
+        "f_avg_ci_high": 0.9999902140262611,
+        "survival_ci_low": 1.0,
+        "survival_ci_high": 1.0,
+        "f_avg_survival_weighted_ci_low": 0.9999886389109411,
+        "f_avg_survival_weighted_ci_high": 0.9999902140262611,
+        "n_bootstrap": 2000,
+        "seed": 51200
+      },
+      "condition": "transport_only|xy16|nominal",
+      "n_trajectories": 512,
+      "dd_pulse_count": 16,
+      "free_vs_pulse_time": {
+        "free_s": 0.0035285420990613953,
+        "pulse_s": 0.0003250579009386047
+      }
+    },
+    "protocol_a|none|nominal": {
+      "ptm_m": [
+        [
+          0.8295695229686205,
+          0.299732650403104,
+          0.0
+        ],
+        [
+          -0.299732650403104,
+          0.8295695229686205,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "affine_c": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "f_avg": 0.9431898409895403,
+      "unitarity": {
+        "unitarity": 0.8520168367707027,
+        "translation_norm": 0.0,
+        "unital": true,
+        "note": "c≠0（T1 类非 unital 通道）时 Tr(M†M)/3 为广义估计"
+      },
+      "coherent": {
+        "coherent_angle_rad": 0.346715743407662,
+        "coherent_axis": [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        "singular_values": [
+          1.0,
+          0.8820573990144032,
+          0.882057399014403
+        ],
+        "contraction_anisotropy": 0.11794260098559695
+      },
+      "applicability": {
+        "affine_residual": 2.0833335057091063e-16,
+        "affine_ok": true,
+        "unital": true,
+        "mixture_of_unitaries_tp": true,
+        "note": "条件自旋通道为幺正系综平均（TP+unital）时 F_avg=1/2+Tr(M)/6 严格适用；含 Lindblad T1 时 c≠0，该值解释为 Haar 平均纯态保真度"
+      },
+      "n_realizations": 2000,
+      "survival": 1.0,
+      "f_avg_survival_weighted": 0.9431898409895403,
+      "f_avg_loss_detected_convention": 0.9431898409895403,
+      "conventions": {
+        "conditional_spin_channel": "以幸存为条件的自旋通道 PTM/F_avg",
+        "survival": "经典往返成功概率（Level 4 标签）",
+        "survival_weighted": "survival × F_avg_conditional",
+        "loss_detected": "把丢失计为返回失败 → 与 survival-weighted 数值一致，但语义为返回概率口径"
+      },
+      "bootstrap": {
+        "f_avg_ci_low": 0.9405052649864231,
+        "f_avg_ci_high": 0.9456126115667962,
+        "survival_ci_low": 1.0,
+        "survival_ci_high": 1.0,
+        "f_avg_survival_weighted_ci_low": 0.9405052649864231,
+        "f_avg_survival_weighted_ci_high": 0.9456126115667962,
+        "n_bootstrap": 2000,
+        "seed": 51200
+      },
+      "condition": "protocol_a|none|nominal",
+      "n_trajectories": 2000,
+      "dd_pulse_count": 0,
+      "free_vs_pulse_time": {
+        "free_s": 0.0056536,
+        "pulse_s": 0.0
+      }
+    },
+    "protocol_a|spin_echo|nominal": {
+      "ptm_m": [
+        [
+          0.9983244505429706,
+          -0.0004256266503967647,
+          -0.05707464001256419
+        ],
+        [
+          6.766241683570577e-05,
+          -0.9998193151029193,
+          0.008449831364791036
+        ],
+        [
+          -0.05707619940321596,
+          -0.008439755228414331,
+          -0.9982254688687067
+        ]
+      ],
+      "affine_c": [
+        1.8016108443783192e-20,
+        -5.458596537740351e-19,
+        2.1279274638648861e-19
+      ],
+      "f_avg": 0.33337994442855745,
+      "unitarity": {
+        "unitarity": 0.9998008266761601,
+        "translation_norm": 5.861468200856097e-19,
+        "unital": true,
+        "note": "c≠0（T1 类非 unital 通道）时 Tr(M†M)/3 为广义估计"
+      },
+      "coherent": {
+        "coherent_angle_rad": 3.1331430892968224,
+        "coherent_axis": [
+          -0.9995923026459587,
+          8.953666052365052e-05,
+          0.0285520660222089
+        ],
+        "singular_values": [
+          0.9999550462775482,
+          0.9998914470089084,
+          0.9998547292736963
+        ],
+        "contraction_anisotropy": 0.00010031700385182418
+      },
+      "applicability": {
+        "affine_residual": 2.57072141351955e-16,
+        "affine_ok": true,
+        "unital": true,
+        "mixture_of_unitaries_tp": true,
+        "note": "条件自旋通道为幺正系综平均（TP+unital）时 F_avg=1/2+Tr(M)/6 严格适用；含 Lindblad T1 时 c≠0，该值解释为 Haar 平均纯态保真度"
+      },
+      "n_realizations": 2000,
+      "survival": 1.0,
+      "f_avg_survival_weighted": 0.33337994442855745,
+      "f_avg_loss_detected_convention": 0.33337994442855745,
+      "conventions": {
+        "conditional_spin_channel": "以幸存为条件的自旋通道 PTM/F_avg",
+        "survival": "经典往返成功概率（Level 4 标签）",
+        "survival_weighted": "survival × F_avg_conditional",
+        "loss_detected": "把丢失计为返回失败 → 与 survival-weighted 数值一致，但语义为返回概率口径"
+      },
+      "bootstrap": {
+        "f_avg_ci_low": 0.3333779184892956,
+        "f_avg_ci_high": 0.33338217643280205,
+        "survival_ci_low": 1.0,
+        "survival_ci_high": 1.0,
+        "f_avg_survival_weighted_ci_low": 0.3333779184892956,
+        "f_avg_survival_weighted_ci_high": 0.33338217643280205,
+        "n_bootstrap": 2000,
+        "seed": 51200
+      },
+      "condition": "protocol_a|spin_echo|nominal",
+      "n_trajectories": 2000,
+      "dd_pulse_count": 1,
+      "free_vs_pulse_time": {
+        "free_s": 0.005633283881191337,
+        "pulse_s": 2.0316118808662795e-05
+      }
+    },
+    "protocol_a|xy4_per_long_move|nominal": {
+      "ptm_m": [
+        [
+          0.8719174163853569,
+          -0.42739858657841423,
+          -0.00014146977795290752
+        ],
+        [
+          0.4273967329226096,
+          0.8719174128140853,
+          5.182871801494699e-05
+        ],
+        [
+          0.00011000190675686219,
+          -0.00011863381079308901,
+          0.9999980266134826
+        ]
+      ],
+      "affine_c": [
+        -1.4166908387143818e-19,
+        -7.424616477180764e-19,
+        -2.4147350785597153e-18
+      ],
+      "f_avg": 0.9573054759688209,
+      "unitarity": {
+        "unitarity": 0.9619378589972816,
+        "translation_norm": 2.530269734096349e-18,
+        "unital": true,
+        "note": "c≠0（T1 类非 unital 通道）时 Tr(M†M)/3 为广义估计"
+      },
+      "coherent": {
+        "coherent_angle_rad": 0.4557619121732929,
+        "coherent_axis": [
+          -0.0001944430046277093,
+          -0.0002920191101704848,
+          0.9999999384583768
+        ],
+        "singular_values": [
+          0.9999980401177423,
+          0.9710358172402301,
+          0.9710339532627666
+        ],
+        "contraction_anisotropy": 0.028964086854975646
+      },
+      "applicability": {
+        "affine_residual": 4.468818198789197e-16,
+        "affine_ok": true,
+        "unital": true,
+        "mixture_of_unitaries_tp": true,
+        "note": "条件自旋通道为幺正系综平均（TP+unital）时 F_avg=1/2+Tr(M)/6 严格适用；含 Lindblad T1 时 c≠0，该值解释为 Haar 平均纯态保真度"
+      },
+      "n_realizations": 2000,
+      "survival": 1.0,
+      "f_avg_survival_weighted": 0.9573054759688209,
+      "f_avg_loss_detected_convention": 0.9573054759688209,
+      "conventions": {
+        "conditional_spin_channel": "以幸存为条件的自旋通道 PTM/F_avg",
+        "survival": "经典往返成功概率（Level 4 标签）",
+        "survival_weighted": "survival × F_avg_conditional",
+        "loss_detected": "把丢失计为返回失败 → 与 survival-weighted 数值一致，但语义为返回概率口径"
+      },
+      "bootstrap": {
+        "f_avg_ci_low": 0.9553623873192459,
+        "f_avg_ci_high": 0.9591541095175167,
+        "survival_ci_low": 1.0,
+        "survival_ci_high": 1.0,
+        "f_avg_survival_weighted_ci_low": 0.9553623873192459,
+        "f_avg_survival_weighted_ci_high": 0.9591541095175167,
+        "n_bootstrap": 2000,
+        "seed": 51200
+      },
+      "condition": "protocol_a|xy4_per_long_move|nominal",
+      "n_trajectories": 2000,
+      "dd_pulse_count": 8,
+      "free_vs_pulse_time": {
+        "free_s": 0.005491071049530697,
+        "pulse_s": 0.00016252895046930236
+      }
+    },
+    "protocol_a|xy16|nominal": {
+      "ptm_m": [
+        [
+          0.9894806324952127,
+          0.1324307030592772,
+          0.05809144634191017
+        ],
+        [
+          -0.13541377765943957,
+          0.9894815136545729,
+          0.05074295244723941
+        ],
+        [
+          -0.05076061112350376,
+          -0.058076305329835515,
+          0.9970167711283853
+        ]
+      ],
+      "affine_c": [
+        -5.3175056950275756e-18,
+        -1.3674246919966537e-17,
+        8.419191270074098e-19
+      ],
+      "f_avg": 0.9959964862130286,
+      "unitarity": {
+        "unitarity": 0.9999872574649568,
+        "translation_norm": 1.4695908391837708e-17,
+        "unital": true,
+        "note": "c≠0（T1 类非 unital 通道）时 Tr(M†M)/3 为广义估计"
+      },
+      "coherent": {
+        "coherent_angle_rad": 0.15508162405259288,
+        "coherent_axis": [
+          -0.3522577946088572,
+          0.35236403379880243,
+          -0.8670375042766838
+        ],
+        "singular_values": [
+          0.9999959967824744,
+          0.999994371421814,
+          0.9999905179243389
+        ],
+        "contraction_anisotropy": 5.4788581355103005e-06
+      },
+      "applicability": {
+        "affine_residual": 7.376807498182814e-16,
+        "affine_ok": true,
+        "unital": true,
+        "mixture_of_unitaries_tp": true,
+        "note": "条件自旋通道为幺正系综平均（TP+unital）时 F_avg=1/2+Tr(M)/6 严格适用；含 Lindblad T1 时 c≠0，该值解释为 Haar 平均纯态保真度"
+      },
+      "n_realizations": 2000,
+      "survival": 1.0,
+      "f_avg_survival_weighted": 0.9959964862130286,
+      "f_avg_loss_detected_convention": 0.9959964862130286,
+      "conventions": {
+        "conditional_spin_channel": "以幸存为条件的自旋通道 PTM/F_avg",
+        "survival": "经典往返成功概率（Level 4 标签）",
+        "survival_weighted": "survival × F_avg_conditional",
+        "loss_detected": "把丢失计为返回失败 → 与 survival-weighted 数值一致，但语义为返回概率口径"
+      },
+      "bootstrap": {
+        "f_avg_ci_low": 0.9959894996092375,
+        "f_avg_ci_high": 0.9960031787212594,
+        "survival_ci_low": 1.0,
+        "survival_ci_high": 1.0,
+        "f_avg_survival_weighted_ci_low": 0.9959894996092375,
+        "f_avg_survival_weighted_ci_high": 0.9960031787212594,
+        "n_bootstrap": 2000,
+        "seed": 51200
+      },
+      "condition": "protocol_a|xy16|nominal",
+      "n_trajectories": 2000,
+      "dd_pulse_count": 16,
+      "free_vs_pulse_time": {
+        "free_s": 0.005328542099061395,
+        "pulse_s": 0.0003250579009386047
+      }
+    },
+    "protocol_b|none|nominal": {
+      "ptm_m": [
+        [
+          0.3873201954141997,
+          -0.8455362474095017,
+          0.0
+        ],
+        [
+          0.8455362474095017,
+          0.3873201954141997,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "affine_c": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "f_avg": 0.7957733984713999,
+      "unitarity": {
+        "unitarity": 0.9099656529726907,
+        "translation_norm": 0.0,
+        "unital": true,
+        "note": "c≠0（T1 类非 unital 通道）时 Tr(M†M)/3 为广义估计"
+      },
+      "coherent": {
+        "coherent_angle_rad": 1.141246402531577,
+        "coherent_axis": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "singular_values": [
+          1.0,
+          0.9300260638600599,
+          0.9300260638600598
+        ],
+        "contraction_anisotropy": 0.06997393613994018
+      },
+      "applicability": {
+        "affine_residual": 2.0599841277224584e-16,
+        "affine_ok": true,
+        "unital": true,
+        "mixture_of_unitaries_tp": true,
+        "note": "条件自旋通道为幺正系综平均（TP+unital）时 F_avg=1/2+Tr(M)/6 严格适用；含 Lindblad T1 时 c≠0，该值解释为 Haar 平均纯态保真度"
+      },
+      "n_realizations": 512,
+      "survival": 1.0,
+      "f_avg_survival_weighted": 0.7957733984713999,
+      "f_avg_loss_detected_convention": 0.7957733984713999,
+      "conventions": {
+        "conditional_spin_channel": "以幸存为条件的自旋通道 PTM/F_avg",
+        "survival": "经典往返成功概率（Level 4 标签）",
+        "survival_weighted": "survival × F_avg_conditional",
+        "loss_detected": "把丢失计为返回失败 → 与 survival-weighted 数值一致，但语义为返回概率口径"
+      },
+      "bootstrap": {
+        "f_avg_ci_low": 0.7859474290990424,
+        "f_avg_ci_high": 0.8053600787073598,
+        "survival_ci_low": 1.0,
+        "survival_ci_high": 1.0,
+        "f_avg_survival_weighted_ci_low": 0.7859474290990424,
+        "f_avg_survival_weighted_ci_high": 0.8053600787073598,
+        "n_bootstrap": 2000,
+        "seed": 51200
+      },
+      "condition": "protocol_b|none|nominal",
+      "n_trajectories": 512,
+      "dd_pulse_count": 0,
+      "free_vs_pulse_time": {
+        "free_s": 0.0039536,
+        "pulse_s": 0.0
+      }
+    },
+    "protocol_b|xy4_per_long_move|nominal": {
+      "ptm_m": [
+        [
+          -0.33837763658242254,
+          -0.9361224702202202,
+          0.0001648625385542114
+        ],
+        [
+          0.9361208539715646,
+          -0.33837766562566624,
+          8.959498690734275e-05
+        ],
+        [
+          -2.6715481030147536e-05,
+          0.00018429781847762225,
+          0.9999982489709884
+        ]
+      ],
+      "affine_c": [
+        5.384870790011341e-18,
+        3.8850577847397234e-19,
+        7.770115569479442e-19
+      ],
+      "f_avg": 0.5538738244604833,
+      "unitarity": {
+        "unitarity": 0.9938809899521347,
+        "translation_norm": 5.454495130134016e-18,
+        "unital": true,
+        "note": "c≠0（T1 类非 unital 通道）时 Tr(M†M)/3 为广义估计"
+      },
+      "coherent": {
+        "coherent_angle_rad": 1.917650527008963,
+        "coherent_axis": [
+          5.127162304653097e-05,
+          0.00010232364480068916,
+          0.9999999934505462
+        ],
+        "singular_values": [
+          0.9999982666835511,
+          0.9954018493057799,
+          0.995400218447299
+        ],
+        "contraction_anisotropy": 0.004598048236252095
+      },
+      "applicability": {
+        "affine_residual": 4.635204798410437e-16,
+        "affine_ok": true,
+        "unital": true,
+        "mixture_of_unitaries_tp": true,
+        "note": "条件自旋通道为幺正系综平均（TP+unital）时 F_avg=1/2+Tr(M)/6 严格适用；含 Lindblad T1 时 c≠0，该值解释为 Haar 平均纯态保真度"
+      },
+      "n_realizations": 512,
+      "survival": 1.0,
+      "f_avg_survival_weighted": 0.5538738244604833,
+      "f_avg_loss_detected_convention": 0.5538738244604833,
+      "conventions": {
+        "conditional_spin_channel": "以幸存为条件的自旋通道 PTM/F_avg",
+        "survival": "经典往返成功概率（Level 4 标签）",
+        "survival_weighted": "survival × F_avg_conditional",
+        "loss_detected": "把丢失计为返回失败 → 与 survival-weighted 数值一致，但语义为返回概率口径"
+      },
+      "bootstrap": {
+        "f_avg_ci_low": 0.5513809421131408,
+        "f_avg_ci_high": 0.5563029755395503,
+        "survival_ci_low": 1.0,
+        "survival_ci_high": 1.0,
+        "f_avg_survival_weighted_ci_low": 0.5513809421131408,
+        "f_avg_survival_weighted_ci_high": 0.5563029755395503,
+        "n_bootstrap": 2000,
+        "seed": 51200
+      },
+      "condition": "protocol_b|xy4_per_long_move|nominal",
+      "n_trajectories": 512,
+      "dd_pulse_count": 8,
+      "free_vs_pulse_time": {
+        "free_s": 0.0037910710495306973,
+        "pulse_s": 0.00016252895046930236
+      }
+    },
+    "protocol_a_no_lensing|xy4_per_long_move|lensing_off": {
+      "ptm_m": [
+        [
+          0.8691047484695014,
+          -0.4292288288095098,
+          -0.00010776361938899138
+        ],
+        [
+          0.42922796931772744,
+          0.8691047499334682,
+          0.00010509370683132592
+        ],
+        [
+          6.998972387207275e-05,
+          -0.0001761634136630846,
+          0.9999990437350783
+        ]
+      ],
+      "affine_c": [
+        1.818297393439233e-18,
+        -1.9154238380577235e-18,
+        6.143812310751192e-19
+      ],
+      "f_avg": 0.9563680903563412,
+      "unitarity": {
+        "unitarity": 0.9597194377852736,
+        "translation_norm": 2.7115527262963316e-18,
+        "unital": true,
+        "note": "c≠0（T1 类非 unital 通道）时 Tr(M†M)/3 为广义估计"
+      },
+      "coherent": {
+        "coherent_angle_rad": 0.4587349898793501,
+        "coherent_axis": [
+          -0.00031544501256297754,
+          -0.00021134292887739633,
+          0.9999999279143026
+        ],
+        "singular_values": [
+          0.9999990711802328,
+          0.9693198230940523,
+          0.9693189627524097
+        ],
+        "contraction_anisotropy": 0.030680108427823094
+      },
+      "applicability": {
+        "affine_residual": 4.501880389761957e-16,
+        "affine_ok": true,
+        "unital": true,
+        "mixture_of_unitaries_tp": true,
+        "note": "条件自旋通道为幺正系综平均（TP+unital）时 F_avg=1/2+Tr(M)/6 严格适用；含 Lindblad T1 时 c≠0，该值解释为 Haar 平均纯态保真度"
+      },
+      "n_realizations": 512,
+      "survival": 1.0,
+      "f_avg_survival_weighted": 0.9563680903563412,
+      "f_avg_loss_detected_convention": 0.9563680903563412,
+      "conventions": {
+        "conditional_spin_channel": "以幸存为条件的自旋通道 PTM/F_avg",
+        "survival": "经典往返成功概率（Level 4 标签）",
+        "survival_weighted": "survival × F_avg_conditional",
+        "loss_detected": "把丢失计为返回失败 → 与 survival-weighted 数值一致，但语义为返回概率口径"
+      },
+      "bootstrap": {
+        "f_avg_ci_low": 0.9521739491911421,
+        "f_avg_ci_high": 0.9603722490868083,
+        "survival_ci_low": 1.0,
+        "survival_ci_high": 1.0,
+        "f_avg_survival_weighted_ci_low": 0.9521739491911421,
+        "f_avg_survival_weighted_ci_high": 0.9603722490868083,
+        "n_bootstrap": 2000,
+        "seed": 51200
+      },
+      "condition": "protocol_a_no_lensing|xy4_per_long_move|lensing_off",
+      "n_trajectories": 512,
+      "dd_pulse_count": 8,
+      "free_vs_pulse_time": {
+        "free_s": 0.005491071049530697,
+        "pulse_s": 0.00016252895046930236
+      }
+    },
+    "protocol_a|xy4_per_long_move|noise_quasistatic": {
+      "ptm_m": [
+        [
+          0.8183183712749986,
+          -0.40901700932655316,
+          -0.00013533073491635682
+        ],
+        [
+          0.4090151565689829,
+          0.8183183671224097,
+          4.263839403146452e-05
+        ],
+        [
+          0.00010986912677505908,
+          -0.00012709019430485232,
+          0.999998027102507
+        ]
+      ],
+      "affine_c": [
+        3.7359980560591825e-18,
+        1.176187691802792e-18,
+        2.530383310291502e-18
+      ],
+      "f_avg": 0.9394391275833192,
+      "unitarity": {
+        "unitarity": 0.8912914405073766,
+        "translation_norm": 4.6630396372139225e-18,
+        "unital": true,
+        "note": "c≠0（T1 类非 unital 通道）时 Tr(M†M)/3 为广义估计"
+      },
+      "coherent": {
+        "coherent_angle_rad": 0.4635077292447379,
+        "coherent_axis": [
+          -0.00019444631176908153,
+          -0.0002933557463925448,
+          0.999999938066517
+        ],
+        "singular_values": [
+          0.9999980421731869,
+          0.9148446983861145,
+          0.9148428362329467
+        ],
+        "contraction_anisotropy": 0.08515520594024018
+      },
+      "applicability": {
+        "affine_residual": 4.456497426945024e-16,
+        "affine_ok": true,
+        "unital": true,
+        "mixture_of_unitaries_tp": true,
+        "note": "条件自旋通道为幺正系综平均（TP+unital）时 F_avg=1/2+Tr(M)/6 严格适用；含 Lindblad T1 时 c≠0，该值解释为 Haar 平均纯态保真度"
+      },
+      "n_realizations": 2000,
+      "survival": 1.0,
+      "f_avg_survival_weighted": 0.9394391275833192,
+      "f_avg_loss_detected_convention": 0.9394391275833192,
+      "conventions": {
+        "conditional_spin_channel": "以幸存为条件的自旋通道 PTM/F_avg",
+        "survival": "经典往返成功概率（Level 4 标签）",
+        "survival_weighted": "survival × F_avg_conditional",
+        "loss_detected": "把丢失计为返回失败 → 与 survival-weighted 数值一致，但语义为返回概率口径"
+      },
+      "bootstrap": {
+        "f_avg_ci_low": 0.9363588284913313,
+        "f_avg_ci_high": 0.9422813044274349,
+        "survival_ci_low": 1.0,
+        "survival_ci_high": 1.0,
+        "f_avg_survival_weighted_ci_low": 0.9363588284913313,
+        "f_avg_survival_weighted_ci_high": 0.9422813044274349,
+        "n_bootstrap": 2000,
+        "seed": 51200
+      },
+      "condition": "protocol_a|xy4_per_long_move|noise_quasistatic",
+      "n_trajectories": 2000,
+      "dd_pulse_count": 8,
+      "free_vs_pulse_time": {
+        "free_s": 0.005491071049530697,
+        "pulse_s": 0.00016252895046930236
+      }
+    },
+    "protocol_a|xy4_per_long_move|noise_ou": {
+      "ptm_m": [
+        [
+          0.8703964863922421,
+          -0.42539390268694605,
+          -0.00017807753921770712
+        ],
+        [
+          0.42539547040462955,
+          0.8703964705485978,
+          9.99357618686489e-05
+        ],
+        [
+          0.0001617940128907386,
+          -0.0001544662668207097,
+          0.9999945295285116
+        ]
+      ],
+      "affine_c": [
+        2.052864533456472e-18,
+        3.882600259815427e-18,
+        -5.763907869512259e-18
+      ],
+      "f_avg": 0.9567979144115586,
+      "unitarity": {
+        "unitarity": 0.9590301629914233,
+        "translation_norm": 7.246479938457542e-18,
+        "unital": true,
+        "note": "c≠0（T1 类非 unital 通道）时 Tr(M†M)/3 为广义估计"
+      },
+      "coherent": {
+        "coherent_angle_rad": 0.4545964698728496,
+        "coherent_axis": [
+          -0.00028347100642490654,
+          -0.0003870305246574429,
+          0.9999998849257741
+        ],
+        "singular_values": [
+          0.9999945707209872,
+          0.9687890153393848,
+          0.9687874850866748
+        ],
+        "contraction_anisotropy": 0.031207085634312404
+      },
+      "applicability": {
+        "affine_residual": 4.444532440702436e-16,
+        "affine_ok": true,
+        "unital": true,
+        "mixture_of_unitaries_tp": true,
+        "note": "条件自旋通道为幺正系综平均（TP+unital）时 F_avg=1/2+Tr(M)/6 严格适用；含 Lindblad T1 时 c≠0，该值解释为 Haar 平均纯态保真度"
+      },
+      "n_realizations": 2000,
+      "survival": 1.0,
+      "f_avg_survival_weighted": 0.9567979144115586,
+      "f_avg_loss_detected_convention": 0.9567979144115586,
+      "conventions": {
+        "conditional_spin_channel": "以幸存为条件的自旋通道 PTM/F_avg",
+        "survival": "经典往返成功概率（Level 4 标签）",
+        "survival_weighted": "survival × F_avg_conditional",
+        "loss_detected": "把丢失计为返回失败 → 与 survival-weighted 数值一致，但语义为返回概率口径"
+      },
+      "bootstrap": {
+        "f_avg_ci_low": 0.9547259673131412,
+        "f_avg_ci_high": 0.9587051805143205,
+        "survival_ci_low": 1.0,
+        "survival_ci_high": 1.0,
+        "f_avg_survival_weighted_ci_low": 0.9547259673131412,
+        "f_avg_survival_weighted_ci_high": 0.9587051805143205,
+        "n_bootstrap": 2000,
+        "seed": 51200
+      },
+      "condition": "protocol_a|xy4_per_long_move|noise_ou",
+      "n_trajectories": 2000,
+      "dd_pulse_count": 8,
+      "free_vs_pulse_time": {
+        "free_s": 0.005491071049530697,
+        "pulse_s": 0.00016252895046930236
+      }
+    }
+  },
+  "conventions_note": "conditional PTM 未把损失归一化；survival 与 survival-weighted 并列报告",
+  "assumed_noise_variants": [
+    "noise_quasistatic (20 Hz, assumed)",
+    "noise_ou (10 Hz, τ=200 μs, assumed)"
+  ]
+}

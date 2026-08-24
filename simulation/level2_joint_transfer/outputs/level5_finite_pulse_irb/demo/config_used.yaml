@@ -1,0 +1,148 @@
+level5:
+  name: finite_pulse_irb_array
+upstream:
+  level4_output: auto_discover
+  require_sha256_manifest: true
+  trajectory_mode: frozen_replay
+  joint_validation_shots: 128
+  level4_config: configs/level4_roundtrip.yaml
+  run_upstream_tests_in_preflight: true
+qubit:
+  basis: cs133_clock_states
+  drive_rabi_frequency_kHz: 24.611
+  drive_detuning_Hz: 0.0
+  eta_slm: 0.00013
+  eta_aod: 0.00013
+  eta_sensitivity:
+  - 0.00012
+  - 0.00015
+  - 0.00016
+  rotating_wave_approximation: true
+  include_state_dependent_force: false
+  include_bloch_siegert: false
+quantum_integration:
+  method: analytic_su2_midpoint
+  max_dt_us: 0.1
+  convergence_dt_us:
+  - 0.1
+  - 0.05
+  - 0.025
+  dt_free_us: 0.25
+  dt_pulse_us: 0.1
+  norm_tolerance: 1.0e-10
+  density_matrix_min_eigenvalue_tolerance: -1.0e-10
+  n_sub_pulse: 4
+pulses:
+  default_family: scrofulous
+  envelope: square
+  cosine_edge_us: 0.0
+  include_amplitude_error: false
+  amplitude_error_rms: 0.0
+  include_phase_error: false
+dd:
+  modes:
+  - none
+  - spin_echo
+  - xy4
+  - xy4_per_long_move
+  - xy16
+  transport_mode: xy4_per_long_move
+  transformed_clifford_frame: false
+  pulses_are_finite: true
+noise:
+  nominal_enabled: false
+  detuning_model: none
+  amplitude_model: none
+  psd_model: none
+  psd_spec: []
+  quasistatic_detuning_rms_hz: 0.0
+  ou_rms_hz: 0.0
+  ou_tau_us: 200.0
+  common_fraction: 0.0
+  noise_seed: 51999
+  provenance: assumed_unless_calibrated
+paper_coherence_anchor:
+  enabled: true
+  trap_depth_uK: 55.0
+  temperature_uK: 4.3
+  ensemble_t2star_ms: 14.0
+  site_t2star_ms: 25.5
+  xy16_t2_s: 12.6
+  use_for_calibration: false
+  note: 独立 paper-anchor 对照配置；与 Level 4 transport 协议参数不同，不用于拟合 nominal 自由参数
+channel_characterization:
+  classical_trajectories: 2000
+  dev_trajectories: 256
+  bootstrap_samples: 2000
+  input_states:
+  - z_plus
+  - z_minus
+  - x_plus
+  - x_minus
+  - y_plus
+  - y_minus
+reference_rb:
+  lengths:
+  - 1
+  - 2
+  - 4
+  - 8
+  - 16
+  - 32
+  - 64
+  - 128
+  - 256
+  - 512
+  - 1000
+  sequences_per_length: 72
+  dev_sequences_per_length: 8
+  sequence_seed: 51001
+  noise_realizations: 1
+interleaved_rb:
+  total_cliffords: 80
+  interleaved_counts:
+  - 0
+  - 1
+  - 2
+  - 4
+  - 8
+  - 12
+  - 20
+  - 30
+  - 40
+  - 60
+  - 80
+  sequences_per_count: 72
+  dev_sequences_per_count: 8
+  operation: full_pickup_transport_dropoff_roundtrip
+  sequence_seed: 51002
+  noise_realizations: 1
+array:
+  development_sites: 8
+  validation_sites: 47
+  extension_sites: 195
+  site_seed: 51003
+  trap_depth_relative_std: 0.0
+  rabi_relative_std: 0.0
+  static_detuning_std_Hz: 0.0
+  eta_relative_std: 0.0
+  spatial_noise_correlation: 0.0
+  paper_scenario_trap_depth_relative_std: 0.114
+trajectory_pool:
+  seed: 50900
+  chunk_shots: 250
+  dt_classical_us: 0.1
+  record_stride_us: 0.5
+  full_pool_trajectories: 2000
+  secondary_pool_trajectories: 1000
+statistics:
+  bootstrap_samples: 2000
+  hierarchical_bootstrap: true
+  confidence_level: 0.95
+sensitivity:
+  trajectories: 500
+output:
+  directory: outputs/level5_finite_pulse_irb/demo
+  save_sequence_resolved_data: true
+  save_site_resolved_data: true
+  save_noise_realizations_for_replay: true

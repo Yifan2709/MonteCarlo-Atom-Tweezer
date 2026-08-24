@@ -1,0 +1,496 @@
+{
+  "all_passed": true,
+  "critical_checks": [
+    "existing_level0_4_tests",
+    "build_install_import",
+    "level4_trajectory_validation",
+    "frozen_vs_joint_phase",
+    "analytic_rabi",
+    "analytic_ramsey",
+    "quasistatic_echo_limit",
+    "state_norm_dm_checks",
+    "su2_unitarity",
+    "bare_pulse_target",
+    "scrofulous_target_robust",
+    "pulse_envelope_area",
+    "dd_pulse_order",
+    "level4_instantaneous_limit",
+    "psd_normalization",
+    "common_local_correlation",
+    "clifford_group_full",
+    "ideal_rb_returns",
+    "known_ptm_favg",
+    "reference_rb_recovery",
+    "interleaved_recovery",
+    "loss_conditional_separation",
+    "timestep_convergence",
+    "boundary_no_double_integration",
+    "seed_isolation_replay",
+    "validation_frozen_not_calibrated"
+  ],
+  "blocking_checks": [
+    "existing_level0_4_tests",
+    "build_install_import",
+    "level4_trajectory_validation",
+    "frozen_vs_joint_phase",
+    "analytic_rabi",
+    "analytic_ramsey",
+    "quasistatic_echo_limit",
+    "state_norm_dm_checks",
+    "su2_unitarity",
+    "bare_pulse_target",
+    "scrofulous_target_robust",
+    "pulse_envelope_area",
+    "dd_pulse_order",
+    "level4_instantaneous_limit",
+    "psd_normalization",
+    "common_local_correlation",
+    "clifford_group_full",
+    "ideal_rb_returns",
+    "known_ptm_favg",
+    "reference_rb_recovery",
+    "interleaved_recovery",
+    "loss_conditional_separation",
+    "timestep_convergence",
+    "boundary_no_double_integration",
+    "seed_isolation_replay",
+    "validation_frozen_not_calibrated"
+  ],
+  "dev_skipped_checks": [],
+  "checks": {
+    "existing_level0_4_tests": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "returncode": 0,
+        "summary_tail": [
+          "",
+          "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html",
+          "159 passed, 13 warnings in 1208.23s (0:20:08)"
+        ]
+      },
+      "elapsed_s": 1208.703
+    },
+    "build_install_import": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "clean_process_import": true,
+        "cli_help_exit": 0,
+        "pythonpath_removed": true,
+        "module_entry_stderr": ""
+      },
+      "elapsed_s": 0.777
+    },
+    "level4_trajectory_validation": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "manifest_entries": 15,
+        "pool_name": "protocol_a",
+        "n_traj": 2000,
+        "n_samples": 11308,
+        "uniform_grid": true,
+        "covers_protocol_duration": true,
+        "survival_rate": 1.0,
+        "sha256": "43be8ebdb86badc1",
+        "arrays_finite": true
+      },
+      "elapsed_s": 0.132
+    },
+    "frozen_vs_joint_phase": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "joint_vs_engine_final_position_max_dev_m": 0.0,
+        "joint_vs_engine_phase_max_dev_rad": 6.643574579356937e-13,
+        "n_joint_shots": 128,
+        "replay_vs_level4_phase_max_abs_dev_rad": 0.0015296874288601714,
+        "replay_vs_level4_phase_rms_dev_rad": 0.0014700434798316211,
+        "tolerance_rad": 0.005,
+        "n_pool_traj": 2000
+      },
+      "elapsed_s": 10.098
+    },
+    "analytic_rabi": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "numeric": 0.14644660940671372,
+        "analytic": 0.14644660940672624,
+        "abs_dev": 1.251776460264864e-14
+      },
+      "elapsed_s": 0.009
+    },
+    "analytic_ramsey": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "numeric": 9.869571931164778e-06,
+        "analytic": 9.869571931435076e-06,
+        "abs_dev": 2.702983778642143e-16
+      },
+      "elapsed_s": 0.0
+    },
+    "quasistatic_echo_limit": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "return_probability": 1.0000000000000004,
+        "expected": 1.0,
+        "note": "quasistatic Δ 下 echo 完全回聚（数值极限）"
+      },
+      "elapsed_s": 0.0
+    },
+    "state_norm_dm_checks": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "statevector": {
+          "finite": true,
+          "norm_max_abs_deviation": 1.1102230246251565e-16,
+          "norm_ok": true
+        },
+        "density_matrix": {
+          "trace_deviation": 0.0,
+          "hermiticity_max_deviation": 0.0,
+          "min_eigenvalue": 0.35857864376269055,
+          "positive": true,
+          "trace_preserved": true,
+          "hermitian": true
+        }
+      },
+      "elapsed_s": 0.0
+    },
+    "su2_unitarity": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "max_unitarity_error": 2.220446049250313e-16
+      },
+      "elapsed_s": 0.0
+    },
+    "bare_pulse_target": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "worst_deviation_from_target": 2.7755575615628987e-16
+      },
+      "elapsed_s": 0.007
+    },
+    "scrofulous_target_robust": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "instantaneous_match_dev": 3.1205194352401906e-15,
+        "finite_pulse_dev": 1.4412958116823967e-15,
+        "min_robustness_gain_vs_bare_eps5pct": 13.720245808647848,
+        "arcsinc_out_of_branch_raises": true,
+        "pi_over_2_area_pi_units": 2.639902003580675,
+        "paper_anchor_area_pi_units": 2.02,
+        "note": "SCROFULOUS 面积与论文 2.02π 平均锚点同量级；本仓库 decomposition 的平均面积另行统计"
+      },
+      "elapsed_s": 0.008
+    },
+    "pulse_envelope_area": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "rows": [
+          {
+            "envelope": "square",
+            "duration_us": 10.158059404331397,
+            "area_integral_s": 1.0158059404331397e-05
+          },
+          {
+            "envelope": "cosine_edge",
+            "duration_us": 10.158059404331397,
+            "area_integral_s": 9.158059404322749e-06
+          }
+        ],
+        "note": "cosine 边沿包络面积小于方波（峰值补偿）"
+      },
+      "elapsed_s": 0.085
+    },
+    "dd_pulse_order": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "counts": {
+          "none": 0,
+          "spin_echo": 1,
+          "xy4": 4,
+          "xy8": 8,
+          "xy16": 16
+        },
+        "spin_echo_center_us": [
+          39.8419
+        ],
+        "xy16_start_times_us_first4": [
+          -7.0331,
+          -0.7831,
+          5.4669,
+          11.7169
+        ]
+      },
+      "elapsed_s": 0.0
+    },
+    "level4_instantaneous_limit": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "max_abs_dev_rad": 0.0,
+        "note": "DD=none 时瞬时极限与 replay 相位一致"
+      },
+      "elapsed_s": 0.007
+    },
+    "psd_normalization": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "variance_ratio": 0.9999500017583867,
+        "median_relative_psd_error": 0.0073432311108618835,
+        "seed_reproducible": true,
+        "seed_independent": true,
+        "ou_autocorr_max_dev": 0.008199187295733323,
+        "nyquist_hz": 500000.0
+      },
+      "elapsed_s": 0.053
+    },
+    "common_local_correlation": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "target_rho": 0.6,
+        "mean_off_diagonal": 0.5980413147950042,
+        "off_diagonal_std": 0.008338598487138638
+      },
+      "elapsed_s": 0.001
+    },
+    "clifford_group_full": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "group_checks": {
+          "n_elements": 24,
+          "unique": true,
+          "closure": true,
+          "inverse_ok": true,
+          "pauli_conjugation_signed": true,
+          "ideal_realization_matches": true
+        },
+        "sampler_chi2_24bins": 23.947000000000003,
+        "transformed_frame_validation": {
+          "passed": true,
+          "n_trials": 100,
+          "issues": [],
+          "note": "共轭轴 + Hadamard 等价基变换校验；通过也不等于复现论文 transformed Clifford frame 实验技术"
+        },
+        "transformed_frame_enabled": false
+      },
+      "elapsed_s": 0.006
+    },
+    "ideal_rb_returns": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "n_random_sequences": 30,
+        "all_return_probability_1": true
+      },
+      "elapsed_s": 0.001
+    },
+    "known_ptm_favg": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "depolarizing": {
+          "p": 0.1,
+          "f_avg": 0.95,
+          "f_avg_exact": 0.95,
+          "match": true
+        },
+        "dephasing": {
+          "p": 0.2,
+          "f_avg": 0.9333333333333333,
+          "f_avg_exact": 0.9333333333333333,
+          "match": true
+        },
+        "rotation_reconstruction_error": 3.3306690738754696e-16,
+        "rotation_f_avg": 0.9851121630418687,
+        "rotation_f_avg_exact": 0.9851121630418685,
+        "note": "F_avg=1/2+Tr(M)/6 对 TP-unital 通道严格"
+      },
+      "elapsed_s": 0.0
+    },
+    "reference_rb_recovery": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "p_true": 0.998,
+        "p_recovered": 0.998033257168789
+      },
+      "elapsed_s": 0.005
+    },
+    "interleaved_recovery": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "p_move_true": 0.999,
+        "f_avg_recovered": 0.9990641858720766,
+        "fit_params": {
+          "A": 0.397136718925101,
+          "p": 0.997629307558281,
+          "B": 0.5499999999999999
+        }
+      },
+      "elapsed_s": 0.002
+    },
+    "loss_conditional_separation": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "survival": 0.8,
+        "conditional_f_avg": 0.99,
+        "survival_weighted": 0.792,
+        "loss_detected": 0.792,
+        "note": "非 TP 损失映射不归一化；四口径并列报告"
+      },
+      "elapsed_s": 0.0
+    },
+    "timestep_convergence": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "rows": [
+          {
+            "dt_us": 0.1,
+            "dt_free_us": 0.5,
+            "mean_bloch_z": 0.9999972207868555
+          },
+          {
+            "dt_us": 0.05,
+            "dt_free_us": 0.25,
+            "mean_bloch_z": 0.9999972207427271,
+            "phase_dev_rad": 4.4128367626683485e-11,
+            "return_dev": -2.206412830219051e-11,
+            "fidelity_dev": -2.206412830219051e-11
+          },
+          {
+            "dt_us": 0.025,
+            "dt_free_us": 0.125,
+            "mean_bloch_z": 0.9999972207339524,
+            "phase_dev_rad": 5.290312632411087e-11,
+            "return_dev": -2.6451507650904205e-11,
+            "fidelity_dev": -2.6451507650904205e-11
+          }
+        ],
+        "worst_dev_vs_0.10us": 5.290312632411087e-11,
+        "note": "0.10/0.05/0.025 μs 子步结果一致（容差 5e-3）→ 生产 dt_pulse=0.10 足够"
+      },
+      "elapsed_s": 0.348
+    },
+    "boundary_no_double_integration": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "n_boundary_points": 18,
+        "min_gap_s": 2.031611880866282e-05,
+        "covers_full_protocol": true,
+        "pulses_do_not_cross_segment_boundaries": true,
+        "n_pulses": 8
+      },
+      "elapsed_s": 0.0
+    },
+    "seed_isolation_replay": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "seed_pools": {
+          "unit_test_seed_space": 51000,
+          "noise_calibration_pool": 51100,
+          "channel_validation_pool": 51200,
+          "reference_rb_pool": 51300,
+          "interleaved_rb_pool": 51400,
+          "site_validation_pool": 51500,
+          "sensitivity_pool": 51600
+        },
+        "pools_unique": true,
+        "reference_sequences_replay": true,
+        "irb_sequences_replay": true
+      },
+      "elapsed_s": 0.0
+    },
+    "validation_frozen_not_calibrated": {
+      "passed": true,
+      "critical": true,
+      "detail": {
+        "frozen_design": {
+          "frozen_before_formal_rb": true,
+          "reference_rb_lengths": [
+            1,
+            2,
+            4,
+            8,
+            16,
+            32,
+            64,
+            128,
+            256,
+            512,
+            1000
+          ],
+          "irb_counts": [
+            0,
+            1,
+            2,
+            4,
+            8,
+            12,
+            20,
+            30,
+            40,
+            60,
+            80
+          ],
+          "sequences_per_condition": 72,
+          "sites": 47,
+          "fit_windows": "全部长度 / 全部 M（预注册）",
+          "calibration_pools_used": [],
+          "validation_pools": [
+            "reference_rb_pool",
+            "interleaved_rb_pool",
+            "site_validation_pool"
+          ]
+        },
+        "note": "无噪声校准使用 validation observables；anchor 仅作对照，不用于拟合"
+      },
+      "elapsed_s": 0.0
+    }
+  },
+  "elapsed_s_total": 1220.2,
+  "dt_convergence": {
+    "rows": [
+      {
+        "dt_us": 0.1,
+        "dt_free_us": 0.5,
+        "mean_bloch_z": 0.9999972207868555
+      },
+      {
+        "dt_us": 0.05,
+        "dt_free_us": 0.25,
+        "mean_bloch_z": 0.9999972207427271,
+        "phase_dev_rad": 4.4128367626683485e-11,
+        "return_dev": -2.206412830219051e-11,
+        "fidelity_dev": -2.206412830219051e-11
+      },
+      {
+        "dt_us": 0.025,
+        "dt_free_us": 0.125,
+        "mean_bloch_z": 0.9999972207339524,
+        "phase_dev_rad": 5.290312632411087e-11,
+        "return_dev": -2.6451507650904205e-11,
+        "fidelity_dev": -2.6451507650904205e-11
+      }
+    ]
+  }
+}

@@ -118,3 +118,72 @@ level4-roundtrip --config configs/level4_roundtrip.yaml --stage all \
 
 经典成功概率与 C_cond 不可等同论文 IRB fidelity；未包含有限脉冲、自旋
 哈密顿量、Clifford/IRB、Raman 散射与多原子相互作用（Level 5 范围）。
+
+
+## Level 4：端到端往返协议与半经典相干性
+
+`level4_roundtrip_coherence` 包在同一个三维势实现（SLM 三维高斯 + Level 3
+crossed-AOD 透镜势）上编排完整 pick-up—split—375 μm 对角长运输—54 μs 远端
+保持—返回—merge—drop-off 往返协议：
+
+```bash
+level4-roundtrip --config configs/level4_roundtrip.yaml --stage all \
+  --output-dir outputs/level4_end_to_end_roundtrip/demo
+```
+
+- **Protocol A**（论文 Extended Data Fig. 10e 时序锚点）：100+850+400+1450
+  +54+1450+400+850+100 μs，SLM 180→60→180 μK、AOD 0→280→0 μK，
+  smootherstep 深度 ramp（模型假设）；**Protocol B**：冻结 Level 2
+  `best_waveform.yaml` 的时间反向 pickup + 正向 dropoff（自带 2.4 μm 短
+  移动，不重复 split/merge）+ Level 3 冻结 v_s 长运输，SLM 恒 140 μK；
+- 上游产物（Level 2 波形/指标、Level 3 指标/配置）以 SHA-256 冻结进
+  `upstream_manifest.json`，参数来源逐项标注（论文锚点/冻结/假设）；
+- checkpoint basin 归属（`bound_to_slm/bound_to_aod/shared_or_ambiguous/
+  unbound`，连线最低点+势垒+相空间可达性）、first-failure 状态机、
+  absorbing 与非吸收生存、recaptured 区分；
+- 分段功-能账本（SLM 深度功/AOD 深度功/移动功/lensing 偏移功四通道，
+  ΔE=W_ext+R_W 逐段校验）；
+- 半经典差分光移相位 φ=∫y(t)·(ηU)/ħ dt 以 A_SLM/A_AOD 分离累积（η 线性
+  可重算），理想瞬时 none/spin-echo/XY4 toggling（脉冲自动避开网格与分段
+  边界），条件相干对比度与 usable coherent fraction；
+- preflight 20 项（含 Level 0-3 全部测试、Level 2/3 三维回归、控制时间
+  反演到机器精度、0.10/0.05/0.025 μs 收敛）通过后才开放 2000-shot
+  validation；500-shot×10-round 重复、128-shot×40-round 长尾、8 项消融、
+  温度/深度/对准/lensing/η/噪声/脉冲时序敏感性。
+
+## Level 5：有限脉冲单比特动力学、噪声谱与多站点 RB/IRB
+
+`level5_finite_pulse_irb` 包把内部态升级为旋转框架下有限时长微波脉冲驱动
+的 ^133Cs 钟态量子比特（`H=ħ/2[Δσ_z+Ω(cosφσ_x+sinφσ_y)]`，RWA），在
+Level 4 冻结轨迹上执行单通道 PTM 表征、reference RB 与
+transport-interleaved RB（论文 Fig. 5c Methods 设计）：
+
+```bash
+level5-finite-pulse-irb --config configs/level5_finite_pulse_irb.yaml \
+  --stage all --output-dir outputs/level5_finite_pulse_irb/demo
+```
+
+- Rabi 锚点 Ω₀=2π×24.611 kHz（论文 Fig. 4a）；η_SLM=η_AOD=1.3e-4；
+  nominal 噪声关闭（避免把假设参数伪装成实验输入）；
+- 24 元素单比特 Clifford 群（规范型、唯一性/封闭/逆/Pauli 共轭自检），
+  Z-X-Z-X-Z 分解，bare 与 SCROFULOUS 两种脉冲实现；SCROFULOUS 按论文
+  Methods 公式逐段构造（sinc=sin(x)/x，[π/2,π] 根分支），平均面积
+  2.28π/Clifford（论文平均锚点 2.02π）；
+- 有限脉冲 DD（none/spin_echo/XY4/XY8/XY16/transport-aware XY4），
+  transport XY4 在 outbound/inbound 长移动段各放一个对称块；transformed
+  Clifford frame 模式默认关闭；
+- 6 条冻结轨迹池（protocol_a/static_idle 各 2000 条，protocol_b/
+  transfer/transport/no-lensing 各 1000 条）以 NPZ 缓存，survival 标签
+  来自 Level 4 引擎（不修改）；frozen replay 与 joint（联合经典-自旋）
+  两种模式，joint 一致性在 preflight 中验证；
+- 17 个通道条件的 survival-conditioned PTM（六输入态、bootstrapped CI）；
+  reference RB（n=1..1000，72 序列/点 × 47 站点，SCROFULOUS 门）与
+  IRB（N=80，M∈{0..80}，72 strings × 47 站点，transport XY4），
+  survival/conditional/joint 三口径分开拟合；多模型（指数 vs stretched）
+  比较、非指数诊断、IRB 适用性判定；
+- 47/195 站点 ensemble（条件独立 + 可配置共同/局域噪声）；paper-coherence
+  anchor（T2*=14.0/25.5 ms、T2=12.6 s）仅作对照不校准；
+- preflight 26 项（含 Level 0-4 全部测试重跑、干净进程导入、解析
+  Rabi/Ramsey/echo、PSD/空间相关、Clifford、理想 RB、PTM 参数回收、
+  dt 收敛）全部通过才开放正式 RB；测试 159 项全部通过（Level 0-4 的
+  124 + Level 5 的 35）。

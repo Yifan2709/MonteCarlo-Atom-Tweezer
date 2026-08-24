@@ -1,0 +1,46 @@
+frozen_at: before_formal_rb
+reference_rb:
+  lengths:
+  - 1
+  - 2
+  - 4
+  - 8
+  - 16
+  - 32
+  - 64
+  - 128
+  - 256
+  - 512
+  - 1000
+  sequences_per_length: 72
+  seed: 51001
+interleaved_rb:
+  N: 80
+  M_values:
+  - 0
+  - 1
+  - 2
+  - 4
+  - 8
+  - 12
+  - 20
+  - 30
+  - 40
+  - 60
+  - 80
+  sequences_per_count: 72
+  operation: full_pickup_transport_dropoff_roundtrip
+  seed: 51002
+sites:
+  validation: 47
+  extension: 195
+  seed: 51003
+fit_windows:
+  reference: 全部预注册长度
+  irb: 全部预注册 M
+noise_realizations:
+  reference: 1
+  interleaved: 1
+seed_pools: reference_rb_pool / interleaved_rb_pool / site_validation_pool 与 calibration
+  池分离
+note: 设计先于数据冻结；不得依据 formal 结果调参重跑
