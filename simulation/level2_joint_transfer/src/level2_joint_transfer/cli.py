@@ -116,7 +116,12 @@ def stage_optimize(cfg: Level2Config, output_dir: Path, plot_records: list) -> d
 
 
 def _write_waveforms_csv(cfg: Level2Config, specs: dict, physics: dict, output_dir: Path):
-    """三个主波形在公共时间轴上的密集波形表及导数。"""
+    """三个主波形在公共时间轴上的密集波形表及导数。
+
+    直接在公共时间轴 times 上求值（各波形类对 t 超出 [0,T] 冻结端点值）。
+    不得改用 dense_table(len(times))：它按各自时长生成数值，仅长度对齐会把
+    短于 max_duration 的波形整体拉伸到公共时间轴上。
+    """
     max_duration = max(build_waveform(dict(spec, name=n), physics).duration_s
                        for n, spec in specs.items())
     times = np.linspace(0.0, max_duration, 3001)
@@ -125,15 +130,19 @@ def _write_waveforms_csv(cfg: Level2Config, specs: dict, physics: dict, output_d
     }
     for name, spec in specs.items():
         waveform = build_waveform(dict(spec, name=name), physics)
-        table = waveform.dense_table(len(times))
         prefix = name
-        columns[f"{prefix}_aod_center_m"] = table["aod_center_m"]
-        columns[f"{prefix}_aod_center_um"] = table["aod_center_m"] * 1e6
-        columns[f"{prefix}_aod_depth_J"] = table["aod_depth_J"]
-        columns[f"{prefix}_aod_depth_uK"] = table["aod_depth_J"] / 1.380649e-29 / 1e6
-        columns[f"{prefix}_center_velocity_m_per_s"] = table["center_velocity_m_per_s"]
-        columns[f"{prefix}_center_acceleration_m_per_s2"] = table["center_acceleration_m_per_s2"]
-        columns[f"{prefix}_depth_rate_J_per_s"] = table["depth_rate_J_per_s"]
+        center = np.asarray(waveform.center(times), dtype=float)
+        depth = np.asarray(waveform.depth(times), dtype=float)
+        columns[f"{prefix}_aod_center_m"] = center
+        columns[f"{prefix}_aod_center_um"] = center * 1e6
+        columns[f"{prefix}_aod_depth_J"] = depth
+        columns[f"{prefix}_aod_depth_uK"] = depth / 1.380649e-29
+        columns[f"{prefix}_center_velocity_m_per_s"] = np.asarray(
+            waveform.center_velocity(times), dtype=float)
+        columns[f"{prefix}_center_acceleration_m_per_s2"] = np.asarray(
+            waveform.center_acceleration(times), dtype=float)
+        columns[f"{prefix}_depth_rate_J_per_s"] = np.asarray(
+            waveform.depth_rate(times), dtype=float)
     save_csv(output_dir / "waveforms.csv", columns)
 
 
@@ -439,6 +448,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     if robustness_data is None and (output_dir / "robustness.csv").exists():
         with (output_dir / "robustness.csv").open(newline="", encoding="utf-8") as handle:
             robustness_data = {"rows": [dict(row) for row in csv.DictReader(handle)]}
+    # 单独重跑其他 stage 时，validation 段从上一份 metrics.json 恢复，不得被置空
+    if validate_data is None and isinstance(previous_metrics.get("validation"), dict):
+        restored = previous_metrics["validation"]
+        validate_data = {**restored, "states_meta": restored.get("initial_state_meta")}
     validation_section = None if not validate_data else {
         "summaries": validate_data["summaries"],
         "excitation_stats": validate_data["excitation_stats"],

@@ -7,13 +7,13 @@
 
 三通道（默认常数，均为 assumed）：
   recoil    P = 2·E_r·Γ_sc ≈ 0.36 μK/s（1061 nm、280 μK 两能级近似）
-  parametric dE/dt = Γ_par·ε_osc，Γ_par = (π²/4)ν₀²·S_RIN(2ν₀) ≈ 16 s⁻¹
+  parametric P = Γ_par·E_ref，Γ_par = (π²/4)·ν₀²·S_RIN(2ν₀) ≈ 16 /s，
+    E_ref = k_B·T_ref（缺省取初始系综温度）——远离 2ν₀ 参量共振的线性化常数功率
   pointing  P = m·ω₀⁴·S_x(ν₀)/8 ≈ 1.3 μK/s（S_x = 1 pm²/Hz @25.5 kHz）
 """
 from __future__ import annotations
 
 import json
-import math
 from pathlib import Path
 
 import matplotlib
@@ -36,7 +36,7 @@ from level2_joint_transfer.noise_heating import (build_mean_heating, heating_fro
 PROJECT_ROOT = Path(__file__).resolve().parent
 OUTPUT_DIR = PROJECT_ROOT / "outputs" / "level2_joint_transfer" / "demo_mean_heating"
 DT = 0.05e-6
-KELVIN_PER_JOULE_UK_FIELD = 1.380649e-29  # 记录 *_uK 字段实际为开尔文
+# 记录 *_uK 字段已统一为真实 μK（J / 1.380649e-29）
 
 
 def mechanism_panel(ax, physics):
@@ -60,23 +60,23 @@ def mechanism_panel(ax, physics):
     ax.plot(times * 1e6, 100.0 * times, "--", color="tab:blue", alpha=0.6,
             label="解析 P·t")
 
-    # 参量通道：Γ = 1000 s⁻¹，指数
-    rate = 1000.0
+    # 参量通道（线性化常数功率）：P = Γ_par·E_ref = 1000/s × k_B·10 μK
+    rate, t_ref_uK = 1000.0, 10.0
+    p_par = microkelvin_to_joule(rate * t_ref_uK)  # 10 mK/s
     _t, x, v, _a, _w = velocity_verlet_time_dependent_heating(
-        force, mass, 0.3e-6, 0.0, times, build_mean_heating(parametric_rate_s=rate), e_osc_fn)
-    osc = np.array([e_osc for e_osc in (0.5 * mass * v ** 2
-                                        + gaussian_potential(x, depth, waist, 0.0)
-                                        + depth)]) / microkelvin_to_joule(1.0)
-    ax.semilogy(times * 1e6, osc, label="参量 Γ=1000 s⁻¹（数值）", color="tab:red")
-    ax.semilogy(times * 1e6, osc[0] * np.exp(rate * times), "--", color="tab:red", alpha=0.6,
-                label="解析 ε₀·e^{Γt}")
+        force, mass, 0.2e-6, 0.0, times, build_mean_heating(parametric_power_w=p_par), e_osc_fn)
+    numeric_par = energy(x, v) - energy(x, v)[0]
+    ax.plot(times * 1e6, numeric_par, label="参量 P=Γ·E_ref=10 mK/s（数值）", color="tab:red")
+    ax.plot(times * 1e6, rate * t_ref_uK * times, "--", color="tab:red", alpha=0.6,
+            label="解析 P·t")
     ax.set_xlabel("时间 (μs)")
     ax.set_ylabel("能量 (μK)")
-    ax.set_title("机制：常数功率线性 / 参量指数（解析 vs 数值）")
+    ax.set_title("机制：三通道均为常数功率（线性；参量为 Γ·E_ref 线性化）")
     ax.legend(fontsize=8)
     ax.grid(alpha=0.3)
     return {"constant_power_max_rel_error": float(abs(numeric[-1] / (100.0 * times[-1]) - 1.0)),
-            "parametric_max_rel_error": float(abs(osc[-1] / (osc[0] * math.exp(rate * times[-1])) - 1.0))}
+            "parametric_linear_max_rel_error": float(abs(
+                numeric_par[-1] / (rate * t_ref_uK * times[-1]) - 1.0))}
 
 
 def duration_scan(cfg, physics, base_heating):
@@ -99,7 +99,7 @@ def duration_scan(cfg, physics, base_heating):
                 "mean_margin_captured": float(np.mean([r["capture_margin"] for r in records
                                                        if r["captured"]])) if any(r["captured"] for r in records) else None,
                 "mean_noise_injected_uK": float(np.mean(
-                    [r["noise_total_energy_uK"] for r in records]) * 1e6),
+                    [r["noise_total_energy_uK"] for r in records])),
             })
     return table
 
@@ -123,7 +123,7 @@ def hold_scan(cfg, physics, base_heating):
                 float(np.median([r["hold_peak_to_peak_energy_error_over_depth"] for r in captured]))
                 if captured else None,
             "mean_noise_total_at_hold_end_uK":
-                float(np.mean([r["noise_total_energy_uK"] for r in records]) * 1e6),
+                float(np.mean([r["noise_total_energy_uK"] for r in records])),
         })
     return rows
 
@@ -133,7 +133,8 @@ def main():
     physics = physics_from_config(cfg)
     base = heating_from_config(cfg) or build_mean_heating(
         recoil_power_w=2 * 64e-9 * microkelvin_to_joule(1.0) * 2.8,
-        parametric_rate_s=16.0, pointing_power_w=1.3 * microkelvin_to_joule(1.0))
+        parametric_power_w=16.0 * microkelvin_to_joule(5.0),
+        pointing_power_w=1.3 * microkelvin_to_joule(1.0))
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     fig, axes = plt.subplots(1, 3, figsize=(16.5, 4.6))
@@ -174,7 +175,7 @@ def main():
         "duration_scan": duration_table,
         "hold_scan": hold_rows,
         "notes": {
-            "units": "duration/hold 表中 mean_noise_injected_uK 已换算为真实 μK（×1e6）",
+            "units": "duration/hold 表中 mean_noise_injected_uK 即记录字段原值（真实 μK）",
             "provenance": "assumed_sensitivity_only，默认参数推导见 configs/level2_joint_transfer.yaml 注释",
         },
     }

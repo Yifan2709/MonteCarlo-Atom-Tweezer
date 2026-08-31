@@ -66,7 +66,7 @@ def plot_waveform_comparison(waveform_tables: dict, path: Path):
     for name, table in waveform_tables.items():
         t_us = table["time_s"] * 1e6
         axs[0].plot(t_us, table["aod_center_m"] * 1e6, label=name)
-        axs[1].plot(t_us, table["aod_depth_J"] / 1.380649e-29 / 1e6, label=name)
+        axs[1].plot(t_us, table["aod_depth_J"] / 1.380649e-29, label=name)
         arrays += [t_us, table["aod_center_m"], table["aod_depth_J"]]
         series += 1
     axs[0].set_ylabel("AOD center (um)")
@@ -94,7 +94,7 @@ def plot_potential_evolution(spec, physics, path, num_snapshots=6):
         depth = float(waveform.depth(t))
         total = (gaussian_potential(x, physics["slm_depth_j"], physics["slm_waist_m"], physics["slm_center_m"])
                  + gaussian_potential(x, depth, physics["aod_waist_m"], center))
-        ax.plot(x * 1e6, total / 1.380649e-29 / 1e6, label=f"t = {t*1e6:.0f} us")
+        ax.plot(x * 1e6, total / 1.380649e-29, label=f"t = {t*1e6:.0f} us")
         arrays.append(total)
         series += 1
     ax.axvline(0.0, color=C_SLM, ls=":", lw=1.2, label="SLM center")
@@ -244,7 +244,7 @@ def plot_optimization_history(history_rows: list, path):
 def plot_work_energy_balance(work_energy_results: dict, path):
     """多条轨迹的 DeltaE、移动功、深度功、总功与残差随时间。"""
     fig, ax = plt.subplots(figsize=(9.5, 5.6))
-    scale = 1.380649e-29 * 1e6
+    scale = 1.380649e-29
     colors = ["#4c72b0", "#dd8452"]
     arrays = []
     series = 0

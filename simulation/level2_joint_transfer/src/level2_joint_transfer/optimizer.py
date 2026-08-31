@@ -348,7 +348,7 @@ def select_and_freeze(cfg: Level2Config, stage1_rows, stage2_rows, spline_rows, 
     else:
         frozen = {
             "type": "spline",
-            "name": "overlapped_optimized_400us",
+            "name": "spline_optimized_400us",
             "duration_us": float(cfg.waveforms.optimized_duration_us),
             "control_s": [float(v) for v in best.get("control_s")],
             "center_values_m": [float(v) for v in best.get("center_values_m")],

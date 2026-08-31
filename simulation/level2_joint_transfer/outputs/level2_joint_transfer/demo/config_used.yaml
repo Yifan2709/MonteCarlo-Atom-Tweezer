@@ -61,6 +61,15 @@ robustness:
   timestep_subset_shots: 200
   bootstrap_samples: 10000
   bootstrap_seed: 21020
+noise_mean_heating:
+  enabled: false
+  trap_wavelength_nm: 1061.0
+  recoil_scattering_rate_s: null
+  parametric_rate_s: null
+  parametric_rin_psd_per_hz: 1.0e-08
+  pointing_heating_rate_uK_per_s: null
+  pointing_position_psd_m2_per_hz: 1.0e-24
+  reference_nu0_hz: null
 traps:
   slm:
     depth_uK: 140.0

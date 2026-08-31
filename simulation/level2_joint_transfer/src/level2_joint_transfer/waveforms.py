@@ -144,7 +144,7 @@ class SequentialWaveform(WaveformBase):
             "duration_us": self.duration_s * 1e6,
             "move_fraction": self.move_fraction,
             "initial_center_um": self.initial_center_m * 1e6,
-            "initial_depth_uK": self.initial_depth_j / 1.380649e-29 / 1e6,
+            "initial_depth_uK": self.initial_depth_j / 1.380649e-29,
         }
 
 

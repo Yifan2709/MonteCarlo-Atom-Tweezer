@@ -1,0 +1,67 @@
+level2b:
+  name: speed_limit_validation
+  level2_baseline_config: configs/level2_joint_transfer.yaml
+initial_ensemble:
+  main_temperature_uK: 5.0
+  scan_temperatures_uK:
+  - 5.0
+  - 10.0
+  - 20.0
+  scan_shots_per_point: 300
+  boundary_seed: 22002
+  scan_seed: 22001
+speed_scan:
+  pure_move_cruise_speeds_mm_per_s:
+  - 6
+  - 10
+  - 16
+  - 25
+  - 40
+  - 63
+  - 100
+  - 158
+  - 250
+  - 397
+  - 500
+  end_to_end_durations_us:
+  - 600
+  - 400
+  - 300
+  - 220
+  - 160
+  - 120
+  - 90
+  - 65
+  - 45
+  - 32
+  - 25
+  - 20
+  trapezoid_accel_fraction: 0.3
+  stop_when_capture_below: 0.9
+  capture_target_levels:
+  - 0.95
+  - 0.5
+follow_loss:
+  max_separation_over_waist: 2.0
+  max_excitation_over_depth: 0.5
+integration:
+  base_dt_us: 0.05
+  min_steps_per_move: 2000
+  max_step_displacement_over_waist: 0.01
+  post_transfer_hold_us: 100.0
+  work_energy_shots: 4
+comparison:
+  points_near_boundary:
+  - 0.5
+  - 0.75
+  - 1.0
+  - 1.5
+  - 2.0
+  profiles:
+  - trapezoid
+  - frozen_smootherstep
+  - trapezoid_fast_acc
+  comparison_shots: 300
+  bootstrap_samples: 5000
+output:
+  directory: /Users/imok/work/Monte Carlo/monte-carlo-for-aodslm/simulation/level2b_speed_modify/outputs/level2b_speed_limit/demo

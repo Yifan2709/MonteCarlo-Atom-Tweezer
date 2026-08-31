@@ -123,7 +123,7 @@ def run_preflight(cfg: Level2Config) -> dict:
     for name, spec in specs.items():
         run = ideal_run(spec, physics, cfg.integration.validation_dt_s, hold_s)
         ideal_results[name] = {
-            "final_slm_energy_over_depth": run["records"][0]["final_slm_energy_uK"] * 1.380649e-29 * 1e6 / physics["slm_depth_j"],
+            "final_slm_energy_over_depth": run["records"][0]["final_slm_energy_uK"] * 1.380649e-29 / physics["slm_depth_j"],
             "captured": run["records"][0]["captured"],
             "max_abs_residual_over_depth": run["work_energy"]["max_abs_residual_J"] / depth_scale,
         }

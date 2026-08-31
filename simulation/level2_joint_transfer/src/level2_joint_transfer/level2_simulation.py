@@ -73,24 +73,28 @@ def baseline_specs(cfg: Level2Config) -> dict:
 
 def sample_initial_states(cfg: Level2Config, seed: int, shots: int,
                           temperature_uK=None, aod_initial_center_m=None):
-    """复用 Level 1 简谐提议 + 束缚拒绝采样器，生成固定初态数组。"""
+    """复用 Level 1 简谐提议 + 束缚拒绝采样器，生成固定初态数组。
+
+    提议与拒绝都发生在 Level 1 采样器内部；通过 return_attempts 取回每次
+    接受实际消耗的提议数，attempts/acceptance_rate 按真实值记账（5 μK 工况
+    接受率≈1，浅阱/高温工况会显著小于 1）。
+    """
     view = level1_view(cfg, temperature_uK=temperature_uK, aod_initial_center_m=aod_initial_center_m)
     rng = np.random.default_rng(seed)
     states = []
     accepted = 0
     attempts = 0
     while accepted < shots:
-        states.append(sample_thermal_initial_state(view, rng))
+        state, used = sample_thermal_initial_state(view, rng, return_attempts=True)
+        states.append(state)
         accepted += 1
-        attempts += 1
-        if attempts > shots * 1000:
-            raise RuntimeError("初态采样接受率过低")
+        attempts += used
     x0 = np.array([s.x0_m for s in states])
     v0 = np.array([s.v0_m_s for s in states])
     initial_energy = np.array([s.aod_total_energy_J for s in states])
     initial_excitation = np.array([s.aod_excitation_energy_J for s in states])
     return {
-        "seed": int(seed), "shots": int(shots), "attempts": attempts,
+        "seed": int(seed), "shots": int(shots), "attempts": int(attempts),
         "acceptance_rate": shots / attempts,
         "x0_m": x0, "v0_m_per_s": v0,
         "initial_aod_energy_J": initial_energy,
@@ -223,24 +227,24 @@ def evaluate_waveform_on_states(spec: dict, states: dict, physics: dict, dt_s: f
         record = {
             "shot_id": shot,
             "x0_um": float(x0[shot]) * 1e6, "v0_m_s": float(v0[shot]),
-            "initial_aod_energy_uK": float(states["initial_aod_energy_J"][shot]) / 1.380649e-29 / 1e6,
-            "initial_excitation_uK": float(states["initial_excitation_J"][shot]) / 1.380649e-29 / 1e6,
+            "initial_aod_energy_uK": float(states["initial_aod_energy_J"][shot]) / 1.380649e-29,
+            "initial_excitation_uK": float(states["initial_excitation_J"][shot]) / 1.380649e-29,
             "final_x_um": x_f * 1e6, "final_v_m_s": v_f,
-            "final_slm_energy_uK": final_energy / 1.380649e-29 / 1e6,
+            "final_slm_energy_uK": final_energy / 1.380649e-29,
             "captured": captured,
             "near_threshold": bool(abs(final_energy) / slm[0] < near_threshold),
             "capture_margin": margin,
             "final_excitation_over_depth": final_energy / slm[0] + 1.0,
             "excitation_change_uK": (final_energy + slm[0] - float(states["initial_excitation_J"][shot]))
-                                    / 1.380649e-29 / 1e6,
+                                    / 1.380649e-29,
             "end_time_index": end_index,
         }
         if noise_work is not None:
             record.update({
-                "noise_recoil_energy_uK": float(noise_work["recoil_J"][end_index]) / 1.380649e-29 / 1e6,
-                "noise_parametric_energy_uK": float(noise_work["parametric_J"][end_index]) / 1.380649e-29 / 1e6,
-                "noise_pointing_energy_uK": float(noise_work["pointing_J"][end_index]) / 1.380649e-29 / 1e6,
-                "noise_total_energy_uK": float(noise_work["total_J"][end_index]) / 1.380649e-29 / 1e6,
+                "noise_recoil_energy_uK": float(noise_work["recoil_J"][end_index]) / 1.380649e-29,
+                "noise_parametric_energy_uK": float(noise_work["parametric_J"][end_index]) / 1.380649e-29,
+                "noise_pointing_energy_uK": float(noise_work["pointing_J"][end_index]) / 1.380649e-29,
+                "noise_total_energy_uK": float(noise_work["total_J"][end_index]) / 1.380649e-29,
             })
         if work_energy:
             we = work_energy_along_trajectory(time[:end_index + 1], x[:end_index + 1], v[:end_index + 1],
@@ -248,9 +252,9 @@ def evaluate_waveform_on_states(spec: dict, states: dict, physics: dict, dt_s: f
                                               noise_work_j=None if noise_work is None
                                               else noise_work["total_J"][:end_index + 1])
             record.update({
-                "final_move_work_uK": we["final_work_move_J"] / 1.380649e-29 / 1e6,
-                "final_depth_work_uK": we["final_work_depth_J"] / 1.380649e-29 / 1e6,
-                "final_total_work_uK": we["final_work_total_J"] / 1.380649e-29 / 1e6,
+                "final_move_work_uK": we["final_work_move_J"] / 1.380649e-29,
+                "final_depth_work_uK": we["final_work_depth_J"] / 1.380649e-29,
+                "final_total_work_uK": we["final_work_total_J"] / 1.380649e-29,
                 "max_abs_work_energy_residual_over_depth": we["max_abs_residual_J"] / slm[0],
             })
         hold = hold_segment_energy_error(time, x, v, mass, slm[0], slm[1], slm[2], duration_s)

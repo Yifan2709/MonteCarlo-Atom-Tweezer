@@ -284,7 +284,7 @@ def test_near_threshold_samples_kept(cfg, physics):
                                          cfg.integration.validation_dt_s, 1e-5)
     assert len(result["records"]) == 32
     for record in result["records"]:
-        assert record["captured"] == is_captured(record["final_slm_energy_uK"] * 1.380649e-29 * 1e6)
+        assert record["captured"] == is_captured(record["final_slm_energy_uK"] * 1.380649e-29)
 
 
 # ---------------------------------------------------------------- 16. 步长减半收敛
@@ -424,5 +424,24 @@ def test_output_into_sources_rejected(tmp_path):
 
 def test_sampler_matches_level1_statistics(cfg):
     states = sample_initial_states(cfg, 123, 2000)
+    assert states["attempts"] >= states["shots"]
+    assert 0.0 < states["acceptance_rate"] <= 1.0
     assert states["acceptance_rate"] > 0.9
     assert np.all(states["initial_aod_energy_J"] < 0)
+
+
+def test_sampler_attempts_are_real_proposal_counts(cfg):
+    """attempts 必须计入被拒绝的提议：高温（浅阱）工况下接受率应明显小于 1。"""
+    from dataclasses import replace
+
+    from level1_transfer_1d.thermal import sample_thermal_initial_state
+    from level2_joint_transfer.config import level1_view
+
+    hot = replace(cfg, initial_ensemble=replace(cfg.initial_ensemble, temperature_uK=250.0))
+    states = sample_initial_states(hot, 77, 300)
+    assert states["attempts"] > states["shots"]
+    assert 0.0 < states["acceptance_rate"] < 1.0
+
+    # 向后兼容：不请求 attempts 时仍直接返回单个状态对象
+    state = sample_thermal_initial_state(level1_view(hot), np.random.default_rng(1))
+    assert state.aod_total_energy_J < 0

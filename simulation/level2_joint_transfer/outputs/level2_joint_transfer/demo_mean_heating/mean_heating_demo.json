@@ -6,8 +6,9 @@
       "power_uK_per_s": 3.584e-07
     },
     "parametric": {
-      "kind": "rate_times_e_osc",
-      "rate_per_s": 16.0
+      "kind": "constant_power",
+      "power_w": 1.1045192e-27,
+      "power_uK_per_s": 80.0
     },
     "pointing": {
       "kind": "constant_power",
@@ -17,143 +18,143 @@
   },
   "mechanism_errors": {
     "constant_power_max_rel_error": 0.00015630022608092986,
-    "parametric_max_rel_error": 9.070319486714773e-06
+    "parametric_linear_max_rel_error": 2.551471361589286e-05
   },
   "duration_scan": [
     {
       "scale": 1,
       "duration_us": 400.0,
       "capture_fraction": 1.0,
-      "mean_margin_captured": 0.9767551398199441,
-      "mean_noise_injected_uK": 0.028191211900114335
+      "mean_margin_captured": 0.9767499745493677,
+      "mean_noise_injected_uK": 0.03252000014335638
     },
     {
       "scale": 1,
       "duration_us": 600.0,
       "capture_fraction": 1.0,
-      "mean_margin_captured": 0.9769207081964462,
-      "mean_noise_injected_uK": 0.038715772710358975
+      "mean_margin_captured": 0.9768856836317066,
+      "mean_noise_injected_uK": 0.04878000021503403
     },
     {
       "scale": 1,
       "duration_us": 800.0,
       "capture_fraction": 1.0,
-      "mean_margin_captured": 0.9768782105125443,
-      "mean_noise_injected_uK": 0.050184425504348276
+      "mean_margin_captured": 0.976819998906368,
+      "mean_noise_injected_uK": 0.06504000028672398
     },
     {
       "scale": 1,
       "duration_us": 1200.0,
       "capture_fraction": 1.0,
-      "mean_margin_captured": 0.9767745419667926,
-      "mean_noise_injected_uK": 0.07391331342297179
+      "mean_margin_captured": 0.976666764187641,
+      "mean_noise_injected_uK": 0.09756000043013001
     },
     {
       "scale": 1,
       "duration_us": 1600.0,
       "capture_fraction": 1.0,
-      "mean_margin_captured": 0.9766472493558002,
-      "mean_noise_injected_uK": 0.0981105137693864
+      "mean_margin_captured": 0.9764794000880457,
+      "mean_noise_injected_uK": 0.13008000057353603
     },
     {
       "scale": 100,
       "duration_us": 400.0,
       "capture_fraction": 1.0,
-      "mean_margin_captured": 0.9662200016920782,
-      "mean_noise_injected_uK": 3.4492333612975425
+      "mean_margin_captured": 0.9807945711303334,
+      "mean_noise_injected_uK": 3.252000014335648
     },
     {
       "scale": 100,
       "duration_us": 600.0,
       "capture_fraction": 1.0,
-      "mean_margin_captured": 0.9566818554709697,
-      "mean_noise_injected_uK": 5.4814906133969545
+      "mean_margin_captured": 0.972339834754809,
+      "mean_noise_injected_uK": 4.8780000215043255
     },
     {
       "scale": 100,
       "duration_us": 800.0,
       "capture_fraction": 1.0,
-      "mean_margin_captured": 0.9439335250536737,
-      "mean_noise_injected_uK": 8.230713033474192
+      "mean_margin_captured": 0.9642794714391343,
+      "mean_noise_injected_uK": 6.504000028673406
     },
     {
       "scale": 100,
       "duration_us": 1200.0,
       "capture_fraction": 1.0,
-      "mean_margin_captured": 0.9065673315217304,
-      "mean_noise_injected_uK": 16.2424970813604
+      "mean_margin_captured": 0.947751267124918,
+      "mean_noise_injected_uK": 9.756000043011571
     },
     {
       "scale": 100,
       "duration_us": 1600.0,
       "capture_fraction": 1.0,
-      "mean_margin_captured": 0.8439134582823444,
-      "mean_noise_injected_uK": 29.434274002787237
+      "mean_margin_captured": 0.9278491043568932,
+      "mean_noise_injected_uK": 13.008000057349735
     },
     {
       "scale": 1000,
       "duration_us": 400.0,
-      "capture_fraction": 0.5,
-      "mean_margin_captured": 0.9347035172443022,
-      "mean_noise_injected_uK": 27792.83986101639
+      "capture_fraction": 1.0,
+      "mean_margin_captured": 0.9225680887687421,
+      "mean_noise_injected_uK": 32.520000143356825
     },
     {
       "scale": 1000,
       "duration_us": 600.0,
-      "capture_fraction": 0.5,
-      "mean_margin_captured": 0.9687329420216082,
-      "mean_noise_injected_uK": 427044.43718776427
+      "capture_fraction": 1.0,
+      "mean_margin_captured": 0.8836963006783666,
+      "mean_noise_injected_uK": 48.780000215034654
     },
     {
       "scale": 1000,
       "duration_us": 800.0,
-      "capture_fraction": 0.5,
-      "mean_margin_captured": 0.870392444286784,
-      "mean_noise_injected_uK": 7084521.56140337
+      "capture_fraction": 1.0,
+      "mean_margin_captured": 0.84459549997027,
+      "mean_noise_injected_uK": 65.04000028672293
     },
     {
       "scale": 1000,
       "duration_us": 1200.0,
-      "capture_fraction": 0.0,
-      "mean_margin_captured": null,
-      "mean_noise_injected_uK": 2391617029.710142
+      "capture_fraction": 1.0,
+      "mean_margin_captured": 0.7659288480885115,
+      "mean_noise_injected_uK": 97.56000043013053
     },
     {
       "scale": 1000,
       "duration_us": 1600.0,
-      "capture_fraction": 0.0,
-      "mean_margin_captured": null,
-      "mean_noise_injected_uK": 982273067850.7428
+      "capture_fraction": 1.0,
+      "mean_margin_captured": 0.6867863896902495,
+      "mean_noise_injected_uK": 130.08000057349642
     }
   ],
   "hold_scan": [
     {
       "hold_us": 100.0,
-      "captured_fraction": 0.4453125,
-      "median_hold_peak_to_peak_over_depth_captured": 0.04389669975048093,
-      "mean_noise_total_at_hold_end_uK": 30915.654538821105
+      "captured_fraction": 1.0,
+      "median_hold_peak_to_peak_over_depth_captured": 0.05807207261914955,
+      "mean_noise_total_at_hold_end_uK": 32.520000143356825
     },
     {
       "hold_us": 500.0,
-      "captured_fraction": 0.4453125,
-      "median_hold_peak_to_peak_over_depth_captured": 33.01208502391733,
-      "mean_noise_total_at_hold_end_uK": 30915.654538821105
+      "captured_fraction": 1.0,
+      "median_hold_peak_to_peak_over_depth_captured": 0.2903589792983558,
+      "mean_noise_total_at_hold_end_uK": 32.520000143356825
     },
     {
       "hold_us": 1000.0,
-      "captured_fraction": 0.4453125,
-      "median_hold_peak_to_peak_over_depth_captured": 98126.41560921926,
-      "mean_noise_total_at_hold_end_uK": 30915.654538821105
+      "captured_fraction": 1.0,
+      "median_hold_peak_to_peak_over_depth_captured": 0.5807151987621915,
+      "mean_noise_total_at_hold_end_uK": 32.520000143356825
     },
     {
       "hold_us": 2000.0,
-      "captured_fraction": 0.4453125,
-      "median_hold_peak_to_peak_over_depth_captured": 866402489585.0538,
-      "mean_noise_total_at_hold_end_uK": 30915.654538821105
+      "captured_fraction": 1.0,
+      "median_hold_peak_to_peak_over_depth_captured": 1.1614274692520112,
+      "mean_noise_total_at_hold_end_uK": 32.520000143356825
     }
   ],
   "notes": {
-    "units": "duration/hold 表中 mean_noise_injected_uK 已换算为真实 μK（×1e6）",
+    "units": "duration/hold 表中 mean_noise_injected_uK 即记录字段原值（真实 μK）",
     "provenance": "assumed_sensitivity_only，默认参数推导见 configs/level2_joint_transfer.yaml 注释"
   }
 }

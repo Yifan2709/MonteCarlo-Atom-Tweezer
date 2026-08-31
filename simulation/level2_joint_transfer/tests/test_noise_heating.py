@@ -81,24 +81,26 @@ def test_constant_power_grows_energy_linearly(physics):
     assert np.allclose(work["total_J"], work["recoil_J"], rtol=1e-15)
 
 
-# ------------------------------------------------ 机制：参量通道指数增长
-def test_parametric_channel_grows_oscillation_energy_exponentially(physics):
+# ------------------------------------------------ 机制：参量通道为常数功率（线性化）
+def test_parametric_channel_is_constant_power_linear(physics):
     mass = physics["mass_kg"]
     depth, waist = physics["slm_depth_j"], physics["slm_waist_m"]
     dt, total = 0.05e-6, 500e-6
     times = np.arange(round(total / dt) + 1) * dt
-    rate = 1000.0
-    heating = build_mean_heating(parametric_rate_s=rate)
+    power_w = microkelvin_to_joule(100.0)  # 100 μK/s
+    heating = build_mean_heating(parametric_power_w=power_w)
     force = lambda x, t: gaussian_force(x, depth, waist, 0.0)
-
-    def e_osc(x, v, t):
-        return max(0.0, 0.5 * mass * v * v + float(gaussian_potential(x, depth, waist, 0.0)) + depth)
-
+    e_osc = lambda x, v, t: max(0.0, 0.5 * mass * v * v
+                                + float(gaussian_potential(x, depth, waist, 0.0)) + depth)
     _t, x, v, _a, work = velocity_verlet_time_dependent_heating(
-        force, mass, 0.3e-6, 0.0, times, heating, e_osc)
-    e_osc_series = 0.5 * mass * v ** 2 + gaussian_potential(x, depth, waist, 0.0) + depth
-    growth = e_osc_series[-1] / e_osc_series[0]
-    assert abs(growth / math.exp(rate * total) - 1.0) < 1e-3
+        force, mass, 0.2e-6, 0.0, times, heating, e_osc)
+    energy = 0.5 * mass * v ** 2 + gaussian_potential(x, depth, waist, 0.0)
+    expected = power_w * times
+    assert np.max(np.abs(energy - energy[0] - expected)) / depth < 1e-6  # 线性增长
+    # 功率与当前振荡能量无关（与旧版 Γ·ε_osc 指数模型的本质区别）
+    assert math.isclose(work["parametric_J"][100],
+                        work["parametric_J"][200] - work["parametric_J"][100],
+                        rel_tol=1e-12)
     assert np.allclose(work["parametric_J"], work["total_J"], rtol=1e-15)
 
 
@@ -139,14 +141,13 @@ def test_zero_heating_channels_are_bit_identical_to_disabled(cfg, physics):
 
 # ------------------------------------------------ 功-能账本含噪声通道
 def test_work_energy_residual_absorbs_noise_channel(cfg, physics):
-    states = {"x0_m": np.array([2.3e-6, 2.45e-6]), "v0_m_per_s": np.array([0.0, 0.03]),
-              "initial_aod_energy_J": np.array([-1.0e-28, -1.1e-28]),
-              "initial_excitation_J": np.array([2e-28, 3e-28]), "shots": 2}
-    spec = dict({"type": "sequential", "duration_s": 20e-6, "move_fraction": 0.52})
-    heating = build_mean_heating(recoil_power_w=microkelvin_to_joule(2000.0),
-                                 parametric_rate_s=500.0,
-                                 pointing_power_w=microkelvin_to_joule(1000.0))
-    result = evaluate_waveform_on_states(spec, states, physics, 0.05e-6, 5e-6,
+    from level2_joint_transfer.level2_simulation import sample_initial_states
+    states = sample_initial_states(cfg, 90214, 8)
+    spec = {"type": "sequential", "duration_s": 20e-6, "move_fraction": 0.52}
+    heating = build_mean_heating(recoil_power_w=microkelvin_to_joule(2.0e4),
+                                 parametric_power_w=microkelvin_to_joule(1.5e4),
+                                 pointing_power_w=microkelvin_to_joule(1.0e4))
+    result = evaluate_waveform_on_states(dict(spec), states, physics, 0.05e-6, 5e-6,
                                          work_energy=True, heating=heating)
     depth = physics["slm_depth_j"]
     for record in result["records"]:
@@ -155,25 +156,27 @@ def test_work_energy_residual_absorbs_noise_channel(cfg, physics):
                 and record["noise_parametric_energy_uK"] > 0
                 and record["noise_pointing_energy_uK"] > 0)
         assert record["max_abs_work_energy_residual_over_depth"] < 1e-3
-    base = evaluate_waveform_on_states(spec, states, physics, 0.05e-6, 5e-6)
-    for noisy, clean in zip(result["records"], base["records"]):
-        assert noisy["final_slm_energy_uK"] > clean["final_slm_energy_uK"]  # 加热使末能量升高
+    base = evaluate_waveform_on_states(dict(spec), states, physics, 0.05e-6, 5e-6)
+    # 单条轨迹的末能量受到达相位影响有涨落，系综平均上加热使其升高
+    mean_noisy = np.mean([r["final_slm_energy_uK"] for r in result["records"]])
+    mean_clean = np.mean([r["final_slm_energy_uK"] for r in base["records"]])
+    assert mean_noisy > mean_clean
 
 
 # ------------------------------------------------ 随时间越发不稳定
 def test_heating_grows_with_duration_and_destabilizes_capture(cfg, physics):
-    # 注意：记录中 *_uK 字段沿用既有约定，数值单位实为开尔文（见 README）。
     states = {"x0_m": np.array([2.3e-6, 2.5e-6]), "v0_m_per_s": np.array([0.0, 0.01]),
               "initial_aod_energy_J": np.array([-1.0e-28, -1.1e-28]),
               "initial_excitation_J": np.array([2e-28, 3e-28]), "shots": 2}
-    heating = build_mean_heating(parametric_rate_s=20000.0)
+    heating = build_mean_heating(parametric_power_w=microkelvin_to_joule(1.0e5))
     injected = []
     for duration_us in (20.0, 60.0):
         spec = {"type": "sequential", "duration_s": duration_us * 1e-6, "move_fraction": 0.52}
         result = evaluate_waveform_on_states(spec, states, physics, 0.05e-6, 5e-6, heating=heating)
         injected.append(np.mean([r["noise_total_energy_uK"] for r in result["records"]]))
-    assert injected[1] > 3.0 * injected[0]  # 指数型累积（纯指数预期 ~4.7×），时间越长越不稳定
-    assert injected[1] > 1.0e-4  # 60 μs 末注入 > 100 μK（单位：K，即 1e-4）
+    # 常数功率：注入严格随时长线性（60/20 μs → 3×），时间越长越不稳定
+    assert 2.9 < injected[1] / injected[0] < 3.1
+    assert injected[1] > 4.0  # 60 μs 末注入 ≈ 6 μK（记录字段为真实 μK）
 
 
 # ------------------------------------------------ 配置路径
@@ -188,20 +191,26 @@ def test_heating_from_config_disabled_and_enabled(cfg):
     derived = described["channels"]
     assert 0.2 < derived["recoil"]["power_uK_per_s"] < 0.6  # 2×64nK×2.8/s ≈ 0.36 μK/s
     assert 12.0 < derived["parametric"]["rate_per_s"] < 20.0
+    # 参量 = Γ_par × k_B·T_ref，T_ref 缺省取初始系综温度 5 μK → ~80 μK/s
+    assert 60.0 < derived["parametric"]["power_uK_per_s"] < 100.0
+    assert derived["parametric"]["kind"] == "constant_power"
+    assert derived["parametric"]["reference_temperature_uK"] == 5.0
     # 1 pm/√Hz @25.5 kHz → m·ω₀⁴·S_x/8 ≈ 1.3 μK/s
     assert 0.8 < derived["pointing"]["power_uK_per_s"] < 2.0
-    # 显式速率优先于推导
+    # 显式速率优先于推导，功率随之线性放大
     explicit = replace(cfg, noise_mean_heating=replace(cfg.noise_mean_heating, enabled=True,
                                                        parametric_rate_s=123.0))
-    assert heating_from_config(explicit).describe()["channels"]["parametric"]["rate_per_s"] == 123.0
+    label = heating_from_config(explicit).describe()["channels"]["parametric"]
+    assert label["rate_per_s"] == 123.0
+    assert label["power_uK_per_s"] == 123.0 * 5.0
 
 
 def test_scaled_heating_multiplies_all_channels():
-    base = build_mean_heating(recoil_power_w=1.0, parametric_rate_s=10.0, pointing_power_w=2.0)
+    base = build_mean_heating(recoil_power_w=1.0, parametric_power_w=10.0, pointing_power_w=2.0)
     scaled = scaled_heating(base, 100.0)
     powers = scaled.channel_powers(0.0, 0.0, 0.0, 5.0)
     assert powers["recoil"] == 100.0
-    assert powers["parametric"] == 100.0 * 10.0 * 5.0
+    assert powers["parametric"] == 1000.0  # 常数功率，与 e_osc 无关
     assert powers["pointing"] == 200.0
     clone = pickle.loads(pickle.dumps(scaled))  # 敏感性扫描需跨进程
     assert clone.channel_powers(0.0, 0.0, 0.0, 5.0) == powers
@@ -218,7 +227,8 @@ def test_negative_noise_parameter_is_rejected(cfg, tmp_path):
 
 # ------------------------------------------------ 并行与 pickle
 def test_model_pickle_roundtrip():
-    heating = build_mean_heating(recoil_power_w=1e-27, parametric_rate_s=5.0, pointing_power_w=2e-27)
+    heating = build_mean_heating(recoil_power_w=1e-27, parametric_power_w=5e-27,
+                                 pointing_power_w=2e-27)
     clone = pickle.loads(pickle.dumps(heating))
     assert clone.channel_powers(0.0, 0.0, 0.0, 3e-28) == heating.channel_powers(0.0, 0.0, 0.0, 3e-28)
 
@@ -228,7 +238,7 @@ def test_parallel_matches_serial_with_heating(cfg, physics):
     states = sample_initial_states(cfg, 90210, 8)
     spec = {"type": "sequential", "duration_s": 20e-6, "move_fraction": 0.52}
     heating = build_mean_heating(recoil_power_w=microkelvin_to_joule(500.0),
-                                 parametric_rate_s=300.0)
+                                 parametric_power_w=microkelvin_to_joule(300.0))
     serial = evaluate_waveform_on_states(dict(spec), states, physics, 0.05e-6, 5e-6, heating=heating)
     parallel = evaluate_waveform_parallel(dict(spec), states, physics, 0.05e-6, 5e-6, heating=heating)
     for a, b in zip(serial["records"], parallel["records"]):
