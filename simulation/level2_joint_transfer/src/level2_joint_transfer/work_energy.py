@@ -79,3 +79,57 @@ def hold_segment_energy_error(time_s, position_m, velocity_m_per_s, mass, slm_de
         "peak_to_peak_energy_error_J": span,
         "peak_to_peak_energy_error_over_slm_depth": span / slm_depth_j,
     }
+
+
+def work_energy_two_trap(time_s, position_m, velocity_m_per_s, mass,
+                         aod_depth_j, aod_center_m, aod_depth_rate_j_s, aod_center_rate_m_s,
+                         slm_depth_j, slm_waist_m, slm_factor, aod_waist_m):
+    """双阱均可时变（含 SLM 开关跳变）的功-能核算（Level 2C 往返序列用）。
+
+    外部功 = AOD 深度功 + AOD 移动功 + SLM 开关跳变功：
+    - AOD 两项沿用单阱公式 −Ḋ·exp(−2q²/w²) 与 F_AOD·ċ（数组由调用方
+      按解析导数给出，与积分轨迹同一时间轴）；
+    - SLM 因子 slm_factor∈[0,1] 的每个跳变（含瞬时开关）贡献
+      ΔW = U_SLM(x)·Δfactor = −D_SLM·exp(−2x²/w²)·Δfactor，
+      在跳变步索引处按该步位置计入（梯形积分的分布极限）。
+    返回功的分量、总功、总能量与残差 R_W(t)=ΔE−W_ext 数组。
+    """
+    t = np.asarray(time_s, dtype=float)
+    x = np.asarray(position_m, dtype=float)
+    v = np.asarray(velocity_m_per_s, dtype=float)
+    depth = np.asarray(aod_depth_j, dtype=float)
+    center = np.asarray(aod_center_m, dtype=float)
+    depth_rate = np.asarray(aod_depth_rate_j_s, dtype=float)
+    center_rate = np.asarray(aod_center_rate_m_s, dtype=float)
+    factor = np.asarray(slm_factor, dtype=float)
+
+    offset = x - center
+    envelope = np.exp(-2.0 * (offset / aod_waist_m) ** 2)
+    depth_power = -depth_rate * envelope
+    aod_force = -(4.0 * depth * offset / aod_waist_m**2) * envelope
+    move_power = aod_force * center_rate
+    work_depth = cumulative_trapezoid(depth_power, t, initial=0.0)
+    work_move = cumulative_trapezoid(move_power, t, initial=0.0)
+
+    u_slm_static = gaussian_potential(x, slm_depth_j, slm_waist_m, 0.0)
+    work_slm = np.zeros_like(t)
+    jumps = np.diff(factor)
+    jump_idx = np.nonzero(jumps)[0]
+    for i in jump_idx:
+        work_slm[i + 1:] += u_slm_static[i + 1] * jumps[i]
+
+    work_total = work_depth + work_move + work_slm
+    energy_total = 0.5 * mass * v**2 + u_slm_static * factor - depth * envelope
+    residual = energy_total - energy_total[0] - work_total
+    return {
+        "time_s": t,
+        "work_depth_J": work_depth,
+        "work_move_J": work_move,
+        "work_slm_switch_J": work_slm,
+        "work_total_J": work_total,
+        "energy_total_J": energy_total,
+        "residual_J": residual,
+        "max_abs_residual_J": float(np.max(np.abs(residual))),
+        "final_work_total_J": float(work_total[-1]),
+        "slm_switch_count": int(len(jump_idx)),
+    }

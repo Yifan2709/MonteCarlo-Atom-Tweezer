@@ -1,0 +1,106 @@
+{
+  "existing_tests": {
+    "exit_code": 0,
+    "summary_line": "193 passed, 7 deselected in 173.50s (0:02:53)",
+    "passed": true
+  },
+  "pickup_waveforms": {
+    "per_waveform": {
+      "pickup_pickup_200us": {
+        "valid": true,
+        "reasons": [],
+        "velocity_fd_rel_err": 2.6933053014637336e-10,
+        "depth_rate_fd_rel_err": 9.399901496851724e-12,
+        "passed": true
+      },
+      "pickup_dropoff_200us": {
+        "valid": true,
+        "reasons": [],
+        "velocity_fd_rel_err": 2.5860275152540637e-10,
+        "depth_rate_fd_rel_err": 1.5381205624763452e-11,
+        "passed": true
+      },
+      "pickup_pickup_400us": {
+        "valid": true,
+        "reasons": [],
+        "velocity_fd_rel_err": 7.882798580885469e-11,
+        "depth_rate_fd_rel_err": 2.4754826676409448e-11,
+        "passed": true
+      },
+      "pickup_dropoff_400us": {
+        "valid": true,
+        "reasons": [],
+        "velocity_fd_rel_err": 9.097755535424486e-11,
+        "depth_rate_fd_rel_err": 2.6407465488427856e-11,
+        "passed": true
+      },
+      "pickup_pickup_600us": {
+        "valid": true,
+        "reasons": [],
+        "velocity_fd_rel_err": 6.932358333342749e-11,
+        "depth_rate_fd_rel_err": 3.727944241827317e-11,
+        "passed": true
+      },
+      "pickup_dropoff_600us": {
+        "valid": true,
+        "reasons": [],
+        "velocity_fd_rel_err": 6.753255073338656e-11,
+        "depth_rate_fd_rel_err": 3.727944241827317e-11,
+        "passed": true
+      }
+    },
+    "passed": true
+  },
+  "single_pickup_ideal": {
+    "captured": true,
+    "final_aod_excitation_over_depth": 0.0010862209470960948,
+    "work_energy_residual_over_depth": 0.0002604868911923508,
+    "passed": true
+  },
+  "time_reversal": {
+    "final_x_over_sigma_x": 0.3907254610047027,
+    "final_v_over_sigma_v": 0.2691167389801335,
+    "tolerance": 0.5,
+    "passed": true
+  },
+  "two_trap_work_energy": {
+    "max_abs_residual_over_depth": 0.0002605766143162438,
+    "slm_switch_count": 2,
+    "tolerance": 0.0005,
+    "passed": true
+  },
+  "timestep_convergence": {
+    "dt_us": [
+      0.024999999999999998,
+      0.049999999999999996
+    ],
+    "ideal_final_dx_over_sigma_x": 7.053514251981545e-05,
+    "ideal_final_dv_over_sigma_v": 0.0001786908389859418,
+    "thermal_label_flip_rate": 0.0,
+    "flip_tolerance": 0.02,
+    "passed": true
+  },
+  "slm_sampler": {
+    "all_bound": true,
+    "mean_x_um": -0.005905881800497488,
+    "std_x_um": 0.116640444290765,
+    "passed": true
+  },
+  "pool_isolation": {
+    "scan_seed": 23001,
+    "validation_seed": 23002,
+    "passed": true
+  },
+  "critical_checks": [
+    "existing_tests",
+    "pickup_waveforms",
+    "single_pickup_ideal",
+    "time_reversal",
+    "two_trap_work_energy",
+    "timestep_convergence",
+    "slm_sampler",
+    "pool_isolation"
+  ],
+  "all_passed": true,
+  "elapsed_s": 175.62069725990295
+}

@@ -1,0 +1,131 @@
+level2:
+  name: pickup_survival_reproduction
+
+atom:
+  isotope: Cs-133
+  mass_u: 132.90545196
+
+traps:
+  slm:
+    depth_uK: 140.0
+    waist_um: 1.17
+    center_um: 0.0
+    waist_source: paper_1061nm_slm_measurement
+  aod:
+    initial_depth_uK: 280.0
+    waist_um: 1.17
+    initial_center_um: 2.4
+    waist_source: assumed_matched_to_slm_back_aperture
+
+initial_ensemble:
+  temperature_uK: 5.0        # 论文未直接给转移时刻温度，保留为标定量（prompt 阶段1第2步）
+  sampler: level1_harmonic_rejection
+  optimization_shots: 128
+  selection_shots: 512
+  validation_shots: 2000
+  optimization_seed: 21001
+  selection_seed: 21002
+  validation_seed: 21003
+  level1_reproduction_seed: 20260811
+
+integration:
+  optimization_dt_us: 0.10
+  validation_dt_us: 0.05
+  convergence_dt_us: 0.025
+  post_transfer_hold_us: 100.0
+
+waveforms:
+  sequential_baseline_duration_us: 600.0
+  compressed_baseline_duration_us: 400.0
+  optimized_duration_us: 400.0
+  level1_move_fraction: 0.52
+  level1_ramp_fraction: 0.48
+  min_segment_fraction: 0.10
+  ramp_power_bounds: [0.5, 4.0]
+
+optimization:
+  method: latin_hypercube_then_local_refine
+  lhs_seed: 21010
+  max_candidates: 192
+  finalists: 8
+  refine_steps_per_finalist: 4
+  refine_perturbation_sigma: 0.03
+  enable_monotone_spline_refinement: true
+  spline_control_points: 8
+  spline_candidates: 24
+  capture_weight: 1.0
+  excitation_weight: 0.05
+  smoothness_weight: 0.001
+  margin_quantile: 0.10
+
+classification:
+  capture_energy_threshold_J: 0.0
+  near_threshold_fraction_of_slm_depth: 0.001
+
+robustness:
+  temperatures_uK: [3.0, 5.0, 7.0, 10.0]
+  final_alignment_offsets_um: [-0.10, -0.05, 0.0, 0.05, 0.10]
+  shots_per_condition: 500
+  timestep_subset_shots: 200
+  bootstrap_samples: 10000
+  bootstrap_seed: 21020
+
+# Level 2C 标定加热（prompt 阶段4第10步）：
+# - 反冲：两套光路分别按两能级近似计算后求和
+#   Γ_sc(1055nm, 280µK) ≈ 2.84/s + Γ_sc(1061nm, 140µK) ≈ 1.39/s ≈ 4.23/s；
+#   trap_wavelength_nm 取 AOD 1055 nm（E_r 由此计算）。
+# - 参量：Γ_par = (π²/4)·ν₀²·S_RIN(2ν₀)，S_RIN = 1e-8/Hz 为 assumed_sensitivity_only；
+#   ν₀ 显式取 AOD 阱解析阱频 36007 Hz（原子大部分时间束缚于 AOD）。
+# - 指向：S_x = 1 pm/√Hz（1e-24 m²/Hz）安静光学假设，assumed_sensitivity_only。
+noise_mean_heating:
+  enabled: true
+  trap_wavelength_nm: 1055.0
+  recoil_scattering_rate_s: 4.23
+  parametric_rate_s: null
+  parametric_reference_temperature_uK: null
+  parametric_rin_psd_per_hz: 1.0e-8
+  pointing_heating_rate_uK_per_s: null
+  pointing_position_psd_m2_per_hz: 1.0e-24
+  reference_nu0_hz: 36007.0
+
+output:
+  directory: outputs/level2c_pickup_survival/demo
+  save_candidate_table: true
+  save_representative_trajectories: true
+  representative_shots_per_outcome: 5
+
+level2c:
+  pickup:
+    durations_us: [200.0, 400.0, 600.0]   # 论文手工轨迹三档
+    ramp_fraction: 0.48                      # 前 48% 二次升深（论文 Methods）
+    ml_control_points: 14                    # 论文 ML 轨迹控制点数
+    ml_duration_us: 400.0
+  roundtrip:
+    wait_us: 100.0                           # pick-up 后等待（SLM 关闭清除残留）
+    max_one_way_transfers: 60                # 论文 ML 目标 60 次连续转移
+    scan_shots: 256
+    scan_seed: 23001
+    validation_shots: 512
+    validation_seed: 23002
+    dt_us: 0.05
+    convergence_dt_us: 0.025
+  disorder:                                  # 阶段4第11步：位点差异系综
+    enabled: true
+    alignment_sigma_um: 0.05                 # 残余对准误差（PSF+存活率优化后），assumed
+    aod_depth_rel_sigma: 0.02                # RF 功率→深度标定，assumed
+    slm_depth_rel_sigma: 0.114               # Ext. Data Fig. 2d 实测 11.4% 位点间散布
+    aod_waist_rel_sigma: 0.02                # 1055/1061nm 束腰失配，assumed
+    shot_jitter_alignment_sigma_um: 0.01     # 逐转移对准抖动，assumed
+  ml_optimization:
+    candidates: 64
+    finalists: 4
+    refine_steps: 4
+    perturbation_sigma: 0.05
+    shots_per_candidate: 64
+    candidate_seed: 23101
+    transfers_for_objective: 60
+    dt_us: 0.10
+  acceptance:
+    tolerance_band: 0.02                     # ≈数字化精度（reference/fig6d_parameters.md §4）
+  reference:
+    csv: reference/fig6d_survival_digitized.csv

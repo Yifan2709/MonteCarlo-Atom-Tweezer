@@ -2,11 +2,17 @@
 
 所有波形统一返回 AOD 中心 c(t)、深度 D(t) 及一至三阶导数（导数用于功-能核算
 与光滑度诊断）。时间输入为秒，支持标量与 NumPy 数组。
+
+Level 2C 追加（pick-up 方向，论文 arXiv:2403.12021v4 Fig. 6b/c 结构）：
+- PickupSequentialWaveform：先二次升深后 constant-jerk 移动（手工轨迹）；
+  direction='dropoff' 时为其时间反演（merge & drop-off）；
+- MLCubicWaveform：深度/位置各 N 个控制点的普通三次插值（ML 轨迹），
+  允许非单调，配独立过冲校验。
 """
 from __future__ import annotations
 
 import numpy as np
-from scipy.interpolate import PchipInterpolator
+from scipy.interpolate import CubicSpline, PchipInterpolator
 
 
 def _out(value, original):
@@ -287,6 +293,273 @@ class SplineWaveform(WaveformBase):
             "center_values_m": self.center_values_m.tolist(),
             "depth_values_j": self.depth_values_j.tolist(),
         }
+
+
+def _constant_jerk_terms(u, span, tau):
+    """constant-jerk（bang–coast–bang jerk）移动剖面：u∈[0,1] 局部时间。
+
+    jerk 分段 +j0（前 1/4）、−j0（中 1/2）、+j0（后 1/4），j0=32·span/τ³；
+    端点速度与加速度严格为零，总位移严格 span。返回 (x, v, a, j)。
+    u 越界时冻结端点值（导数为零）。
+    """
+    u = np.clip(np.asarray(u, dtype=float), 0.0, 1.0)
+    j0 = 32.0 * span / tau**3
+    t = u * tau
+    q = tau / 4.0
+    x = np.empty_like(t); v = np.empty_like(t); a = np.empty_like(t); j = np.empty_like(t)
+    seg_a = t < q
+    seg_c = t > 3.0 * q
+    seg_b = ~(seg_a | seg_c)
+    # 段 A：[0, τ/4]，jerk = +j0
+    ta = t[seg_a]
+    x[seg_a] = j0 * ta**3 / 6.0
+    v[seg_a] = j0 * ta**2 / 2.0
+    a[seg_a] = j0 * ta
+    j[seg_a] = j0
+    # 段 B：[τ/4, 3τ/4]，jerk = −j0；段 A 末态 a1=j0q, v1=j0q²/2, x1=j0q³/6
+    tb = t[seg_b] - q
+    x[seg_b] = j0 * q**3 / 6.0 + (j0 * q**2 / 2.0) * tb + (j0 * q) * tb**2 / 2.0 - j0 * tb**3 / 6.0
+    v[seg_b] = j0 * q**2 / 2.0 + j0 * q * tb - j0 * tb**2 / 2.0
+    a[seg_b] = j0 * q - j0 * tb
+    j[seg_b] = -j0
+    # 段 C：[3τ/4, τ]，jerk = +j0；段 B 末态 v2=j0q²/2, x2=11j0q³/6, a2=−j0q
+    tc = t[seg_c] - 3.0 * q
+    x[seg_c] = 11.0 * j0 * q**3 / 6.0 + (j0 * q**2 / 2.0) * tc - (j0 * q) * tc**2 / 2.0 + j0 * tc**3 / 6.0
+    v[seg_c] = j0 * q**2 / 2.0 - j0 * q * tc + j0 * tc**2 / 2.0
+    a[seg_c] = -j0 * q + j0 * tc
+    j[seg_c] = j0
+    # 冻结端点之外
+    frozen_end = np.asarray(u, dtype=float) >= 1.0
+    if np.any(frozen_end):
+        x[frozen_end] = span
+        v[frozen_end] = 0.0
+        a[frozen_end] = 0.0
+        j[frozen_end] = 0.0
+    return x, v, a, j
+
+
+class PickupSequentialWaveform(WaveformBase):
+    """论文手工 pick-up 波形：前 ramp_fraction 二次升深（中心停在 SLM 上），
+    后 (1−ramp_fraction) 以 constant-jerk 移动 0→d，两段不重叠。
+
+    direction='dropoff' 时为时间反演（merge & drop-off）：先 constant-jerk
+    移动 d→0，再按 (1−s)² 二次降深到 0。端点速度/加速度均为零。
+    """
+
+    name = "pickup_sequential"
+
+    def __init__(self, duration_s, ramp_fraction, final_center_m, final_depth_j,
+                 direction="pickup"):
+        if direction not in ("pickup", "dropoff"):
+            raise ValueError("direction 必须是 'pickup' 或 'dropoff'")
+        self.duration_s = float(duration_s)
+        self.ramp_fraction = float(ramp_fraction)
+        self.final_center_m = float(final_center_m)
+        self.final_depth_j = float(final_depth_j)
+        self.direction = direction
+        self.ramp_duration_s = self.duration_s * self.ramp_fraction
+        self.move_duration_s = self.duration_s - self.ramp_duration_s
+        # 与 WaveformBase.smoothness_metrics 的归一化兼容（span/深度尺度）
+        self.initial_center_m = self.final_center_m
+        self.initial_depth_j = self.final_depth_j
+
+    def _ramp_s(self, t):
+        t = np.asarray(t, dtype=float)
+        if self.direction == "pickup":
+            return np.clip(t / self.ramp_duration_s, 0.0, 1.0)
+        return np.clip((t - self.move_duration_s) / self.ramp_duration_s, 0.0, 1.0)
+
+    def _move_u(self, t):
+        t = np.asarray(t, dtype=float)
+        if self.direction == "pickup":
+            return np.clip((t - self.ramp_duration_s) / self.move_duration_s, 0.0, 1.0)
+        return np.clip(t / self.move_duration_s, 0.0, 1.0)
+
+    def center(self, t):
+        u = self._move_u(t)
+        span = self.final_center_m if self.direction == "pickup" else -self.final_center_m
+        offset = 0.0 if self.direction == "pickup" else self.final_center_m
+        x, _, _, _ = _constant_jerk_terms(u, span, self.move_duration_s)
+        return _out(offset + x, t)
+
+    def depth(self, t):
+        s = self._ramp_s(t)
+        value = self.final_depth_j * s**2 if self.direction == "pickup" \
+            else self.final_depth_j * (1.0 - s) ** 2
+        return _out(value, t)
+
+    def center_velocity(self, t):
+        u = self._move_u(t)
+        span = self.final_center_m if self.direction == "pickup" else -self.final_center_m
+        _, v, _, _ = _constant_jerk_terms(u, span, self.move_duration_s)
+        return _out(v, t)
+
+    def center_acceleration(self, t):
+        u = self._move_u(t)
+        span = self.final_center_m if self.direction == "pickup" else -self.final_center_m
+        _, _, acc, _ = _constant_jerk_terms(u, span, self.move_duration_s)
+        return _out(acc, t)
+
+    def center_jerk(self, t):
+        u = self._move_u(t)
+        span = self.final_center_m if self.direction == "pickup" else -self.final_center_m
+        _, _, _, jk = _constant_jerk_terms(u, span, self.move_duration_s)
+        return _out(jk, t)
+
+    def depth_rate(self, t):
+        s = self._ramp_s(t)
+        t = np.asarray(t, dtype=float)
+        if self.direction == "pickup":
+            inside = (t > 0.0) & (t < self.ramp_duration_s)
+            derivative = 2.0 * self.final_depth_j * s / self.ramp_duration_s
+        else:
+            inside = (t > self.move_duration_s) & (t < self.duration_s)
+            derivative = -2.0 * self.final_depth_j * (1.0 - s) / self.ramp_duration_s
+        return _out(np.where(inside, derivative, 0.0), t)
+
+    def describe(self):
+        return {
+            "type": self.name,
+            "duration_us": self.duration_s * 1e6,
+            "ramp_fraction": self.ramp_fraction,
+            "final_center_um": self.final_center_m * 1e6,
+            "final_depth_uK": self.final_depth_j / 1.380649e-29,
+            "direction": self.direction,
+        }
+
+
+class MLCubicWaveform(WaveformBase):
+    """论文 ML 轨迹：深度与位置各 N 个控制点的普通三次插值（not-a-knot）。
+
+    与 SplineWaveform（PCHIP 单调）不同，允许非单调与过冲——这是 ML 优化的
+    真实搜索空间；过冲幅度由 validate_pickup_waveform 按配置容差拦截。
+    端点值由调用方固定在 (c0, D0)（pickup：0→d 与 0→D0；dropoff 反之）。
+    """
+
+    name = "ml_cubic"
+
+    def __init__(self, duration_s, control_s, center_values_m, depth_values_j,
+                 initial_center_m, initial_depth_j):
+        self.duration_s = float(duration_s)
+        self.control_s = np.asarray(control_s, dtype=float)
+        self.center_values_m = np.asarray(center_values_m, dtype=float)
+        self.depth_values_j = np.asarray(depth_values_j, dtype=float)
+        self.initial_center_m = float(initial_center_m)
+        self.initial_depth_j = float(initial_depth_j)
+        if self.control_s[0] != 0.0 or self.control_s[-1] != 1.0:
+            raise ValueError("ML 三次样条控制点必须覆盖 [0,1]")
+        self._center_interp = CubicSpline(self.control_s, self.center_values_m)
+        self._depth_interp = CubicSpline(self.control_s, self.depth_values_j)
+
+    def _s(self, t):
+        return np.clip(np.asarray(t, dtype=float) / self.duration_s, 0.0, 1.0)
+
+    def center(self, t):
+        return _out(self._center_interp(self._s(t)), t)
+
+    def depth(self, t):
+        return _out(self._depth_interp(self._s(t)), t)
+
+    def center_velocity(self, t):
+        return _out(self._center_interp.derivative(1)(self._s(t)) / self.duration_s, t)
+
+    def center_acceleration(self, t):
+        return _out(self._center_interp.derivative(2)(self._s(t)) / self.duration_s**2, t)
+
+    def center_jerk(self, t):
+        return _out(self._center_interp.derivative(3)(self._s(t)) / self.duration_s**3, t)
+
+    def depth_rate(self, t):
+        return _out(self._depth_interp.derivative(1)(self._s(t)) / self.duration_s, t)
+
+    def control_table(self):
+        return {
+            "control_s": self.control_s.tolist(),
+            "center_values_m": self.center_values_m.tolist(),
+            "depth_values_j": self.depth_values_j.tolist(),
+        }
+
+    def describe(self):
+        return {
+            "type": self.name,
+            "duration_us": self.duration_s * 1e6,
+            "control_points": int(self.control_s.size),
+            "initial_center_um": float(self.center_values_m[0]) * 1e6,
+            "final_center_um": float(self.center_values_m[-1]) * 1e6,
+            "initial_depth_uK": float(self.depth_values_j[0]) / 1.380649e-29,
+            "final_depth_uK": float(self.depth_values_j[-1]) / 1.380649e-29,
+        }
+
+
+def validate_pickup_waveform(waveform, final_center_m, final_depth_j,
+                              direction="pickup", overshoot_fraction=0.0,
+                              ml_overshoot_fraction=0.05):
+    """pick-up/drop-off（时间反演）波形校验：端点、范围、单调性与过冲。
+
+    - 顺序 pick-up 族：中心与深度必须单调（pickup 不减、dropoff 不增）且零过冲；
+    - ML 三次样条：允许非单调，但深度/位置越界幅度不得超过
+      ml_overshoot_fraction（论文 ML 轨迹本身允许摆动，仅防病态过冲）；
+    - 端点严格：pickup 为 c(0)=0→c(T)=d、D(0)=0→D(T)=D0；dropoff 反之；
+    - 端点中心速度/加速度为零（constant-jerk 剖面性质；ML 样条不强制，
+      其端点导数参与优化目标约束，由优化器惩罚而非此处拒绝）。
+    """
+    reasons = []
+    table = waveform.dense_table(2001)
+    center = table["aod_center_m"]
+    depth = table["aod_depth_J"]
+    span = abs(final_center_m)
+    c_tol = 1e-9 * max(span, 1e-9) + 1e-15
+    d_tol = 1e-9 * final_depth_j + 1e-30
+
+    if direction == "pickup":
+        endpoints = [(center[0], 0.0), (center[-1], final_center_m),
+                     (depth[0], 0.0), (depth[-1], final_depth_j)]
+    else:
+        endpoints = [(center[0], final_center_m), (center[-1], 0.0),
+                     (depth[0], final_depth_j), (depth[-1], 0.0)]
+    labels = ["c(0)", "c(T)", "D(0)", "D(T)"]
+    for (value, target), label in zip(endpoints, labels):
+        scale = span if label.startswith("c") else final_depth_j
+        tol = c_tol if label.startswith("c") else d_tol
+        if abs(value - target) > tol:
+            reasons.append(f"{label}={value:.6e} 不等于端点目标 {target:.6e}")
+
+    if isinstance(waveform, PickupSequentialWaveform):
+        dc = np.diff(center)
+        dd = np.diff(depth)
+        if direction == "pickup":
+            if np.any(dc < -1e-9 * span):
+                reasons.append("pick-up 中心轨迹非单调不减")
+            if np.any(dd < -1e-9 * final_depth_j):
+                reasons.append("pick-up 深度轨迹非单调不减")
+        else:
+            if np.any(dc > 1e-9 * span):
+                reasons.append("drop-off 中心轨迹非单调不增")
+            if np.any(dd > 1e-9 * final_depth_j):
+                reasons.append("drop-off 深度轨迹非单调不增")
+        for probe in (0.0, waveform.duration_s):
+            if abs(float(waveform.center_velocity(probe))) > 1e-12 * span / waveform.duration_s:
+                reasons.append(f"端点中心速度非零 t={probe:.3e}")
+            if abs(float(waveform.center_acceleration(probe))) > 1e-9 * span / waveform.duration_s**2:
+                reasons.append(f"端点中心加速度非零 t={probe:.3e}")
+
+    if isinstance(waveform, MLCubicWaveform):
+        c_over = ml_overshoot_fraction * max(span, 1e-12)
+        d_over = ml_overshoot_fraction * final_depth_j
+        lo_c, hi_c = (0.0, final_center_m) if direction == "pickup" else (0.0, final_center_m)
+        if np.any(center < min(lo_c, hi_c) - c_over) or np.any(center > max(lo_c, hi_c) + c_over):
+            reasons.append("ML 样条中心过冲超过容差")
+        if np.any(depth < -d_over) or np.any(depth > final_depth_j + d_over):
+            reasons.append("ML 样条深度过冲超过容差")
+        if float(np.min(depth)) < -d_tol:
+            reasons.append("ML 样条出现负深度（物理非法）")
+    else:
+        if np.any(center < -1e-9 * span - c_tol) or np.any(center > final_center_m + 1e-9 * span):
+            reasons.append("中心越出 [0, d] 范围")
+        if np.any(depth < -d_tol) or np.any(depth > final_depth_j * (1 + 1e-9)):
+            reasons.append("深度越出 [0, D0] 范围")
+
+    return (len(reasons) == 0), reasons
 
 
 def validate_waveform(waveform, wcfg, final_center_target_m=0.0):

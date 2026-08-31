@@ -187,3 +187,41 @@ level5-finite-pulse-irb --config configs/level5_finite_pulse_irb.yaml \
   Rabi/Ramsey/echo、PSD/空间相关、Clifford、理想 RB、PTM 参数回收、
   dt 收敛）全部通过才开放正式 RB；测试 159 项全部通过（Level 0-4 的
   124 + Level 5 的 35）。
+
+## Level 2C：SLM→AOD pick-up 重复转移存活率复现（arXiv:2403.12021v4 Fig. 6d 顶图）
+
+`src/level2c_pickup_survival` 在 Level 2 引擎上把转移方向反转为 pick-up
+（`spec["direction"]="pickup"`，引擎参数而非代码复制；drop-off 路径原样可跑），
+复现论文"存活率 vs 单程转移次数"曲线。只覆盖存活率；IRB 保真度、XY4、相干性、
+成像与长距离运输不在范围。
+
+新增能力：
+
+- `level1_transfer_1d/thermal.py`：采样阱可选（`well="slm"`，140 µK SLM 阱中
+  简谐提议 + 束缚拒绝）；
+- `waveforms.py`：`PickupSequentialWaveform`（前 48% 二次升深 + 后 52%
+  constant-jerk 移动；`direction="dropoff"` 为严格时间反演）、
+  `MLCubicWaveform`（14+14 控制点普通三次插值，允许非单调，配过冲校验）；
+- `work_energy.py`：`work_energy_two_trap`（双阱时变 + SLM 开关跳变的功-能核算）；
+- `level2c_pickup_survival/survival_engine.py`：逐 shot 连续 n 次单程转移
+  （pick-up → 100 µs 等待 SLM 关闭 → 时间反演 drop-off），中途丢失即终止，
+  支持标定加热三通道与位点差异系综；
+- `reference/`：论文 Fig. 6d 顶图的程序化数字化曲线与参数表
+  （`tools/digitize_fig6d.py` 可从 PDF 重新生成）。
+
+运行：
+
+```bash
+.venv/bin/python -m level2c_pickup_survival.level2c_cli \
+  --config configs/level2c_pickup_survival.yaml --stage all
+```
+
+`--stage` 支持 `preflight` / `pickup` / `roundtrip` / `ml` / `survival_scan` / `all`。
+输出在 `outputs/level2c_pickup_survival/demo/`：pickup_baseline.csv、
+roundtrip_survival.csv、roundtrip_fits.json、ml_candidates.csv、ml_frozen.yaml、
+survival_scan_results.csv、comparison_to_paper.json、metrics.json、summary.md
+及各诊断图（含 survival_vs_transfers.png 模拟-论文叠加图）。
+
+防过拟合：扫描池（23001）/复核池（23002）/ML 训练池（23101）三种子隔离；
+ML 冻结后只在复核池评估一次；验收标准为模拟曲线落入数字化 ±0.02 容差带，
+达不到则如实报告缺口（不调噪声凑数）。

@@ -271,11 +271,15 @@ def _root(path: Path) -> Path:
     return path.parent.resolve()
 
 
-def load_config(path) -> Level2Config:
-    """读取并校验 Level 2 YAML，返回结构化配置。"""
+def load_config(path, extra_sections=()) -> Level2Config:
+    """读取并校验 Level 2 YAML，返回结构化配置。
+
+    extra_sections：允许出现的额外顶层段（如 Level 2C 的 "level2c"），
+    其内容由调用方自行解析；缺省为空时行为与 Level 2 原始 schema 一致。
+    """
     config_path = Path(path).expanduser().resolve()
     raw = yaml.safe_load(config_path.read_text(encoding="utf-8"))
-    if not isinstance(raw, Mapping) or set(raw) != set(_KEYS):
+    if not isinstance(raw, Mapping) or set(raw) != set(_KEYS) | set(extra_sections):
         raise ValueError("配置顶层段必须与 schema 完全一致")
     for section, keys in _KEYS.items():
         if not isinstance(raw[section], Mapping) or set(raw[section]) != keys:
@@ -461,11 +465,15 @@ def config_as_dict(c: Level2Config) -> dict:
 
 
 def level1_view(c: Level2Config, temperature_uK=None, aod_initial_center_m=None):
-    """构造与 Level 1 采样器接口兼容的视图对象，保证逐调用复用同一实现。"""
+    """构造与 Level 1 采样器接口兼容的视图对象，保证逐调用复用同一实现。
+
+    slm 命名空间供 Level 2C 的 well='slm' 采样使用；drop-off 路径不受影响。
+    """
     temperature = c.initial_ensemble.temperature_uK if temperature_uK is None else temperature_uK
     center = c.aod.initial_center_m if aod_initial_center_m is None else aod_initial_center_m
     return SimpleNamespace(
         atom=SimpleNamespace(mass_kg=c.atom.mass_kg),
         aod=SimpleNamespace(depth_j=c.aod.initial_depth_j, waist_m=c.aod.waist_m, initial_center_m=center),
+        slm=SimpleNamespace(depth_j=c.slm.depth_j, waist_m=c.slm.waist_m, center_m=c.slm.center_m),
         thermal=SimpleNamespace(temperature_uK=temperature),
     )

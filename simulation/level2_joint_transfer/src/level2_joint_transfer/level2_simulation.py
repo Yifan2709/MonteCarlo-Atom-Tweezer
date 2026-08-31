@@ -19,7 +19,8 @@ from level1_transfer_1d.thermal import sample_thermal_initial_state
 from .config import Level2Config, level1_view
 from .noise_heating import MeanHeating, velocity_verlet_time_dependent_heating
 from .statistics import paired_bootstrap_difference, paired_counts, summarize_capture
-from .waveforms import OverlappedWaveform, SequentialWaveform, SplineWaveform, validate_waveform
+from .waveforms import (MLCubicWaveform, OverlappedWaveform, PickupSequentialWaveform,
+                        SequentialWaveform, SplineWaveform, validate_waveform)
 from .work_energy import hold_segment_energy_error, work_energy_along_trajectory
 
 
@@ -53,6 +54,14 @@ def build_waveform(spec: dict, physics: dict):
         return SplineWaveform(spec["duration_s"], spec["control_s"], spec["center_values_m"],
                               spec["depth_values_j"], physics["aod_initial_center_m"],
                               physics["aod_initial_depth_j"])
+    if kind == "pickup_sequential":
+        return PickupSequentialWaveform(spec["duration_s"], spec["ramp_fraction"],
+                                        physics["aod_initial_center_m"], physics["aod_initial_depth_j"],
+                                        direction=spec.get("pickup_direction", "pickup"))
+    if kind == "ml_cubic":
+        return MLCubicWaveform(spec["duration_s"], spec["control_s"], spec["center_values_m"],
+                               spec["depth_values_j"], physics["aod_initial_center_m"],
+                               physics["aod_initial_depth_j"])
     raise ValueError(f"未知波形类型 {kind!r}")
 
 
@@ -72,12 +81,14 @@ def baseline_specs(cfg: Level2Config) -> dict:
 
 
 def sample_initial_states(cfg: Level2Config, seed: int, shots: int,
-                          temperature_uK=None, aod_initial_center_m=None):
+                          temperature_uK=None, aod_initial_center_m=None, well="aod"):
     """复用 Level 1 简谐提议 + 束缚拒绝采样器，生成固定初态数组。
 
     提议与拒绝都发生在 Level 1 采样器内部；通过 return_attempts 取回每次
     接受实际消耗的提议数，attempts/acceptance_rate 按真实值记账（5 μK 工况
     接受率≈1，浅阱/高温工况会显著小于 1）。
+    well='slm'（Level 2C pick-up 方向）在 SLM 单阱中采样与拒绝；
+    返回数组字段名沿用 initial_aod_*（历史原因），数值为采样阱能量。
     """
     view = level1_view(cfg, temperature_uK=temperature_uK, aod_initial_center_m=aod_initial_center_m)
     rng = np.random.default_rng(seed)
@@ -85,7 +96,7 @@ def sample_initial_states(cfg: Level2Config, seed: int, shots: int,
     accepted = 0
     attempts = 0
     while accepted < shots:
-        state, used = sample_thermal_initial_state(view, rng, return_attempts=True)
+        state, used = sample_thermal_initial_state(view, rng, return_attempts=True, well=well)
         states.append(state)
         accepted += 1
         attempts += used
@@ -96,6 +107,7 @@ def sample_initial_states(cfg: Level2Config, seed: int, shots: int,
     return {
         "seed": int(seed), "shots": int(shots), "attempts": int(attempts),
         "acceptance_rate": shots / attempts,
+        "sampling_well": well,
         "x0_m": x0, "v0_m_per_s": v0,
         "initial_aod_energy_J": initial_energy,
         "initial_excitation_J": initial_excitation,
@@ -167,11 +179,21 @@ def evaluate_waveform_on_states(spec: dict, states: dict, physics: dict, dt_s: f
                                  heating: MeanHeating | None = None):
     """在固定初态数组上评估一个波形；返回逐 shot 记录与汇总。
 
-    俘获判据在转移结束时刻 t=T（AOD 深度严格为 0）用 SLM 单阱能量判定。
+    转移方向由 spec["direction"] 给出（引擎参数，drop-off 路径保持原样）：
+    - "dropoff"（默认）：俘获判据在 t=T（AOD 深度严格为 0）用 SLM 单阱能量判定；
+      保持段只有 SLM（AOD 已关闭）。
+    - "pickup"（Level 2C）：转移段 SLM 全程开着，保持段（t>T）SLM 关闭、
+      原子只剩静态 AOD 阱；判据为保持段内 AOD 单阱能量全程 < 0
+      （保守极限下 E_AOD 守恒，端点检查即够；噪声注入单调增能时亦然，
+      此处仍逐点检查以严格实现“保持段内逃出 AOD 阱也算失败”）。
+
     heating 给定时，按平均强度确定性注入三通道噪声加热（无随机性）；
     注入能量计入功-能账本（恒等式 ΔE = W_ext + W_noise + R_W），
     转移与保持段全程生效，注入能量随时间累积使系统越发不稳定。
     """
+    direction = spec.get("direction", "dropoff")
+    if direction not in ("dropoff", "pickup"):
+        raise ValueError(f"未知转移方向 {direction!r}")
     waveform = build_waveform(spec, physics)
     duration_s = waveform.duration_s
     total_s = duration_s + hold_s
@@ -182,10 +204,15 @@ def evaluate_waveform_on_states(spec: dict, states: dict, physics: dict, dt_s: f
     end_index = int(round(duration_s / dt_s))
     mass = physics["mass_kg"]
     slm = (physics["slm_depth_j"], physics["slm_waist_m"], physics["slm_center_m"])
+    aod_final_depth = float(waveform.depth(duration_s))
+    aod_final_center = float(waveform.center(duration_s)) + alignment_offset_m
 
     def total_force(x, t):
         center = float(waveform.center(t)) + alignment_offset_m
         depth = float(waveform.depth(t))
+        if direction == "pickup" and t > duration_s:
+            # pick-up 保持段：SLM 关闭（清除残留原子），仅剩静态 AOD 阱
+            return gaussian_force(x, aod_final_depth, physics["aod_waist_m"], aod_final_center)
         return (gaussian_force(x, slm[0], slm[1], slm[2])
                 + gaussian_force(x, depth, physics["aod_waist_m"], center))
 
@@ -221,24 +248,47 @@ def evaluate_waveform_on_states(spec: dict, states: dict, physics: dict, dt_s: f
             time, x, v, _a, noise_work = velocity_verlet_time_dependent_heating(
                 total_force, mass, float(x0[shot]), float(v0[shot]), times, heating, e_osc_fn)
         x_f, v_f = float(x[end_index]), float(v[end_index])
-        final_energy = 0.5 * mass * v_f**2 + float(gaussian_potential(x_f, *slm))
-        captured = is_captured(final_energy, physics.get("capture_threshold", 0.0))
-        margin = -final_energy / slm[0]
+        final_slm_energy = 0.5 * mass * v_f**2 + float(gaussian_potential(x_f, *slm))
+        threshold = physics.get("capture_threshold", 0.0)
+        if direction == "pickup":
+            # 保持段全程 AOD 单阱能量；任一点 >= 阈值即判逃出（转移失败）
+            e_aod_hold = (0.5 * mass * v[end_index:]**2
+                          + gaussian_potential(x[end_index:], aod_final_depth,
+                                               physics["aod_waist_m"], aod_final_center))
+            escaped_during_hold = bool(np.any(e_aod_hold >= threshold))
+            final_energy = float(e_aod_hold[-1])
+            captured = bool(final_energy < threshold) and not escaped_during_hold
+            margin = -final_energy / aod_final_depth
+        else:
+            escaped_during_hold = False
+            final_energy = final_slm_energy
+            captured = is_captured(final_energy, threshold)
+            margin = -final_energy / slm[0]
         record = {
             "shot_id": shot,
+            "direction": direction,
             "x0_um": float(x0[shot]) * 1e6, "v0_m_s": float(v0[shot]),
             "initial_aod_energy_uK": float(states["initial_aod_energy_J"][shot]) / 1.380649e-29,
             "initial_excitation_uK": float(states["initial_excitation_J"][shot]) / 1.380649e-29,
             "final_x_um": x_f * 1e6, "final_v_m_s": v_f,
-            "final_slm_energy_uK": final_energy / 1.380649e-29,
+            "final_slm_energy_uK": final_slm_energy / 1.380649e-29,
             "captured": captured,
-            "near_threshold": bool(abs(final_energy) / slm[0] < near_threshold),
+            "near_threshold": bool(abs(final_energy) / (aod_final_depth if direction == "pickup" else slm[0])
+                                   < near_threshold),
             "capture_margin": margin,
             "final_excitation_over_depth": final_energy / slm[0] + 1.0,
             "excitation_change_uK": (final_energy + slm[0] - float(states["initial_excitation_J"][shot]))
                                     / 1.380649e-29,
             "end_time_index": end_index,
         }
+        if direction == "pickup":
+            record.update({
+                "final_aod_energy_uK": final_energy / 1.380649e-29,
+                "final_aod_excitation_over_depth": final_energy / aod_final_depth + 1.0,
+                "escaped_during_hold": escaped_during_hold,
+                "final_hold_x_um": float(x[-1]) * 1e6,
+                "final_hold_v_m_s": float(v[-1]),
+            })
         if noise_work is not None:
             record.update({
                 "noise_recoil_energy_uK": float(noise_work["recoil_J"][end_index]) / 1.380649e-29,
@@ -257,7 +307,11 @@ def evaluate_waveform_on_states(spec: dict, states: dict, physics: dict, dt_s: f
                 "final_total_work_uK": we["final_work_total_J"] / 1.380649e-29,
                 "max_abs_work_energy_residual_over_depth": we["max_abs_residual_J"] / slm[0],
             })
-        hold = hold_segment_energy_error(time, x, v, mass, slm[0], slm[1], slm[2], duration_s)
+        if direction == "pickup":
+            hold = hold_segment_energy_error(time, x, v, mass, aod_final_depth,
+                                             physics["aod_waist_m"], aod_final_center, duration_s)
+        else:
+            hold = hold_segment_energy_error(time, x, v, mass, slm[0], slm[1], slm[2], duration_s)
         record["hold_peak_to_peak_energy_error_over_depth"] = hold["peak_to_peak_energy_error_over_slm_depth"]
         records.append(record)
         if shot in keep_trajectory_ids:
@@ -294,11 +348,20 @@ def evaluate_waveform_on_states(spec: dict, states: dict, physics: dict, dt_s: f
 
 def ideal_run(spec: dict, physics: dict, dt_s: float, hold_s: float, alignment_offset_m=0.0,
               heating: MeanHeating | None = None):
-    """理想初态（AOD 阱底静止）单条轨迹及功-能核算。"""
-    states = {"x0_m": np.array([physics["aod_initial_center_m"]]),
-              "v0_m_per_s": np.array([0.0]),
-              "initial_aod_energy_J": np.array([-physics["aod_initial_depth_j"]]),
-              "initial_excitation_J": np.array([0.0])}
+    """理想初态单条轨迹及功-能核算。
+
+    drop-off：AOD 阱底静止；pick-up（Level 2C）：SLM 阱底静止。
+    """
+    if spec.get("direction", "dropoff") == "pickup":
+        states = {"x0_m": np.array([physics["slm_center_m"]]),
+                  "v0_m_per_s": np.array([0.0]),
+                  "initial_aod_energy_J": np.array([-physics["slm_depth_j"]]),
+                  "initial_excitation_J": np.array([0.0])}
+    else:
+        states = {"x0_m": np.array([physics["aod_initial_center_m"]]),
+                  "v0_m_per_s": np.array([0.0]),
+                  "initial_aod_energy_J": np.array([-physics["aod_initial_depth_j"]]),
+                  "initial_excitation_J": np.array([0.0])}
     result = evaluate_waveform_on_states(spec, states, physics, dt_s, hold_s,
                                          alignment_offset_m=alignment_offset_m, work_energy=True,
                                          keep_trajectory_ids=(0,), heating=heating)
