@@ -1,0 +1,41 @@
+type: ml_cubic
+duration_us: 400.0
+control_points: 14
+center_values_m:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 1.8189076882884797e-08
+- 2.25867234439979e-07
+- 7.696384920140822e-07
+- 1.4675488505967407e-06
+- 2.070986856948349e-06
+- 2.3585647577933994e-06
+- 2.4e-06
+depth_values_j:
+- 0.0
+- 9.928236974030244e-29
+- 3.9712947896120977e-28
+- 8.935413276627217e-28
+- 1.5885179158448391e-27
+- 2.4820592435075614e-27
+- 3.574165310650887e-27
+- 3.8658171999999996e-27
+- 3.8658171999999996e-27
+- 3.8658171999999996e-27
+- 3.8658171999999996e-27
+- 3.8658171999999996e-27
+- 3.8658171999999996e-27
+- 3.8658171999999996e-27
+provenance:
+  candidate_id: ml_0000
+  origin: manual_anchor
+  training_survival_at_objective: 0.984375
+  training_pool_seed: 23101
+  transfers_for_objective: 60
+  objective: survival_first_then_excitation_then_smoothness
+  optimizer: LHS + local perturbation refine（替代论文在线 ML 优化器，等价黑盒搜索）
