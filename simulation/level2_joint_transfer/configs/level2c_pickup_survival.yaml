@@ -126,6 +126,6 @@ level2c:
     transfers_for_objective: 60
     dt_us: 0.10
   acceptance:
-    tolerance_band: 0.02                     # ≈数字化精度（reference/fig6d_parameters.md §4）
+    tolerance_band: 0.02                     # 沿用比较容差；非论文误差条，非矢量读取误差
   reference:
-    csv: reference/fig6d_survival_digitized.csv
+    csv: reference/fig6d_vector_v2/published_fit_reference.csv

@@ -1,0 +1,38 @@
+{
+  "purpose": "Diagnose whether independent initial temperature and mean heating can describe manual 600 us",
+  "scope": "single-curve sensitivity/calibration only; no experimental input calibration",
+  "initial_sampling": "site_bound_harmonic",
+  "one_way_transfers": 60,
+  "initial_temperatures_uK": [
+    5,
+    10,
+    15,
+    20,
+    25
+  ],
+  "heating_reference_temperatures_uK": [
+    15,
+    25,
+    40,
+    60,
+    80,
+    100
+  ],
+  "scan_shots": 1024,
+  "scan_seed": 24015,
+  "scan_dt_us": 0.05,
+  "fixed_parameter_check": {
+    "temperature_uK": 25,
+    "Tref_uK": 25,
+    "shots": 4096,
+    "seed": 23003,
+    "dt_us": 0.0125
+  },
+  "validation": {
+    "shots": 4096,
+    "seed": 24016,
+    "dt_us": 0.0125
+  },
+  "ranking": "RMSE against unchanged PDF fit path over n=5..60; also require max deviation, markers and early/late behavior to be disclosed",
+  "caution": "Temperature and Tref are independent assumed parameters, not measured experimental values."
+}

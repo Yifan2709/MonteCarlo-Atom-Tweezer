@@ -1,5 +1,9 @@
 # Level 2C 对标参考表：论文 Fig. 6 / Methods "Atom transfer between SLM and AOD tweezers"
 
+> **2026-09-15 更正：本页第 3–4 节记录的是旧像素参考，现已停用。** 旧程序混合追踪拟合线、菱形标记及遮挡边缘，产生伪起伏。“曲线单调性可靠”这一旧声明不成立。旧 CSV 保留用于结果追溯，不再作为默认验收参考。
+>
+> 新参考见 [fig6d_vector_v2/README.md](fig6d_vector_v2/README.md)。直接读取 PDF 中独立的拟合路径、37 个散点中心和原图误差条；默认配置使用 `published_fit_reference.csv`。±0.02 仅保留为与既有验收可比的容差，不再称为提取误差或论文误差条。
+
 > 来源：arXiv 2403.12021v4（*A tweezer array with 6100 highly coherent atomic qubits*）。
 > 本文件是 Level 2C 的固定对标数据，一旦建立不得为迁就模拟结果而修改。
 > 生成日期：2026-08-31。

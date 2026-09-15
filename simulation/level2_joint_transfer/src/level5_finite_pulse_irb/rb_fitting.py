@@ -122,13 +122,26 @@ def instantaneous_ratios(y, risk_set=None):
     return out
 
 
-def irb_estimate(p_ref, p_int, d=2):
+def irb_estimate(p_ref, p_int, d=2, *, design="standard_variable_length"):
     """标准 IRB 估计（前提满足时）：F = (d−1)(x−1)/d + 1，x=p_int/p_ref。"""
-    if p_ref is None or p_int is None or p_ref <= 0 or p_int <= 0:
+    if design == "fixed_cliffords_variable_moves":
+        return {"interpretable": False, "design": design,
+                "reason": "固定 Clifford 总数、扫描移动次数 M：p(M) 与 "
+                          "reference 的 p(n) 不具有相同自变量，不能使用标准 "
+                          "p_int/p_ref 保真度公式；仅报告移动衰减拟合"}
+    if design != "standard_variable_length":
+        raise ValueError(f"未知 IRB 设计 {design}")
+    if (p_ref is None or p_int is None
+            or not np.isfinite(p_ref) or not np.isfinite(p_int)
+            or not 0 < p_ref <= 1 or not 0 < p_int <= 1):
         return {"interpretable": False,
                 "reason": "p_ref/p_int 不可用（拟合失败或非正）"}
     x = p_int / p_ref
     f = (d - 1) * (x - 1.0) / d + 1.0
+    if not 0.0 <= f <= 1.0:
+        return {"interpretable": False, "ratio": float(x),
+                "reason": "标准 IRB 比值推导出 [0,1] 之外的保真度；"
+                          "检查拟合、实验设计与假设，不裁剪为有效结果"}
     return {"interpretable": True, "ratio": float(x),
             "f_avg_interleaved": float(f),
             "note": "仅在 gate-independence、Markovianity、拟合质量与"

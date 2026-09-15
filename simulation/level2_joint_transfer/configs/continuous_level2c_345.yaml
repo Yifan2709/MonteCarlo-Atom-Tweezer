@@ -1,0 +1,25 @@
+# Paths are relative to simulation/level2_joint_transfer.
+level2c_config: configs/level2c_pickup_survival.yaml
+ml_waveform: outputs/level2c_pickup_survival/scan_stage1/fig6c_ml_trajectory_digitized.json
+# Prepare each atom in its actual SLM site before declaring S(0)=1.
+initial_sampling: site_bound_harmonic
+# Optional independent heating reference; null retains the historical Tref=T rule.
+parametric_reference_temperature_uK: null
+temperatures_uK: [5.0, 40.0]
+waveforms: [manual_200us, manual_400us, manual_600us, ml_400us]
+arms: [baseline_1d, matched_lensing_off, matched, extended]
+scan_shots: 256
+scan_seed: 23001
+validation_shots: 512
+validation_seed: 23002
+convergence_shots: 128
+max_one_way_transfers: 60
+dt_us: 0.05
+convergence_dt_us: 0.025
+long_distance_um: 375.0
+long_duration_us: 1450.0
+remote_hold_us: 54.0
+vs_m_s: 0.5391689206547424  # Level 3 severity=1 scenario, NOT measured device calibration
+eta: 0.00013
+rabi_frequency_hz: 24611.0
+threads: 12

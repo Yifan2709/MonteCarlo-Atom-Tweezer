@@ -612,9 +612,10 @@ def stage_interleaved_rb(cfg, pools, output_dir, plot_records, log=print):
     ref_fit = _ref_fit_for_metrics(output_dir, cfg)
     p_ref = ref_fit.get("p") if isinstance(ref_fit, dict) else None
     if cond_p is not None and p_ref is not None:
-        irb = irb_estimate(float(p_ref), float(cond_p))
+        irb = irb_estimate(float(p_ref), float(cond_p),
+                           design="fixed_cliffords_variable_moves")
         irb["p_ref"] = p_ref
-        irb["p_interleaved_combined"] = cond_p
+        irb["p_per_move_fit"] = cond_p
     else:
         irb = {"interpretable": False,
                "reason": "reference/interleaved 拟合不可用"}
@@ -630,7 +631,8 @@ def stage_interleaved_rb(cfg, pools, output_dir, plot_records, log=print):
     }
     if not (exp_ok and ratios_ok):
         irb["interpretable"] = False
-        irb["reason"] = ("conditional 衰减非单指数或相邻比值不稳定 → "
+        irb["reason"] = (irb.get("reason", "") + "；"
+                         "conditional 衰减非单指数或相邻比值不稳定 → "
                          "IRB estimate not interpretable under standard "
                          "assumptions")
     summary["irb_estimate"] = irb
@@ -1241,6 +1243,8 @@ def _build_summary(cfg, preflight, channel, ref, irb, arr, sens,
                          f"{est['f_avg_interleaved']:.6f}"
                          f"（p_ref={est.get('p_ref'):.6f}, "
                          f"p_comb={est.get('p_interleaved_combined'):.6f}）")
+        else:
+            lines.append(f"- 不输出标准 IRB 保真度：{est.get('reason', '假设未满足')}。")
         lines.append(f"- survival（M=80）= "
                      f"{s['survival']['means'][-1]:.4f}；conditional（M=80"
                      f"）= {s['conditional_return']['means'][-1]:.4f}；"

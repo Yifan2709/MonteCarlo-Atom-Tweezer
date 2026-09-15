@@ -18,8 +18,11 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=7.4"]
+continuous = ["numba>=0.61,<0.68"]
 
 [project.scripts]
+simulation-workflow = "simulation_workflow.cli:main"
+continuous-transfer = "continuous_transfer.cli:main"
 level0-static-trap = "level0_static_trap.cli:main"
 level1-transfer-1d = "level1_transfer_1d.cli:main"
 level2-joint-transfer = "level2_joint_transfer.cli:main"

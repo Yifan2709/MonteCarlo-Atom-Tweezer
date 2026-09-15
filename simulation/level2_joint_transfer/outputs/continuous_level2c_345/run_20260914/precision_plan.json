@@ -1,0 +1,23 @@
+{
+  "stage": "precision",
+  "temperatures_uK": [
+    5,
+    15,
+    25
+  ],
+  "arm": "matched",
+  "shots": 4096,
+  "seed": 23003,
+  "dt_us": [
+    0.025,
+    0.0125
+  ],
+  "selection": "256-shot seed 23001 scan only; all four curves at each selected T",
+  "selection_rule": "minimize mean of four curve MSEs, equal curve weights",
+  "per_waveform_best_scan_T": {
+    "manual_200us": 5,
+    "manual_400us": 15,
+    "manual_600us": 25,
+    "ml_400us": 25
+  }
+}

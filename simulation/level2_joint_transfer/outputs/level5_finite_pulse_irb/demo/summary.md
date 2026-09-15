@@ -1,5 +1,7 @@
 # Level 5 有限脉冲单比特动力学、噪声谱与多站点 RB/IRB
 
+> 2026-09-14 状态说明：以下为历史输出。IRB 与 47/195 站点统计受已确认的移动索引错误影响，修复后尚未全量重跑；F_avg=1.001650 不可解释。请先阅读 [RESULT_STATUS.md](RESULT_STATUS.md)。
+
 在 Level 4 冻结的经典轨迹与协议之上，把内部态升级为旋转框架下有限时长微波脉冲驱动的 ^133Cs 钟态量子比特，完成单通道 PTM 表征、reference RB、transport-interleaved RB 与多站点统计。
 
 - Rabi 锚点 Ω₀ = 2π×24.611 kHz（论文 Fig. 4a）；η_SLM=η_AOD=0.00013；nominal 噪声关。

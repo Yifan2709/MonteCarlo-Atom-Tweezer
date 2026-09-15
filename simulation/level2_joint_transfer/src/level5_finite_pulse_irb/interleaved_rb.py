@@ -109,8 +109,9 @@ def run_interleaved_rb(seqs, move_engine: MoveChannelEngine,
                 k_sel = np.stack([k_moves[seqs[i]["string_id"], slot]
                                   for i in rows])  # [n_rows, n_sites]
                 surv_sel = surv_pool[k_sel].astype(float)  # [n_rows, n_sites]
-                idx = (np.array(rows)[:, None]
-                       + np.zeros(n_sites, dtype=int)[None, :]).ravel()
+                # 扁平状态按 [sequence, site] 排列，每个站点必须只更新一次。
+                idx = (np.asarray(rows)[:, None] * n_sites
+                       + np.arange(n_sites)[None, :]).ravel()
                 k_flat = k_sel.ravel()
                 psi_move = flat_psi[idx].copy()
                 eta_s_flat = np.tile(eta_s_site, len(rows))
@@ -129,6 +130,7 @@ def run_interleaved_rb(seqs, move_engine: MoveChannelEngine,
                     else np.tile(rabi_site, len(rows)))
                 flat_psi[idx] = psi_move
                 survival[idx] *= surv_sel.ravel()
+                flat_tstart[idx] += move_pool.total_duration_s
     flat_cliff = np.repeat(
         np.array([s["inverse"] for s in seqs], dtype=int), n_sites)
     noise_qs = None if noise_qs_fn is None else noise_qs_fn(-1)

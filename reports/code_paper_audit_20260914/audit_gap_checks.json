@@ -1,0 +1,77 @@
+{
+  "T5": {
+    "rate_s": 31.98995517010143,
+    "reference_T_uK": 5.0,
+    "power_uK_s": {
+      "recoil": 0.5476112096157026,
+      "parametric": 159.94977585050717,
+      "pointing": 5.234628354809151,
+      "total": 165.73201541493202
+    },
+    "parametric_energy_60_transfers_uK": 4.318643947963693
+  },
+  "T40": {
+    "rate_s": 31.98995517010143,
+    "reference_T_uK": 40.0,
+    "power_uK_s": {
+      "recoil": 0.5476112096157026,
+      "parametric": 1279.5982068040573,
+      "pointing": 5.234628354809151,
+      "total": 1285.3804463684821
+    },
+    "parametric_energy_60_transfers_uK": 34.549151583709545
+  },
+  "comparison": {
+    "manual_200us": {
+      "n": 31,
+      "paper": 0.3344,
+      "sim": 0.44921875,
+      "max_abs_deviation": 0.14374687500000005
+    },
+    "manual_400us": {
+      "n": 60,
+      "paper": 0.4135,
+      "sim": 0.9296875,
+      "max_abs_deviation": 0.5161875
+    },
+    "manual_600us": {
+      "n": 60,
+      "paper": 0.5726,
+      "sim": 0.99609375,
+      "max_abs_deviation": 0.42349375
+    },
+    "ml_400us": {
+      "n": 60,
+      "paper": 0.6633,
+      "sim": 0.921875,
+      "max_abs_deviation": 0.258575
+    }
+  },
+  "irb_index_expected": "M0 all 1, M1 all 0",
+  "irb_index_actual_sites_1": [
+    [
+      1.0
+    ],
+    [
+      0.0
+    ]
+  ],
+  "irb_index_actual_sites_3": [
+    [
+      1.0,
+      0.0,
+      1.0
+    ],
+    [
+      1.0,
+      1.0,
+      1.0
+    ]
+  ],
+  "irb_fixedN_ideal_move_imperfect_reference": {
+    "interpretable": true,
+    "ratio": 1.0101010101010102,
+    "f_avg_interleaved": 1.0050505050505052,
+    "note": "\u4ec5\u5728 gate-independence\u3001Markovianity\u3001\u62df\u5408\u8d28\u91cf\u4e0eloss convention \u524d\u63d0\u6ee1\u8db3\u65f6\u53ef\u89e3\u91ca"
+  }
+}

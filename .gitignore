@@ -14,3 +14,14 @@ __pycache__/
 simulation/level2_joint_transfer/outputs/level5_finite_pulse_irb/demo/frozen_pools/
 simulation/level2_joint_transfer/outputs/level5_finite_pulse_irb/demo/interleaved_rb_sequence_results.csv
 simulation/level2_joint_transfer/outputs/level5_finite_pulse_irb/demo/reference_rb_sequence_results.csv
+
+# Local runtimes and temporary presentation workbooks/previews.
+/tmp/
+/.chart-data-*/
+reports/**/.build/
+node_modules/
+
+# Regenerable per-atom trajectories; retain lightweight JSON metrics and plans.
+simulation/level2_joint_transfer/outputs/continuous_level2c_345/**/*.npz
+reports/level5_paper_review/output/manual600_early_audit/*.npz
+*.partial.json
