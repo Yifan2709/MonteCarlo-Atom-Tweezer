@@ -1,0 +1,43 @@
+{
+  "generated": "2026-09-16",
+  "purpose": "Unified T0=Tref=15 uK Fig. 6d rerun with site-bound initialization",
+  "git": {
+    "branch": "movement_effects_v0",
+    "head": "0153053e2d05aca3d77d091d59afb794bf25894e",
+    "worktree": "clean before this task; new files: configs/continuous_fig6d_unified_T15.yaml, outputs/continuous_level2c_345/run_20260916_unified_T15/*"
+  },
+  "runtime": {
+    "machine": "Apple M1, 8 cores, macOS darwin 24.6.0 arm64",
+    "python": "3.14.7",
+    "numpy": "2.5.2",
+    "numba": "0.67.0",
+    "backend": "numba",
+    "archive_note": "run_20260914 was produced on a Windows machine, Python 3.12.14, numba; engine.py and protocol.py hashes are IDENTICAL between that archive and this run"
+  },
+  "commands": [
+    "PYTHONPATH=src .venv/bin/python -m continuous_transfer.cli --config configs/continuous_fig6d_unified_T15.yaml --output-dir outputs/continuous_level2c_345/run_20260916_unified_T15 --stage validation",
+    "PYTHONPATH=src .venv/bin/python -m continuous_transfer.cli --config configs/continuous_fig6d_unified_T15.yaml --output-dir outputs/continuous_level2c_345/run_20260916_unified_T15 --stage convergence",
+    ".venv/bin/python outputs/continuous_level2c_345/run_20260916_unified_T15/analyze_unified_T15.py"
+  ],
+  "pool_freeze": {
+    "T0_uK": 15.0,
+    "Tref_uK": 15.0,
+    "shots": 4096,
+    "seed": 23003,
+    "dt_formal_us": 0.0125,
+    "dt_check_us": 0.025,
+    "arm": "matched",
+    "seed_provenance": "23003 = archived confirmation pool from reports/stage_review/continuous_precision.py, never used for parameter selection"
+  },
+  "source_sha256_16": {
+    "configs/continuous_fig6d_unified_T15.yaml": "7a2aea3e74ea260f",
+    "configs/level2c_pickup_survival.yaml": "fff85adb17a81241",
+    "outputs/level2c_pickup_survival/scan_stage1/fig6c_ml_trajectory_digitized.json": "7bd03a5eec140197",
+    "reference/fig6d_vector_v2/published_fit_reference.csv": "d4af2792f6942624",
+    "reference/fig6d_vector_v2/experimental_marker_centers.csv": "a1c857f6866f7667",
+    "src/continuous_transfer/engine.py": "c94ec73617bd5cdf",
+    "src/continuous_transfer/protocol.py": "8461f8ba3a9eaae9",
+    "src/continuous_transfer/initialization.py": "4214e87cd8069b75",
+    "src/continuous_transfer/cli.py": "aa38e60f992fa7f6"
+  }
+}

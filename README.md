@@ -48,6 +48,7 @@ Level 4/5 的上游文件仍由各自 YAML 指定；使用新上游结果时应�
 
 ## 报告与结果状态
 
+- [统一初始温度 Fig. 6d 重算与参数审计（2026-09-16）](simulation/level2_joint_transfer/outputs/continuous_level2c_345/run_20260916_unified_T15/REPORT.md)：四条曲线共同 T0=Tref=15 μK、修复后按实际格点初始化、4096 原子、dt=0.0125 μs、冻结 seed 23003；四条曲线均未通过 ±0.02 容差，逐曲线参数审计与复现命令见报告与 `param_audit.csv`。
 - [独立 Level 5 PPT：论文参考数据修正版](reports/level5_paper_review/output/Level5_MonteCarlo_论文对照与全流程_2026-09-15_参考数据修正版.pptx)
 - [手工 600 μs 初期损失诊断（修复前归档）](reports/level5_paper_review/output/manual600_early_audit/手工600us初期损失核查.md)
 - [连续全流程重算报告 v10](reports/stage_review/output/AOD_SLM_continuous_level2c_345_2026-09-14_v10.md)

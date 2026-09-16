@@ -1,0 +1,41 @@
+# Unified Fig. 6d baseline: all four curves share one initial temperature T0=15 uK
+# and one independent heating reference Tref=15 uK.
+#
+# T0=15 is the pre-fixed shared diagnostic baseline required by the 2026-09-16
+# task. It is NOT an experimental calibration, NOT the best-fit value after
+# seeing results, and must not be re-tuned per waveform.
+#
+# Tref is configured explicitly (parametric_reference_temperature_uK: 15.0)
+# instead of the historical implicit Tref=T rule, so initial temperature and
+# heating power can never drift apart silently. Numerically this equals the
+# historical T=15 archive, which isolates the initialization fix as the only
+# intended change relative to run_20260914.
+#
+# Pool freezing: shots=4096, seed=23003 (the archived confirmation pool from
+# reports/stage_review/continuous_precision.py, never used for any parameter
+# selection), dt=0.0125 us for the formal curves, 0.025 us for the paired
+# timestep check (--stage convergence reuses validation_seed and this pool).
+#
+# Paths are relative to simulation/level2_joint_transfer.
+level2c_config: configs/level2c_pickup_survival.yaml
+ml_waveform: outputs/level2c_pickup_survival/scan_stage1/fig6c_ml_trajectory_digitized.json
+initial_sampling: site_bound_harmonic
+parametric_reference_temperature_uK: 15.0
+temperatures_uK: [15.0]
+waveforms: [manual_200us, manual_400us, manual_600us, ml_400us]
+arms: [matched]
+scan_shots: 256
+scan_seed: 23001
+validation_shots: 4096
+validation_seed: 23003
+convergence_shots: 4096
+max_one_way_transfers: 60
+dt_us: 0.0125
+convergence_dt_us: 0.025
+long_distance_um: 375.0
+long_duration_us: 1450.0
+remote_hold_us: 54.0
+vs_m_s: 0.5391689206547424  # Level 3 severity=1 scenario, NOT measured device calibration
+eta: 0.00013
+rabi_frequency_hz: 24611.0
+threads: 8
