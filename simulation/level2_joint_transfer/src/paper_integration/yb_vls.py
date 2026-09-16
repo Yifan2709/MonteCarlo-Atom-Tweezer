@@ -90,7 +90,8 @@ def ramsey_contrast_vs_trips(config: str, max_trips: int = 30,
 
 
 def evaluate_anchors() -> dict:
-    """预注册锚点判据：optimal 每单程 <6e-4 上界；parallel 强衰减；static 最稳。"""
+    """锚点报告（修正 D4：optimal 几何因子由论文上界反求，属构造自洽，
+    不再作为独立复现判据；1.5× 容差随之撤销，仅报告数值与来源）。"""
     opt = per_trip_dephasing("optimal")
     par = per_trip_dephasing("parallel")
     sta = per_trip_dephasing("static_slm")
@@ -98,8 +99,12 @@ def evaluate_anchors() -> dict:
         "trip_flip_dephase_prob").value
     return {
         "optimal_per_trip_total": opt["p_flip"] + opt["p_dephase"],
+        "optimal_per_trip_paper_bound": anchor,
+        "optimal_consistency": "construction_self_consistent"
+        "(g_optimal=0.04 由该上界反求；非独立复现)",
         "optimal_within_paper_bound": bool(
             opt["p_flip"] + opt["p_dephase"] <= anchor * 1.5),
+        "optimal_criterion_nature": "循环：数值由界反求后与界比较，仅自洽",
         "parallel_sigma_phi_rad": par["sigma_phi_rad"],
         "parallel_strongly_dephasing": bool(par["sigma_phi_rad"] > 1.0),
         "ordering_static_le_optimal_le_parallel": bool(

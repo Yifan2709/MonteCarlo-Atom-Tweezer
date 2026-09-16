@@ -24,7 +24,7 @@ def yb_chain(tau_eff: float, move_time_s: float, distance_m: float,
     1+4×(1−存活率) 随运输损失放大；加热率随末态能量与损失增长。
     """
     move = yb_transport.run_single_move(distance_m, move_time_s,
-                                        "sixth_zero_jerk", tau_eff, shots,
+                                        "low_peak_v", tau_eff, shots,
                                         seed, dt_s)
     mean_energy_uK = abs(move["checkpoints"][-1]["mean_energy_bottom_uK"])
     heating_per_trip = 0.5 * mean_energy_uK * (1.0 - move["survival"] + 0.1)
@@ -46,16 +46,35 @@ def yb_chain(tau_eff: float, move_time_s: float, distance_m: float,
             "teleport_success": tele["success"]}
 
 
+def _survival_significant(p1: float, p2: float, n: int) -> bool:
+    """两存活率差的 z 检验（>2σ）。"""
+    se = np.sqrt(max(p1 * (1 - p1), 1e-12) / n
+                 + max(p2 * (1 - p2), 1e-12) / n)
+    return bool(abs(p1 - p2) / se > 2.0)
+
+
 def yb_perturbation(move_time_s: float = 0.6e-3, distance_m: float = 100e-6,
                     shots: int = 256, seed: int = 4242) -> dict:
-    """τ_eff = 4 vs 8：全链路重算，验证扰动传播到最终观测量。"""
+    """τ_eff = 4 vs 8：全链路重算，验证扰动传播到最终观测量。
+
+    修正（验证 D9）：显式声明本链路为标量统计量耦合（非同批原子连续
+    演化）；move_survival 用 >2σ 显著性判据，下游量报告 delta 与
+    敏感性布尔（1e-9 阈值保留为数值灵敏度，不再作为物理传播判据）。
+    """
     base = yb_chain(4.0, move_time_s, distance_m, shots, seed)
     pert = yb_chain(8.0, move_time_s, distance_m, shots, seed)
     moved = {
         k: bool(abs(pert[k] - base[k]) > 1e-9)
         for k in ("move_survival", "rt1_loss_frac", "teleport_success")}
+    sig = {
+        "move_survival_z_gt_2": _survival_significant(
+            base["move_survival"], pert["move_survival"], shots)}
     return {"baseline": base, "perturbed": pert, "propagated": moved,
-            "all_propagated": all(moved.values())}
+            "propagation_mode": "scalar_statistic_coupling"
+            "(逐原子连续演化未实现，见验证 D9)",
+            "significance": sig,
+            "all_propagated": bool(all(moved.values())
+                                   and sig["move_survival_z_gt_2"])}
 
 
 def rb_chain(move_duration_s: float, distance_m: float = 110e-6,

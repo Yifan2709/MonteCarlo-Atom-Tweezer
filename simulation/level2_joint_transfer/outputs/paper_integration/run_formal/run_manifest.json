@@ -1,10 +1,10 @@
 {
- "stage": "integration",
- "generated_utc": "2026-09-15T11:35:17.553026+00:00",
+ "stage": "scan_rb2022",
+ "generated_utc": "2026-09-16T03:43:37.378963+00:00",
  "python": "3.14.7",
  "platform": "macOS-15.7.3-arm64-arm-64bit-Mach-O",
  "numpy": "2.5.2",
- "contract_sha256": "1e54d3e4bcc71acaa1a0f2a86dd871980aaa39c7e8142258eff2c38543cc2904",
+ "contract_sha256": "26f96fdf2d895a5b2487f798cd455cb5e64ab36f57eebaa5883a4acabfddb55f",
  "config": {
   "cs_existing": {
    "config": "cs_existing",
@@ -914,5 +914,7 @@
   }
  },
  "output_dir": "outputs/paper_integration/run_formal",
- "elapsed_s": 10.014626026153564
+ "shots": 1024,
+ "seed": 20260915,
+ "elapsed_s": 6.279526233673096
 }

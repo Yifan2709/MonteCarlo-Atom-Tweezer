@@ -79,8 +79,22 @@ def stage_preflight(out_dir: Path) -> dict:
     s3 = stream_seed(7, 1, 0, "ch")
     results["m1"] = {"ledger_summary": led.summary(),
                      "stream_stable": s1 == s2, "stream_keyed": s1 != s3}
+    # 修正（验证 D8）：B0 增加本版本代码的初态束缚实检（不再只读历史归档）
+    from continuous_transfer.initialization import sample_site_bound_harmonic
+    KBc = 1.380649e-23
+    cs_physics = {"slm_depth_j": 140e-6 * KBc, "slm_waist_m": 1.17e-6,
+                  "slm_center_m": 0.0,
+                  "mass_kg": 132.90545196 * 1.66053906660e-27}
+    init = sample_site_bound_harmonic(90210, 25.0, cs_physics,
+                                       np.ones(256))
+    e = init["initial_energy_j"]
+    results["b0"]["current_code_init_check"] = {
+        "sampler": init["sampler"], "n": 256,
+        "all_bound": bool(np.all(e < 0)),
+        "mean_energy_uK": float(np.mean(e) / KBc / 1e-6)}
     ok = (b0["initial_unbound_actual_site"] == 0 and s1 == s2 and s1 != s3
-          and b0["known_deviation_still_reported"])
+          and b0["known_deviation_still_reported"]
+          and results["b0"]["current_code_init_check"]["all_bound"])
     results["preflight_ok"] = bool(ok)
     _dump(out_dir, "preflight.json", results)
     _dump(out_dir, "run_manifest.json",
@@ -100,8 +114,11 @@ def stage_scan_rb(out_dir: Path, shots: int, seed: int) -> dict:
         cal["c_phi_rad_per_quanta"])
     crit2 = rb_entangled.evaluate_structure(scan2)
     dd_off = rb_entangled.entangled_transport(
-        110e-6, 300e-6, shots, seed + 2, cal["c_phi_rad_per_quanta"], dd=False)
-    dd_on = [r for r in scan2 if r["time_s"] == 300e-6][0]
+        110e-6, 1000e-6, shots, seed + 2, cal["c_phi_rad_per_quanta"], dd=False)
+    dd_on = [r for r in scan2 if r["time_s"] == 600e-6][0]
+    dd_on_1ms = rb_entangled.entangled_transport(
+        110e-6, 1000e-6, shots, seed + 3, cal["c_phi_rad_per_quanta"], dd=True)
+    dd_on = dd_on_1ms  # DD 对照在静态失相干可分辨时长（σ=2T/T2*，T=1ms→0.5 rad）
     crit2["C3_dd_on_greater_than_off"] = bool(
         dd_on["fidelity_raw_loss_as_one"] > dd_off["fidelity_raw_loss_as_one"])
     out = {"r1_rows": rows, "r1_criteria": crit,
@@ -121,7 +138,7 @@ def stage_scan_yb(out_dir: Path, shots: int, seed: int) -> dict:
     times = [0.4e-3, 0.5e-3, 0.6e-3, 0.7e-3, 0.89e-3, 1.5e-3, 3.0e-3]
     rows = yb_transport.scan_moves(
         100e-6, times, shots, seed, 0.1e-6,
-        taus=[0.0, 8.0], trajs=["sixth_zero_jerk", "gamma:1.875"])
+        taus=[0.0, 8.0], trajs=["low_peak_v", "gamma:1.875"])
     crit = yb_transport.evaluate_structure_criteria(rows)
     # 绝热窗口复核（无透镜存活>0.98 的区间上判 C2/C3）
     out = {"y1_rows": rows, "y1_criteria": crit,

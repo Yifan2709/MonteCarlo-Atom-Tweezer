@@ -186,6 +186,18 @@ def build_contract() -> dict:
              "reason": "原窗口把短 T 饱和区与长 T 热噪声底计入，T^-4 标度"
                            "不可测；目标斜率 −4±0.6 未变，判据未放宽",
              "impact": "R1 C2 由不可测变为可测"},
+            {"id": "AMD-3", "requirement": "多处",
+             "field": "口径/标签修正（独立验证 A 阶段发现 D1-D9）",
+             "old": "Y6 后选含真实丢失；Y2 optimal 判据循环；Y4 指数称复现；"
+                    "I1 称实际接通；B0 只读归档；sixth_zero_jerk 命名；"
+                    "diag_expectation 乘积式；R2 解析读出",
+             "new": "D3 后选只读检测+理想诊断单列；D4 循环性声明；D5 自洽声明；"
+                    "D9 标量耦合声明+2σ；D8 本版初态实检；D2 重命名 low_peak_v；"
+                    "D1 真实联合期望；D6 联合态参与读出；D7 入口语法修复",
+             "reason": "独立验证（validation_plan.md A 阶段）证实六条线索与"
+                       "一个入口语法缺陷；均为口径诚实性与缺陷修复，"
+                       "未放宽任何通过阈值（AMD-1/2 的判据不变）",
+             "impact": "Y6 postselected 数值口径改变；其余为标签/文档/回归修正"},
             {"id": "AMD-2", "requirement": "Y1",
              "field": "C2/C3 评估窗口",
              "old": "全部 T 格点",

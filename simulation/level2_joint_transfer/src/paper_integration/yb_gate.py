@@ -115,8 +115,15 @@ def evaluate_anchors(zone_result: dict, scaling: dict) -> dict:
     fr_ar = yb.get("gate_ar_erasure_frac").value
     fr_to = yb.get("gate_to_loss_frac").value
     return {
+        "model_nature": ("given_error_model_sampling：ϵ=ϵ0+c·(ΔI/I)^k 为"
+                         "登记的假设有效通道；标度指数拟合是对预置公式的"
+                         "自洽检查，非门动力学预测（验证 D5）"),
         "scaling_AR": scaling["AR"]["fitted_slope"],
         "scaling_TO": scaling["TO"]["fitted_slope"],
+        "scaling_AR_self_consistent": bool(
+            abs(scaling["AR"]["fitted_slope"] - exp_ar) < 0.6),
+        "scaling_TO_self_consistent": bool(
+            abs(scaling["TO"]["fitted_slope"] - exp_to) < 0.6),
         "scaling_AR_ok": bool(abs(scaling["AR"]["fitted_slope"] - exp_ar) < 0.6),
         "scaling_TO_ok": bool(abs(scaling["TO"]["fitted_slope"] - exp_to) < 0.6),
         "AR_erasure_frac": zone_result["AR"]["erasure_frac_of_errors"],

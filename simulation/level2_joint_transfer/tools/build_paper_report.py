@@ -94,9 +94,11 @@ def build(run_rb: Path, run_yb: Path, out_dir: Path):
         y2 = val_yb["y2"]
         y2_ok = bool(y2["optimal_within_paper_bound"]
                      and y2["ordering_static_le_optimal_le_parallel"])
-        row("Y2", "done", "ran", "anchor_pass" if y2_ok else "anchor_fail",
+        row("Y2", "done", "ran",
+            "construction_consistent(循环锚定已声明)" if y2_ok else "anchor_fail",
             "SELF_CHECKED", str(run_yb / "validation_yb2026.json"),
-            f"optimal/trip={y2['optimal_per_trip_total']:.2e}(bound 6e-4)")
+            f"optimal/trip={y2['optimal_per_trip_total']:.2e}"
+            f"(bound 6e-4, g_optimal 由界反求→自洽非复现)")
         y3 = val_yb["y3"]["anchors"]
         y3_ok = bool(y3["erasure_frac_declines"]
                      and abs(y3["rt1_loss"] - y3["rt1_loss_paper"]) < 0.006)
@@ -107,10 +109,12 @@ def build(run_rb: Path, run_yb: Path, out_dir: Path):
             f"(paper {y3['rt1_erasure_frac_paper']}/{y3['rt5_erasure_frac_paper']})")
         y4 = val_yb["y4"]["anchors"]
         y4_ok = bool(y4["scaling_AR_ok"] and y4["scaling_TO_ok"])
-        row("Y4", "done", "ran", "anchor_pass" if y4_ok else "anchor_fail",
+        row("Y4", "done", "ran",
+            "self_consistent_model_sampling(构成锚点通过)" if y4_ok else "anchor_fail",
             "SELF_CHECKED", str(run_yb / "validation_yb2026.json"),
-            f"slope AR/TO={y4['scaling_AR']:.2f}/{y4['scaling_TO']:.2f} "
-            f"erasure AR={y4['AR_erasure_frac']:.2f}(paper {y4['AR_erasure_frac_paper']})")
+            f"slope AR/TO={y4['scaling_AR']:.2f}/{y4['scaling_TO']:.2f}"
+            f"(预置公式自洽)；erasure AR={y4['AR_erasure_frac']:.2f}"
+            f"(paper {y4['AR_erasure_frac_paper']},MC 抽样锚点)")
         y5 = val_yb["y5"]
         prep_raw = y5["prep"]["raw"]["fidelity_estimate"]
         prep_flag = y5["prep"]["flag"]["fidelity_estimate"]
@@ -132,15 +136,18 @@ def build(run_rb: Path, run_yb: Path, out_dir: Path):
             "SELF_CHECKED", str(run_yb / "validation_yb2026.json"),
             f"adaptive/random/ps={y6a['success']:.3f}/{y6r['success']:.3f}/"
             f"{y6a['postselected_success']:.3f}"
-            f"(paper 0.802/0.771/0.87); 水平差 ~{y6a['success']-0.802:+.3f}（见报告归因）")
+            f"(paper 0.802/0.771/0.87; ps 已改只读检测口径 D3); "
+            f"水平差 ~{y6a['success']-0.802:+.3f}（见报告归因）")
     else:
         for rid in ("Y2", "Y3", "Y4", "Y5", "Y6"):
             row(rid, "done", "not_run", "missing", "SELF_CHECKED", "-")
 
     if integ:
         i1_ok = bool(integ["all_propagated"])
-        row("I1", "done", "ran", "n/a(接通)" + ("_pass" if i1_ok else "_fail"),
+        row("I1", "done", "ran",
+            "n/a(标量耦合接通" + ("_pass" if i1_ok else "_fail") + ")",
             "SELF_CHECKED", str(run_rb / "integration.json"),
+            f"mode={integ['yb_chain'].get('propagation_mode', 'n/a')[:20]}… "
             f"yb={integ['yb_chain']['all_propagated']} "
             f"rb={integ['rb_chain']['all_propagated']}")
     else:
@@ -170,7 +177,11 @@ def report(status_rows, run_rb: Path, run_yb: Path, out_dir: Path) -> str:
         "",
         "- 结构/锚点级通过：R1 R2 Y1 Y2 Y3 Y4（预注册结构判据全过或差距<容差）。",
         "- 定性/序关系通过、水平差距如实报告：R3 Y5 Y6（见下表差距列）。",
-        "- 基础设施：B0 M1 I1 V1 通过（B0 确认 Cs 600μs 历史偏差仍未解决且未被改写）。",
+        "- 基础设施：B0 M1 I1 V1（B0 含本版初态束缚实检 D8；Cs 600μs 历史"
+        "偏差仍未解决且未被改写）。",
+        "- **独立验证 A 阶段修正已并入本版**（validation_plan.md，D1-D9）："
+        "Y6 后选口径改只读检测；Y2/Y4 标签降级为自洽；I1 声明标量耦合；"
+        "sixth_zero_jerk→low_peak_v；统一入口语法修复（原 0b86619 该入口损坏）。",
         "- **不能**声称“完整复现两篇论文”：绝对曲线验收所需的论文源数据"
         "（R 图1d/ED2、Y ED2b）在本环境未获取（网络受限），Y1/R1/R2 仅做结构判据；"
         "R3 raw 差 0.17、Y6 水平差约 +0.11，归因见 §差距。",

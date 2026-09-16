@@ -2,13 +2,12 @@
 
 - constant_jerk（R Methods）：x(s)=D(3s²−2s³)，速度抛物线、加速度线性、jerk 常数。
 - min_jerk（Y，γ=1.875）：x(s)=D(10s³−15s⁴+6s⁵)，峰值速度 1.875·D/T。
-- zero_jerk（Y，γ=1.5625）：六阶剖面 x(s)=D(7.5s⁴−9s⁵+2.5s⁶)，
-  端点 jerk=0，峰值速度 ≈1.69·D/T。
-  【已登记假设】论文的五阶多项式 γ 族的精确定义（γ 如何进入系数）无法从
-  可获取的 arXiv 文本恢复；本实现以“端点零 jerk 的最低阶多项式”作为
-  zero-jerk 的显式剖面，γ 数值仅作为论文标签保留。此假设影响绝对曲线，
-  不影响“含透镜时 zero-jerk 优于 min-jerk”的结构判据（两条剖面峰值速度
-  1.69<1.875、加速度末端行为不同，透镜灵敏度排序由此可判）。
+- low_peak_v（对应论文 zero-jerk 标签，γ=1.5625）：五阶族低分支剖面
+  x(s)=D(6s³−7s⁴+2s⁵)，峰值速度 1.728·D/T < min-jerk 的 1.875。
+  【已登记假设】论文五阶 γ 族的精确定义（γ 如何进入系数）无法从可获取的
+  arXiv 文本恢复；本实现取该族中峰值速度最低的可达剖面（a=6）近似论文
+  zero-jerk。注意：该剖面端点 jerk(0)=36·D/T³≠0，名称不再声称零 jerk；
+  此假设影响绝对曲线，不影响“含透镜时低峰值速度剖面更优”的结构判据。
 - gamma:P 族：x(s)=a s³+(5−2a)s⁴+(a−4)s⁵，端点速度为零，峰值速度=γ·D/T；
   仅在 γ≳1.7（a≥6 分支）可解，供灵敏度扫描。
 """
@@ -77,10 +76,10 @@ def poly_trajectory(kind: str, distance_m: float, duration_s: float,
         # v(s)=2s (s<0.5), 2(1−s)；x=s² (s<0.5), 1−(1−s)²
         x = np.where(s < 0.5, s**2, 1 - (1 - s) ** 2) * distance_m
         v = np.where(s < 0.5, 2 * s, 2 * (1 - s)) * distance_m / duration_s
-    elif kind == "sixth_zero_jerk":
-        # Y zero-jerk 近似：五阶族低分支中峰值速度最低的可达剖面（a≈6，γ≈1.63）。
-        # 论文 γ=1.5625 的精确定义不可恢复（见模块 docstring）；保留结构性质：
-        # 峰值速度低于 min-jerk(1.875) ⇒ 含透镜时灵敏度更低。
+    elif kind == "low_peak_v":
+        # 论文 zero-jerk 标签的近似剖面：五阶族低分支 x=6s³−7s⁴+2s⁵
+        # （a=6，峰值速度比 1.728）。端点 jerk(0)=36·D/T³≠0——本名称只声明
+        # 低峰值速度，不声称零 jerk（γ=1.5625 精确定义不可恢复，见 docstring）。
         a0, b0, c0 = 6.0, 5.0 - 12.0, 2.0
         x = distance_m * (a0 * s**3 + b0 * s**4 + c0 * s**5)
         v = (distance_m / duration_s) * (3 * a0 * s**2 + 4 * b0 * s**3
@@ -88,7 +87,7 @@ def poly_trajectory(kind: str, distance_m: float, duration_s: float,
     elif kind.startswith("gamma:"):
         gamma = float(kind.split(":")[1])
         if gamma < 1.7:
-            raise ValueError("gamma:P 族仅在 γ≳1.7 可解；zero-jerk 用 sixth_zero_jerk")
+            raise ValueError("gamma:P 族仅在 γ≳1.7 可解；论文 zero-jerk 近似用 low_peak_v")
         a, b, c = gamma_family_coeffs(gamma)
         x = distance_m * (a * s**3 + b * s**4 + c * s**5)
         v = (distance_m / duration_s) * (3 * a * s**2 + 4 * b * s**3
@@ -99,4 +98,4 @@ def poly_trajectory(kind: str, distance_m: float, duration_s: float,
 
 
 MIN_JERK = "gamma:1.875"      # Y：minimum-jerk（10−15+6，解析一致）
-ZERO_JERK = "sixth_zero_jerk"  # Y：zero-jerk（六阶端点零 jerk，见模块说明）
+ZERO_JERK = "low_peak_v"  # 论文 zero-jerk 标签的近似剖面（低峰值速度，端点 jerk≠0）

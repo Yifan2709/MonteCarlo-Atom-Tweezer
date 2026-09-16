@@ -1,7 +1,10 @@
 {
  "y2": {
   "optimal_per_trip_total": 0.0008877621349702819,
+  "optimal_per_trip_paper_bound": 0.0006,
+  "optimal_consistency": "construction_self_consistent(g_optimal=0.04 由该上界反求；非独立复现)",
   "optimal_within_paper_bound": true,
+  "optimal_criterion_nature": "循环：数值由界反求后与界比较，仅自洽",
   "parallel_sigma_phi_rad": 1.0609664660247258,
   "parallel_strongly_dephasing": true,
   "ordering_static_le_optimal_le_parallel": true
@@ -394,8 +397,11 @@
    }
   },
   "anchors": {
+   "model_nature": "given_error_model_sampling：ϵ=ϵ0+c·(ΔI/I)^k 为登记的假设有效通道；标度指数拟合是对预置公式的自洽检查，非门动力学预测（验证 D5）",
    "scaling_AR": 4.000000000000003,
    "scaling_TO": 1.9999999999999976,
+   "scaling_AR_self_consistent": true,
+   "scaling_TO_self_consistent": true,
    "scaling_AR_ok": true,
    "scaling_TO_ok": true,
    "AR_erasure_frac": 0.3796627205718115,
@@ -516,8 +522,9 @@
    "policy": "adaptive",
    "n_blocks": 4,
    "success": 0.912115,
-   "postselected_success": 0.928790857368153,
-   "acceptance": 0.913085,
+   "postselected_success": 0.912153206728052,
+   "ideal_true_loss_conditioned_success": 0.9287814493388452,
+   "acceptance": 0.999695,
    "mean_selection_latency_s": 0.02882662499995869,
    "paper": {
     "raw_random": 0.771,
@@ -530,8 +537,9 @@
    "policy": "random",
    "n_blocks": 4,
    "success": 0.89378,
-   "postselected_success": 0.9280857162700542,
-   "acceptance": 0.791915,
+   "postselected_success": 0.9119242443477559,
+   "ideal_true_loss_conditioned_success": 0.928246088456694,
+   "acceptance": 0.86647,
    "mean_selection_latency_s": 0.0,
    "paper": {
     "raw_random": 0.771,

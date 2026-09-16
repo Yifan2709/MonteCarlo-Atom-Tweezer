@@ -148,7 +148,7 @@ def evaluate_structure_criteria(rows: list[dict]) -> dict:
         results["C1_best_gap"] = {"gap": best_gap[0], "err": best_gap[1],
                                   "at_T_s": best_gap[2], "traj": best_gap[3]}
     # C2/C3：zero vs min jerk
-    zj = [k for k in ("sixth_zero_jerk",) if k in trajs]
+    zj = [k for k in ("low_peak_v",) if k in trajs]
     mj = [k for k in ("gamma:1.875",) if k in trajs]
     if zj and mj:
         zj, mj = zj[0], mj[0]

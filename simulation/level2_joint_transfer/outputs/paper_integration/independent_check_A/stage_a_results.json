@@ -1,0 +1,46 @@
+{
+ "A1_bell_reference": {
+  "independent": {
+   "ZI": 0.0,
+   "IZ": 0.0,
+   "ZZ": 0.9999999999999998,
+   "XX": 0.9999999999999998,
+   "YY": -0.9999999999999998
+  },
+  "pass": true,
+  "diag_expectation_ZZ_on_Bell": 0.0,
+  "true_ZZ": 0.9999999999999998,
+  "diag_product_formula_bias": 0.9999999999999998,
+  "production_usage": "grep 确认 diag_expectation 未进入生产结果路径；测试仅用 'ZI'（单比特，乘积式正确）"
+ },
+ "A3_trajectories": {
+  "values": {
+   "sixth_zero_jerk": {
+    "v_end_abs_max": 2.9380962882000014e-07,
+    "acc_start": 1.079020904,
+    "acc_end": -759.63958010152,
+    "jerk_start": 3414950.937000002,
+    "jerk_end": 598857832.7140563,
+    "peak_v_ratio": 1.7279999640010146,
+    "endpoint_x_err": 0.0
+   },
+   "gamma:1.875": {
+    "v_end_abs_max": 4.895920864600001e-07,
+    "acc_start": 1.7979021120000005,
+    "acc_end": -1.7979036651213587,
+    "jerk_start": 5689181.811000004,
+    "jerk_end": 5689170.649173919,
+    "peak_v_ratio": 1.8749999500002446,
+    "endpoint_x_err": 0.0
+   }
+  },
+  "finding": "sixth_zero_jerk 实为五阶剖面 x=6s³−7s⁴+2s⁵：端点 jerk(0)=6a=36·D/T³≠0，并非零 jerk，与名称及模块 docstring 中“六阶/端点零 jerk”表述不符（代码内联注释已如实写 a=6/γ≈1.63）；结构性质（峰值速度 1.728<1.875）成立，但“zero-jerk”标签应更名或修正文档"
+ },
+ "A3_pass_endpoint_v": false,
+ "A4_dispatch": {
+  "paper_cli_list_rc": 0,
+  "paper_cli_stdout": "paper-rb2022: scan/validation | paper-yb2026: scan/validation | 无 paper: preflight/integration",
+  "workflow_registered": "",
+  "workflow_rc": 1
+ }
+}

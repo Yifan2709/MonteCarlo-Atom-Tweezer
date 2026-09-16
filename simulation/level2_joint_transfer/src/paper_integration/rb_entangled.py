@@ -77,48 +77,56 @@ def entangled_transport(distance_m: float, time_s: float, shots: int,
     dphi = rng.standard_normal(shots) * sigma_total
     lost_moving = ~res["alive"]
     lost_static = rng.random(shots) < 0.004     # 静止阱保持损失（assumed 小）
-    state = BatchedState(2, shots, rng)
-    state.h(0)
-    state.cx(0, 1)
-    # 施加逐 trial 相位：Z1 旋转 −dphi/2、Z2 +dphi/2（等效 Φ+ 失相干）
-    fz1 = dphi < 0   # 符号化近似：相位连续分布用两段 Pauli 近似不可行 →
-    # 改用确定性相位旋转的等价统计：直接对 |Φ+⟩ 计算（见下）
-    # —— 用解析读出替代态矢量（|Φ+⟩ + 已知相位差的关联完全解析）：
-    # P(00)=P(11)=(1+cos dphi)/4? 对 Φ+ 在 ZZ 读出：P(同)= (1+cos dphi)/2
-    cosphi = np.cos(dphi)
-    # ZZ 关联（读出含 FP/FN=0 & 损失读|1⟩：lost→bit=1）
-    def zz_outcome(dark_read_as_one: bool):
-        b0 = np.where(lost_static, 1, np.zeros(shots, int))
-        b1 = np.where(lost_moving, 1, np.zeros(shots, int))
-        # 未丢失部分：Z 读出关联采样
-        u = rng.random(shots)
-        same = u < (1 + cosphi) / 2
-        z0 = np.where(lost_static, b0, np.where(same, 0, 0))
-        z1 = np.where(lost_moving, b1, np.where(same, 0, 1))
-        if dark_read_as_one:
-            return z0, z1
-        # 后选口径标记
-        keep = ~lost_static & ~lost_moving
-        return z0, z1, keep
 
-    z0, z1 = zz_outcome(True)
-    zz = 1 - 2 * np.mean(z0 ^ z1)
-    # 宇称振荡：分析旋转 θ 后 X 基关联 ⟨X(θ)X(−θ)⟩ = cos(dphi − 2θ) 期望
-    contrasts = []
+    # 修正（验证 D6）：联合态实际参与读出——构造 |Φ+⟩，对 q0 施加逐 trial
+    # 相对相位 φ（|00>/|11> 相对相位），克隆后按基/分析角测量。
+    def build_state() -> BatchedState:
+        st = BatchedState(2, shots, rng)
+        st.h(0)
+        st.cx(0, 1)
+        st.apply_z_rotation(0, dphi)   # |Φ+> 相对相位：单比特旋转 φ
+        st.mark_lost(np.stack([lost_static, lost_moving]))
+        return st
+
+    def readout_bits(st: BatchedState):
+        """破坏性读出；丢失读为 |1⟩（dark），含 1% SPAM 翻转。"""
+        out = []
+        for q in range(2):
+            b = st.measure_z(q).astype(np.int8)
+            u = rng.random(shots)
+            b = np.where(b < 0, 1, np.where((u < 0.01), 1 - np.where(b < 0, 1, b),
+                                            np.where(b < 0, 1, b)))
+            out.append(np.where(st.lost[q] | (b < 0), 1, b).astype(np.int8))
+        return out
+
+    keep = ~lost_static & ~lost_moving
+    # ZZ（Z 基克隆）
+    stz = build_state()
+    z0, z1 = readout_bits(stz)
+    zz = float(1 - 2 * np.mean(z0 ^ z1))
+    zz_ps = float(1 - 2 * np.mean(z0[keep] ^ z1[keep])) if keep.any() else float("nan")
+    # 宇称振荡：分析角 θ 克隆 → R_z(θ)⊗R_z(−θ) → X 基读出
+    contrasts, contrasts_ps = [], []
     for theta in analysis_angles:
-        c = float(np.mean(np.cos(dphi - 2 * theta)))
-        contrasts.append(c)
+        stx = build_state()
+        stx.apply_z_rotation(0, np.full(shots, theta))
+        stx.apply_z_rotation(1, np.full(shots, -theta))
+        stx.h(0)
+        stx.h(1)
+        b0, b1 = readout_bits(stx)
+        contrasts.append(float(1 - 2 * np.mean(b0 ^ b1)))
+        contrasts_ps.append(float(1 - 2 * np.mean(b0[keep] ^ b1[keep]))
+                            if keep.any() else float("nan"))
     c_max = float(max(contrasts))
-    fid_raw = float(0.5 * (zz + c_max)) * 0.99   # 含 SPAM ≈1%（assumed）
-    _, _, keep = zz_outcome(False)
-    fid_ps = float(0.5 * ((1 - 2 * np.mean(z0[keep] ^ z1[keep]))
-                          + float(np.mean(np.cos(dphi[keep]))))) \
-        if keep.any() else float("nan")
+    c_ps = float(max(contrasts_ps)) if keep.any() else float("nan")
+    fid_raw = float(0.5 * (zz + c_max))         # SPAM 已在读出中（1% 翻转）
+    fid_ps = float(0.5 * (zz_ps + c_ps)) if keep.any() else float("nan")
     return {
         "distance_m": distance_m, "time_s": time_s, "shots": shots,
         "seed": seed, "dd": dd,
         "mean_delta_N": dn, "sigma_phi_rad": sigma_total,
-        "zz_correlation": float(zz), "parity_contrast": c_max,
+        "zz_correlation": zz, "parity_contrast": c_max,
+        "readout_mode": "state_vector_with_per_trial_phase(D6 fix)",
         "fidelity_raw_loss_as_one": fid_raw,
         "fidelity_postselected_both_alive": fid_ps,
         "both_alive_frac": float(np.mean(keep)),

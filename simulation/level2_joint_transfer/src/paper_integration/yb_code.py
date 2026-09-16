@@ -372,11 +372,16 @@ def teleportation(trials: int, seed: int, n_blocks: int = 4,
     detectedB = np.zeros(trials, bool)
     for tr in range(trials):
         detectedB[tr] = block_detected[sel[tr]][tr]
-    accepted = ~detectedB & ~lostB[4:].any(axis=0)
+    # 修正（验证 D3）：观测后选只读擦除检测记录；
+    # 真实丢失条件化单列为理想诊断（隐藏标签，不进入观测口径）。
+    accepted = ~detectedB
+    ideal_no_true_loss = ~lostB[4:].any(axis=0)
     return {
         "trials": trials, "policy": policy, "n_blocks": n_blocks,
         "success": float(np.mean(succ)),
         "postselected_success": float(np.mean(succ[accepted])) if accepted.any() else float("nan"),
+        "ideal_true_loss_conditioned_success": float(
+            np.mean(succ[ideal_no_true_loss])) if ideal_no_true_loss.any() else float("nan"),
         "acceptance": float(np.mean(accepted)),
         "mean_selection_latency_s": latency_s if policy == "adaptive" else 0.0,
         "paper": {"raw_random": yb.get("teleport_fid_raw").value,

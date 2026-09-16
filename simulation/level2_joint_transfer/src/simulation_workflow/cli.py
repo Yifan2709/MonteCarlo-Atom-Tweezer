@@ -56,7 +56,6 @@ LEVELS = {
         "unit": "默认 M 为完整组合往返数；每次独立抽取冻结轨迹",
         "depends_on": ["Level 4 协议与轨迹池"],
     },
-,
     "paper-rb2022": {
         "title": "R 论文（Bluvstein 2022）Rb 纠缠运输与线路接入",
         "module": "paper_integration.cli",

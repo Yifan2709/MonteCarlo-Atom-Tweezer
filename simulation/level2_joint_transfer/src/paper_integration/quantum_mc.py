@@ -114,15 +114,42 @@ class BatchedState:
 
     # ---------------- 诊断观测 ----------------
     def diag_expectation(self, spec: str) -> np.ndarray:
-        """对角 Pauli 期望（I/Z 串），逐 trial。仅诊断用。"""
-        psi2 = np.abs(self.psi) ** 2
-        prod = np.ones(self.trials)
-        for q, ch in enumerate(spec):
-            moved = np.moveaxis(psi2, q, 0)
-            s0 = moved[0].sum(axis=tuple(range(self.n - 1)))
-            s1 = moved[1].sum(axis=tuple(range(self.n - 1)))
-            prod = prod * ((s0 + s1) if ch == "I" else (s0 - s1))
-        return prod
+        """真实联合对角期望 ⟨⊗_q O_q⟩（I/Z 串），逐 trial。
+
+        修正（验证 D1）：旧实现为逐比特边缘期望的乘积，对纠缠态错误
+        （Bell 态 "ZZ" 返回 0，真值 1）。现按概率表逐串求和。
+        仅支持对角（I/Z）观测；非对角请用测量或专用旋转。
+        """
+        prob = np.abs(self.psi) ** 2          # (2,)*n + (trials,)
+        flat = prob.reshape(2 ** self.n, -1)
+        acc = np.zeros(self.trials)
+        for idx in range(2 ** self.n):
+            bits = [(idx >> (self.n - 1 - q)) & 1 for q in range(self.n)]
+            eig = 1.0
+            for q, ch in enumerate(spec):
+                if ch == "Z":
+                    eig *= 1 - 2 * bits[q]
+                elif ch != "I":
+                    raise ValueError(f"diag_expectation 仅支持 I/Z，收到 {ch!r}")
+            acc += eig * flat[idx]
+        return acc
+
+    def apply_z_rotation(self, q: int, angles: np.ndarray) -> None:
+        """逐 trial 施加 R_z(θ_q)：|0⟩→e^{−iθ/2}|0⟩，|1⟩→e^{+iθ/2}|1⟩。
+
+        angles 形状 (trials,)。丢失位上恒等。
+        """
+        theta = np.asarray(angles, dtype=float)
+        moved = np.moveaxis(self.psi, q, 0)
+        ph0 = np.exp(-0.5j * theta)
+        ph1 = np.exp(+0.5j * theta)
+        out0 = moved[0] * ph0
+        out1 = moved[1] * ph1
+        moved = np.stack([out0, out1], axis=0)
+        if self.lost[q].any():
+            orig = np.moveaxis(self.psi, q, 0)
+            moved = np.where(self.lost[q], orig, moved)
+        self.psi = np.moveaxis(moved, 0, q)
 
     def probabilities(self) -> np.ndarray:
         return np.abs(self.psi.reshape(2 ** self.n, -1)) ** 2

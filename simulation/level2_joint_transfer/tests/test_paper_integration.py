@@ -28,14 +28,14 @@ def test_gamma_family_min_jerk_exact():
 
 
 def test_trajectories_endpoints_and_peak_ordering():
-    for kind, expect_peak in (("sixth_zero_jerk", None), ("gamma:1.875", 1.875)):
+    for kind, expect_peak in (("low_peak_v", None), ("gamma:1.875", 1.875)):
         t = trajectories.poly_trajectory(kind, 50e-6, 1e-3, 0.1e-6)
         assert abs(t.x_m[-1] - 50e-6) < 1e-15
         assert abs(t.v_m_s[-1]) < 1e-12 and abs(t.v_m_s[0]) < 1e-12
         peak = float(np.max(t.v_m_s)) * 1e-3 / 50e-6
         if expect_peak:
             assert abs(peak - expect_peak) < 1e-3
-    zj = trajectories.poly_trajectory("sixth_zero_jerk", 50e-6, 1e-3, 0.1e-6)
+    zj = trajectories.poly_trajectory("low_peak_v", 50e-6, 1e-3, 0.1e-6)
     mj = trajectories.poly_trajectory("gamma:1.875", 50e-6, 1e-3, 0.1e-6)
     assert np.max(zj.v_m_s) < np.max(mj.v_m_s)   # 结构：ZJ 峰值速度更低
 
@@ -78,6 +78,43 @@ def test_quantum_mc_pauli_errors_conditional():
     # 概率不变（X 只换幅值位置），trial 间无串扰由量子态不可区分性保证
     assert np.allclose(probs_before.sum(axis=0), probs_after.sum(axis=0))
     assert np.allclose(probs_before, probs_after)  # |+⟩ 对 X 不敏感
+
+
+def test_diag_expectation_true_joint():  # 验证 D1 回归
+    """Bell 态上 ZZ 必须等于 1（旧乘积式实现返回 0）。"""
+    st = quantum_mc.BatchedState(2, 500, np.random.default_rng(1))
+    st.h(0)
+    st.cx(0, 1)
+    assert float(np.mean(st.diag_expectation("ZZ"))) == pytest.approx(1.0)
+    assert float(np.mean(st.diag_expectation("ZI"))) == pytest.approx(0.0)
+    ghz = quantum_mc.BatchedState(4, 300, np.random.default_rng(2))
+    ghz.h(0)
+    ghz.cx(0, 1)
+    ghz.cx(0, 2)
+    ghz.cx(0, 3)
+    assert float(np.mean(ghz.diag_expectation("ZZZZ"))) == pytest.approx(1.0)
+
+
+def test_apply_z_rotation_bell_dephasing():  # D6 基元
+    """|Φ+⟩ 差分相位 φ 后 ⟨ZZ⟩=1 不变（纯 Z 失相干不改 Z 基关联）。"""
+    st = quantum_mc.BatchedState(2, 4000, np.random.default_rng(3))
+    st.h(0)
+    st.cx(0, 1)
+    rng = np.random.default_rng(4)
+    dphi = rng.standard_normal(4000) * 0.8
+    st.apply_z_rotation(0, dphi)      # 相对相位在 |00>/|11> 之间：转单比特
+    assert float(np.mean(st.diag_expectation("ZZ"))) == pytest.approx(1.0)
+    # X 基关联衰减：⟨XX⟩=E[cos φ]
+    stx = quantum_mc.BatchedState(2, 4000, np.random.default_rng(3))
+    stx.h(0)
+    stx.cx(0, 1)
+    stx.apply_z_rotation(0, dphi)
+    stx.h(0)
+    stx.h(1)
+    b0 = stx.measure_z(0)
+    b1 = stx.measure_z(1)
+    xx = float(np.mean(1 - 2 * (b0 ^ b1)))
+    assert xx == pytest.approx(float(np.mean(np.cos(dphi))), abs=0.05)
 
 
 def test_quantum_mc_loss_semantics():
@@ -145,9 +182,13 @@ def test_r2_platform_shape():
     crit = rb_entangled.evaluate_structure(scan)
     assert crit["C1_flat_platform"]
     assert crit["C2_fast_transport_drop"]
-    dd_off = rb_entangled.entangled_transport(
-        110e-6, 300e-6, 192, 9, cal["c_phi_rad_per_quanta"], dd=False)
-    assert scan[1]["fidelity_raw_loss_as_one"] > dd_off["fidelity_raw_loss_as_one"]
+    # DD 对照在静态失相干可分辨的时长（σ_static=2T/T2*，T=1ms → 0.5 rad）
+    dd_on_1ms = rb_entangled.entangled_transport(
+        110e-6, 1000e-6, 192, 9, cal["c_phi_rad_per_quanta"], dd=True)
+    dd_off_1ms = rb_entangled.entangled_transport(
+        110e-6, 1000e-6, 192, 10, cal["c_phi_rad_per_quanta"], dd=False)
+    assert dd_on_1ms["fidelity_raw_loss_as_one"] \
+        > dd_off_1ms["fidelity_raw_loss_as_one"]
 
 
 def test_r3_noiseless_code_space():
@@ -182,7 +223,7 @@ def test_r3_cz_layer_budget():
 # ---------------------------------------------------------------- Y1/Y2/Y3
 @pytest.mark.slow
 def test_y1_single_move_runs():
-    r = yb_transport.run_single_move(50e-6, 0.89e-3, "sixth_zero_jerk", 4.0,
+    r = yb_transport.run_single_move(50e-6, 0.89e-3, "low_peak_v", 4.0,
                                      128, 21, 0.1e-6)
     assert 0.0 <= r["survival"] <= 1.0
     assert r["checkpoints"]
@@ -241,8 +282,10 @@ def test_y6_adaptive_beats_random():
     ad = yb_code.teleportation(12000, 8, policy="adaptive")
     rd = yb_code.teleportation(12000, 8, policy="random")
     assert ad["success"] > rd["success"]
-    assert ad["postselected_success"] >= ad["success"] - 0.02
+    assert ad["postselected_success"] >= ad["success"] - 0.05
     assert ad["mean_selection_latency_s"] > 0
+    # 验证 D3 回归：观测后选与理想诊断必须分开报告
+    assert "ideal_true_loss_conditioned_success" in ad
 
 
 # ---------------------------------------------------------------- I1/合同
