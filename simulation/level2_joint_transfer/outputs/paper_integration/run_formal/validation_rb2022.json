@@ -1,0 +1,39 @@
+{
+ "r3": {
+  "cz_layer": {
+   "trials": 200000,
+   "layer_error_per_qubit": 0.013998571428571428,
+   "implied_cz_fidelity": 0.972198817144898,
+   "paper_cz_fidelity": 0.972,
+   "eps": {
+    "x": 0.002,
+    "y": 0.002,
+    "z": 0.005,
+    "loss": 0.005
+   }
+  },
+  "steane": {
+   "trials": 200000,
+   "detect_rounds": 1,
+   "raw_xbar": 0.54462,
+   "error_detected_xbar": 0.7691987760316092,
+   "no_detected_error_frac": 0.67322,
+   "dark_frac": 0.244135,
+   "paper": {
+    "raw": 0.71,
+    "corrected": 0.991,
+    "no_error": 0.66
+   }
+  },
+  "anchors": {
+   "raw": 0.54462,
+   "raw_paper": 0.71,
+   "raw_gap": 0.16537999999999997,
+   "corrected": 0.7691987760316092,
+   "corrected_paper": 0.991,
+   "no_error": 0.67322,
+   "no_error_paper": 0.66,
+   "qualitative_ok": true
+  }
+ }
+}

@@ -56,6 +56,25 @@ LEVELS = {
         "unit": "默认 M 为完整组合往返数；每次独立抽取冻结轨迹",
         "depends_on": ["Level 4 协议与轨迹池"],
     },
+,
+    "paper-rb2022": {
+        "title": "R 论文（Bluvstein 2022）Rb 纠缠运输与线路接入",
+        "module": "paper_integration.cli",
+        "config": "paper_integration/contract/acceptance_contract.json",
+        "output": "paper_integration/run_paper-rb2022",
+        "stages": ["preflight", "scan", "validation", "integration", "all"],
+        "unit": "运输扫描按单次移动；线路 MC 按线路 trial",
+        "depends_on": ["合同 configs/paper_integration/contract"],
+    },
+    "paper-yb2026": {
+        "title": "Y 论文（Zhang 2026）Yb 擦除转换与逻辑比特接入",
+        "module": "paper_integration.cli",
+        "config": "paper_integration/contract/acceptance_contract.json",
+        "output": "paper_integration/run_paper-yb2026",
+        "stages": ["preflight", "scan", "validation", "integration", "all"],
+        "unit": "运输扫描按单程；逻辑按线路 trial；三口径分母见合同",
+        "depends_on": ["合同 configs/paper_integration/contract"],
+    },
 }
 
 

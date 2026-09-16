@@ -1,0 +1,53 @@
+{
+ "yb_chain": {
+  "baseline": {
+   "tau_eff": 4.0,
+   "move_survival": 0.09895833333333333,
+   "mean_energy_uK": 34.68878779357277,
+   "heating_per_trip_uK": 17.362460973762204,
+   "rt1_loss_frac": 0.020751953125,
+   "storage_unconditional": 0.63005,
+   "storage_erasure_informed": 0.82955,
+   "teleport_success": 0.91375
+  },
+  "perturbed": {
+   "tau_eff": 8.0,
+   "move_survival": 0.0,
+   "mean_energy_uK": NaN,
+   "heating_per_trip_uK": NaN,
+   "rt1_loss_frac": 0.020263671875,
+   "storage_unconditional": 0.6301,
+   "storage_erasure_informed": 0.82955,
+   "teleport_success": 0.91525
+  },
+  "propagated": {
+   "move_survival": true,
+   "rt1_loss_frac": true,
+   "teleport_success": true
+  },
+  "all_propagated": true
+ },
+ "rb_chain": {
+  "baseline": {
+   "move_duration_s": 0.0003,
+   "move_survival": 1.0,
+   "transport_layer_loss": 0.0,
+   "steane_raw_xbar": 0.6087,
+   "steane_no_error_frac": 0.7744
+  },
+  "perturbed": {
+   "move_duration_s": 0.00015,
+   "move_survival": 0.0,
+   "transport_layer_loss": 1.0,
+   "steane_raw_xbar": -0.0122,
+   "steane_no_error_frac": 0.0
+  },
+  "propagated": {
+   "move_survival": true,
+   "transport_layer_loss": true,
+   "steane_raw_xbar": true
+  },
+  "all_propagated": true
+ },
+ "all_propagated": true
+}

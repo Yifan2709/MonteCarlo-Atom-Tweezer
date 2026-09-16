@@ -1,0 +1,920 @@
+{
+ "stage": "validation_yb2026",
+ "generated_utc": "2026-09-15T11:35:07.370265+00:00",
+ "python": "3.14.7",
+ "platform": "macOS-15.7.3-arm64-arm-64bit-Mach-O",
+ "numpy": "2.5.2",
+ "contract_sha256": "1e54d3e4bcc71acaa1a0f2a86dd871980aaa39c7e8142258eff2c38543cc2904",
+ "config": {
+  "cs_existing": {
+   "config": "cs_existing",
+   "params": {
+    "mass_u": {
+     "name": "mass_u",
+     "value": 132.90545196,
+     "unit": "u",
+     "provenance": "external_measured",
+     "source": "Cs-133 同位素质量",
+     "uncertainty": null,
+     "note": ""
+    },
+    "aod_wavelength_m": {
+     "name": "aod_wavelength_m",
+     "value": 1.055e-06,
+     "unit": "m",
+     "provenance": "paper_measured",
+     "source": "C Ext. Data Fig.2",
+     "uncertainty": null,
+     "note": ""
+    },
+    "aod_waist_m": {
+     "name": "aod_waist_m",
+     "value": 1.17e-06,
+     "unit": "m",
+     "provenance": "paper_measured",
+     "source": "C AOD 阱参数",
+     "uncertainty": null,
+     "note": ""
+    },
+    "aod_depth_uK": {
+     "name": "aod_depth_uK",
+     "value": 280.0,
+     "unit": "uK",
+     "provenance": "paper_measured",
+     "source": "C Methods/Fig.6",
+     "uncertainty": null,
+     "note": ""
+    },
+    "slm_depth_uK": {
+     "name": "slm_depth_uK",
+     "value": 140.0,
+     "unit": "uK",
+     "provenance": "paper_measured",
+     "source": "C Methods（转移时）",
+     "uncertainty": null,
+     "note": ""
+    },
+    "temperature_uK": {
+     "name": "temperature_uK",
+     "value": 25.0,
+     "unit": "uK",
+     "provenance": "assumed_sensitivity",
+     "source": "诊断假设，非实验标定；初温-加热耦合见 v10 报告",
+     "uncertainty": null,
+     "note": ""
+    },
+    "move_distance_m": {
+     "name": "move_distance_m",
+     "value": 2.4e-06,
+     "unit": "m",
+     "provenance": "paper_measured",
+     "source": "C Fig.6 caption",
+     "uncertainty": null,
+     "note": ""
+    }
+   }
+  },
+  "rb87_2022_native": {
+   "config": "rb87_2022_native",
+   "params": {
+    "mass_u": {
+     "name": "mass_u",
+     "value": 86.909180531,
+     "unit": "u",
+     "provenance": "external_measured",
+     "source": "Rb-87 同位素质量",
+     "uncertainty": null,
+     "note": ""
+    },
+    "wavelength_m": {
+     "name": "wavelength_m",
+     "value": 8.28e-07,
+     "unit": "m",
+     "provenance": "paper_measured",
+     "source": "R Methods：AOD 光镊 828 nm",
+     "uncertainty": null,
+     "note": ""
+    },
+    "depth_loading_hz": {
+     "name": "depth_loading_hz",
+     "value": 16000000.0,
+     "unit": "Hz(U/h)",
+     "provenance": "paper_measured",
+     "source": "R Methods：装载阱深 2π×16 MHz",
+     "uncertainty": null,
+     "note": ""
+    },
+    "depth_circuit_hz": {
+     "name": "depth_circuit_hz",
+     "value": 4000000.0,
+     "unit": "Hz(U/h)",
+     "provenance": "paper_measured",
+     "source": "R Methods：线路运行阱深 2π×4 MHz（~100 能级）",
+     "uncertainty": null,
+     "note": ""
+    },
+    "omega_r_circuit_rad_s": {
+     "name": "omega_r_circuit_rad_s",
+     "value": 251327.41228718346,
+     "unit": "rad/s",
+     "provenance": "paper_measured",
+     "source": "R Methods：线路径向频率 2π×40 kHz",
+     "uncertainty": null,
+     "note": ""
+    },
+    "omega_axial_rad_s": {
+     "name": "omega_axial_rad_s",
+     "value": 37699.11184307752,
+     "unit": "rad/s",
+     "provenance": "paper_measured",
+     "source": "R Methods：轴向 2π×6 kHz",
+     "uncertainty": null,
+     "note": ""
+    },
+    "waist_m": {
+     "name": "waist_m",
+     "value": 1.0784270437423918e-06,
+     "unit": "m",
+     "provenance": "paper_derived",
+     "source": "w=sqrt(4U/(m·ω_r²)), U=h·4MHz, ω_r=2π·40kHz",
+     "uncertainty": null,
+     "note": "≈1.08 μm"
+    },
+    "zr_m": {
+     "name": "zr_m",
+     "value": 4.412666200906103e-06,
+     "unit": "m",
+     "provenance": "paper_derived",
+     "source": "zR=π w²/λ",
+     "uncertainty": null,
+     "note": ""
+    },
+    "bell_move_distance_m": {
+     "name": "bell_move_distance_m",
+     "value": 0.00011,
+     "unit": "m",
+     "provenance": "paper_measured",
+     "source": "R 图1：Bell 对分离 110 μm",
+     "uncertainty": null,
+     "note": ""
+    },
+    "bell_move_time_s": {
+     "name": "bell_move_time_s",
+     "value": 0.0003,
+     "unit": "s",
+     "provenance": "paper_measured",
+     "source": "R 图1：300 μs",
+     "uncertainty": null,
+     "note": ""
+    },
+    "bell_flat_speed_m_per_s": {
+     "name": "bell_flat_speed_m_per_s",
+     "value": 0.55,
+     "unit": "m/s",
+     "provenance": "paper_measured",
+     "source": "R 图1d：b≲0.55 μm/μs 保真度不受影响",
+     "uncertainty": null,
+     "note": ""
+    },
+    "bell_raw_fidelity": {
+     "name": "bell_raw_fidelity",
+     "value": 0.948,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "R：94.8(2)%",
+     "uncertainty": null,
+     "note": ""
+    },
+    "t2_star_s": {
+     "name": "t2_star_s",
+     "value": 0.004,
+     "unit": "s",
+     "provenance": "paper_measured",
+     "source": "R Methods",
+     "uncertainty": null,
+     "note": ""
+    },
+    "t2_dd_s": {
+     "name": "t2_dd_s",
+     "value": 1.49,
+     "unit": "s",
+     "provenance": "paper_measured",
+     "source": "R Methods：XY16，unc 0.08 s",
+     "uncertainty": 0.08,
+     "note": ""
+    },
+    "t1_s": {
+     "name": "t1_s",
+     "value": 4.0,
+     "unit": "s",
+     "provenance": "paper_measured",
+     "source": "R Methods",
+     "uncertainty": null,
+     "note": ""
+    },
+    "cz_layer_error_y": {
+     "name": "cz_layer_error_y",
+     "value": 0.002,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "R ED 线路 MC：CZ 层 Y 误差 0.2%/qubit",
+     "uncertainty": null,
+     "note": ""
+    },
+    "cz_layer_error_x": {
+     "name": "cz_layer_error_x",
+     "value": 0.002,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "同上 X 0.2%",
+     "uncertainty": null,
+     "note": ""
+    },
+    "cz_layer_error_z": {
+     "name": "cz_layer_error_z",
+     "value": 0.005,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "同上 Z 0.5%",
+     "uncertainty": null,
+     "note": ""
+    },
+    "cz_layer_error_loss": {
+     "name": "cz_layer_error_loss",
+     "value": 0.005,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "同上 loss 0.5%",
+     "uncertainty": null,
+     "note": ""
+    },
+    "oneq_ambient_x": {
+     "name": "oneq_ambient_x",
+     "value": 0.001,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "R ED：1Q 环境误差 X 0.1%",
+     "uncertainty": null,
+     "note": ""
+    },
+    "oneq_ambient_y": {
+     "name": "oneq_ambient_y",
+     "value": 0.001,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "R ED：1Q 环境误差 Y 0.1%",
+     "uncertainty": null,
+     "note": ""
+    },
+    "oneq_ambient_z": {
+     "name": "oneq_ambient_z",
+     "value": 0.004,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "R ED：1Q 环境误差 Z 0.4%",
+     "uncertainty": null,
+     "note": ""
+    },
+    "oneq_ambient_loss": {
+     "name": "oneq_ambient_loss",
+     "value": 0.002,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "R ED：1Q loss 0.2%",
+     "uncertainty": null,
+     "note": ""
+    },
+    "initial_loss_prob": {
+     "name": "initial_loss_prob",
+     "value": 0.01,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "R ED：初态 loss 1%",
+     "uncertainty": null,
+     "note": ""
+    },
+    "rydberg_omega_hz": {
+     "name": "rydberg_omega_hz",
+     "value": 3600000.0,
+     "unit": "Hz",
+     "provenance": "paper_measured",
+     "source": "R Methods：Ω/2π=3.6 MHz",
+     "uncertainty": null,
+     "note": ""
+    },
+    "rydberg_delta_hz": {
+     "name": "rydberg_delta_hz",
+     "value": -1360000.0,
+     "unit": "Hz",
+     "provenance": "paper_derived",
+     "source": "Δ=−0.377371×2π MHz（R Methods 数值）",
+     "uncertainty": null,
+     "note": ""
+    },
+    "rydberg_xi_hz": {
+     "name": "rydberg_xi_hz",
+     "value": -621089.0,
+     "unit": "Hz",
+     "provenance": "paper_measured",
+     "source": "R Methods ξ",
+     "uncertainty": null,
+     "note": ""
+    },
+    "cz_duration_s": {
+     "name": "cz_duration_s",
+     "value": 1.8977805555555555e-07,
+     "unit": "s",
+     "provenance": "paper_derived",
+     "source": "τ=0.683201/Ω，≈190 ns",
+     "uncertainty": null,
+     "note": ""
+    },
+    "steane_xl_raw": {
+     "name": "steane_xl_raw",
+     "value": 0.71,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "R 图3：0.71(2)",
+     "uncertainty": 0.02,
+     "note": ""
+    },
+    "steane_xl_corrected": {
+     "name": "steane_xl_corrected",
+     "value": 0.991,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "R 图3",
+     "uncertainty": null,
+     "note": ""
+    },
+    "steane_no_error_frac": {
+     "name": "steane_no_error_frac",
+     "value": 0.66,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "R：66(1)%",
+     "uncertainty": 0.01,
+     "note": ""
+    },
+    "nmax_analytic_low": {
+     "name": "nmax_analytic_low",
+     "value": 26.0,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "R Methods：erf 留存模型 Nmax≈26",
+     "uncertainty": null,
+     "note": ""
+    },
+    "nmax_analytic_high": {
+     "name": "nmax_analytic_high",
+     "value": 33.0,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "R Methods：Nmax 上界 33",
+     "uncertainty": null,
+     "note": ""
+    },
+    "trap_drop_s": {
+     "name": "trap_drop_s",
+     "value": 5e-07,
+     "unit": "s",
+     "provenance": "paper_measured",
+     "source": "R：每次 CZ 关阱 500 ns",
+     "uncertainty": null,
+     "note": ""
+    }
+   }
+  },
+  "yb171_2026_native": {
+   "config": "yb171_2026_native",
+   "params": {
+    "mass_u": {
+     "name": "mass_u",
+     "value": 170.9363316,
+     "unit": "u",
+     "provenance": "external_measured",
+     "source": "Yb-171 同位素质量",
+     "uncertainty": null,
+     "note": ""
+    },
+    "wavelength_m": {
+     "name": "wavelength_m",
+     "value": 4.87e-07,
+     "unit": "m",
+     "provenance": "paper_measured",
+     "source": "Y：487 nm 光阱",
+     "uncertainty": null,
+     "note": ""
+    },
+    "waist_m": {
+     "name": "waist_m",
+     "value": 7.7e-07,
+     "unit": "m",
+     "provenance": "paper_measured",
+     "source": "Y Methods：w=0.77 μm",
+     "uncertainty": null,
+     "note": ""
+    },
+    "zr_m": {
+     "name": "zr_m",
+     "value": 3.824743910294433e-06,
+     "unit": "m",
+     "provenance": "paper_derived",
+     "source": "zR=π w²/λ",
+     "uncertainty": null,
+     "note": ""
+    },
+    "storage_depth_uK": {
+     "name": "storage_depth_uK",
+     "value": 108.27392971978176,
+     "unit": "uK",
+     "provenance": "paper_derived",
+     "source": "U=m·ω_r²·w²/4，ω_r=2π·30 kHz（fr=30 kHz）",
+     "uncertainty": null,
+     "note": "≈109 μK"
+    },
+    "gate_zone_avg_depth_uK": {
+     "name": "gate_zone_avg_depth_uK",
+     "value": 37.0,
+     "unit": "uK",
+     "provenance": "paper_measured",
+     "source": "Y ED Fig.5：50% 占空比 V_avg=37 μK",
+     "uncertainty": null,
+     "note": ""
+    },
+    "omega_r_rad_s": {
+     "name": "omega_r_rad_s",
+     "value": 188495.5592153876,
+     "unit": "rad/s",
+     "provenance": "paper_measured",
+     "source": "Y ED Fig.5：fr=30 kHz",
+     "uncertainty": null,
+     "note": ""
+    },
+    "move_time_s": {
+     "name": "move_time_s",
+     "value": 0.00089,
+     "unit": "s",
+     "provenance": "paper_measured",
+     "source": "Y：单程移动 0.89 ms",
+     "uncertainty": null,
+     "note": ""
+    },
+    "handoff_time_s": {
+     "name": "handoff_time_s",
+     "value": 0.00078,
+     "unit": "s",
+     "provenance": "paper_measured",
+     "source": "Y：每次交接 ramp 0.78 ms（单程两次）",
+     "uncertainty": null,
+     "note": ""
+    },
+    "zone_distance_m": {
+     "name": "zone_distance_m",
+     "value": 5e-05,
+     "unit": "m",
+     "provenance": "assumed_sensitivity",
+     "source": "存储区-门区间距：论文文本未给出精确值，默认 50 μm，Y1 中作灵敏度扫描",
+     "uncertainty": null,
+     "note": ""
+    },
+    "lensing_tau_eff_s_per_m": {
+     "name": "lensing_tau_eff_s_per_m",
+     "value": 4.0,
+     "unit": "s/m",
+     "provenance": "assumed_sensitivity",
+     "source": "zs=τ_eff·zR·ẋ；对应 level3 的 2σ/v_s≈3.7；扫描 {0, 2, 4, 8}",
+     "uncertainty": null,
+     "note": "默认值仅用于结构对照，不得标为论文标定"
+    },
+    "eta_vls": {
+     "name": "eta_vls",
+     "value": 0.0003,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：487 nm 矢量光移比",
+     "uncertainty": null,
+     "note": ""
+    },
+    "synthetic_B_G": {
+     "name": "synthetic_B_G",
+     "value": 0.05,
+     "unit": "G",
+     "provenance": "paper_measured",
+     "source": "Y：合成磁场 50 mG",
+     "uncertainty": null,
+     "note": ""
+    },
+    "splitting_parallel_hz": {
+     "name": "splitting_parallel_hz",
+     "value": 57.0,
+     "unit": "Hz",
+     "provenance": "paper_measured",
+     "source": "Y：偏振平行时 57 Hz 劈裂（50 mG）",
+     "uncertainty": null,
+     "note": ""
+    },
+    "optimal_config_splitting_hz": {
+     "name": "optimal_config_splitting_hz",
+     "value": 0.3,
+     "unit": "Hz",
+     "provenance": "paper_measured",
+     "source": "Y：最优配置 B_SLM∥B_AOD⊥B₀",
+     "uncertainty": null,
+     "note": ""
+    },
+    "trip_flip_dephase_prob": {
+     "name": "trip_flip_dephase_prob",
+     "value": 0.0006,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：最优配置每单程失相干+翻转 <6×10⁻⁴（上界）",
+     "uncertainty": null,
+     "note": ""
+    },
+    "vls_phase_per_nm_rad": {
+     "name": "vls_phase_per_nm_rad",
+     "value": 0.007,
+     "unit": "rad/nm",
+     "provenance": "paper_measured",
+     "source": "Y：每单程相位灵敏度 7 mrad/nm",
+     "uncertainty": null,
+     "note": ""
+    },
+    "alignment_sigma_m": {
+     "name": "alignment_sigma_m",
+     "value": 8e-08,
+     "unit": "m",
+     "provenance": "paper_measured",
+     "source": "Y：SLM-AOD 对准 80 nm",
+     "uncertainty": null,
+     "note": ""
+    },
+    "transverse_offset_m": {
+     "name": "transverse_offset_m",
+     "value": 3e-11,
+     "unit": "m",
+     "provenance": "paper_measured",
+     "source": "Y：δy≈30 pm",
+     "uncertainty": null,
+     "note": ""
+    },
+    "transverse_sigma_m": {
+     "name": "transverse_sigma_m",
+     "value": 3.1e-08,
+     "unit": "m",
+     "provenance": "paper_measured",
+     "source": "Y：σy=31 nm",
+     "uncertainty": null,
+     "note": ""
+    },
+    "scatter_prob_per_handoff": {
+     "name": "scatter_prob_per_handoff",
+     "value": 0.001,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：交接散射 0.1%/次",
+     "uncertainty": null,
+     "note": ""
+    },
+    "scatter_prob_per_move": {
+     "name": "scatter_prob_per_move",
+     "value": 0.001,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：移动散射 0.1%/次（存储深度）",
+     "uncertainty": null,
+     "note": ""
+    },
+    "scattering_depth_exponent": {
+     "name": "scattering_depth_exponent",
+     "value": 2.0,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y ED Fig.3：散射率对阱深二次拟合",
+     "uncertainty": null,
+     "note": ""
+    },
+    "leakage_erasure_fraction": {
+     "name": "leakage_erasure_fraction",
+     "value": 0.72,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：泄漏中可擦除占比 r_e,l≈0.72",
+     "uncertainty": null,
+     "note": ""
+    },
+    "erasure_check_fp": {
+     "name": "erasure_check_fp",
+     "value": 0.014,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：擦除检查 FP 1.4%",
+     "uncertainty": null,
+     "note": ""
+    },
+    "erasure_check_fn": {
+     "name": "erasure_check_fn",
+     "value": 0.014,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：擦除检查 FN 1.4%",
+     "uncertainty": null,
+     "note": ""
+    },
+    "terminal_imaging_fp": {
+     "name": "terminal_imaging_fp",
+     "value": 0.001,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：终端成像 FP 0.1%",
+     "uncertainty": null,
+     "note": ""
+    },
+    "terminal_imaging_fn": {
+     "name": "terminal_imaging_fn",
+     "value": 0.005,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：终端成像 FN 0.5%",
+     "uncertainty": null,
+     "note": ""
+    },
+    "roundtrip1_loss_prob": {
+     "name": "roundtrip1_loss_prob",
+     "value": 0.011,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：首次往返 ³P₀ 损失 1.1(4)%",
+     "uncertainty": 0.004,
+     "note": ""
+    },
+    "roundtrip1_erasure_frac": {
+     "name": "roundtrip1_erasure_frac",
+     "value": 0.5,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：首次往返损失中约一半可擦除检测",
+     "uncertainty": null,
+     "note": ""
+    },
+    "roundtrip5_erasure_frac": {
+     "name": "roundtrip5_erasure_frac",
+     "value": 0.1,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：第 5 次往返擦除占比降至 ~10%",
+     "uncertainty": null,
+     "note": ""
+    },
+    "gate_ar_error": {
+     "name": "gate_ar_error",
+     "value": 0.016,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：ϵ_AR=0.016(1)",
+     "uncertainty": 0.001,
+     "note": ""
+    },
+    "gate_ar_conditional_error": {
+     "name": "gate_ar_conditional_error",
+     "value": 0.01,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：无擦除条件 ϵ_c=0.010(1)",
+     "uncertainty": 0.001,
+     "note": ""
+    },
+    "gate_to_error": {
+     "name": "gate_to_error",
+     "value": 0.011,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：ϵ_TO=0.011(1)",
+     "uncertainty": 0.001,
+     "note": ""
+    },
+    "gate_ar_erasure_frac": {
+     "name": "gate_ar_erasure_frac",
+     "value": 0.38,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：AR 误差 38(6)% 可擦除",
+     "uncertainty": 0.06,
+     "note": ""
+    },
+    "gate_to_loss_frac": {
+     "name": "gate_to_loss_frac",
+     "value": 0.75,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：TO 误差 75% 为丢失",
+     "uncertainty": null,
+     "note": ""
+    },
+    "gate_ar_scaling_exp": {
+     "name": "gate_ar_scaling_exp",
+     "value": 4.0,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y ED Fig.6c：AR ϵ∝(ΔI/I)⁴",
+     "uncertainty": null,
+     "note": ""
+    },
+    "gate_to_scaling_exp": {
+     "name": "gate_to_scaling_exp",
+     "value": 2.0,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y ED Fig.6c：TO ϵ∝(ΔI/I)²",
+     "uncertainty": null,
+     "note": ""
+    },
+    "oneq_rf_fidelity": {
+     "name": "oneq_rf_fidelity",
+     "value": 0.999,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：F1Q=0.9990(1)",
+     "uncertainty": null,
+     "note": ""
+    },
+    "rydberg_omega_hz": {
+     "name": "rydberg_omega_hz",
+     "value": 2500000.0,
+     "unit": "Hz",
+     "provenance": "paper_measured",
+     "source": "Y：302 nm 单光子 Ω_r/2π=2.5 MHz",
+     "uncertainty": null,
+     "note": ""
+    },
+    "rydberg_lifetime_s": {
+     "name": "rydberg_lifetime_s",
+     "value": 8.8e-05,
+     "unit": "s",
+     "provenance": "paper_measured",
+     "source": "Y ED Fig.6c：τ_Ryd=88 μs",
+     "uncertainty": null,
+     "note": ""
+    },
+    "code_prep_fid_raw": {
+     "name": "code_prep_fid_raw",
+     "value": 0.981,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：0.981(2)",
+     "uncertainty": 0.002,
+     "note": ""
+    },
+    "code_prep_fid_flag": {
+     "name": "code_prep_fid_flag",
+     "value": 0.99,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：flag 0.990(1)",
+     "uncertainty": 0.001,
+     "note": ""
+    },
+    "code_prep_fid_erasure": {
+     "name": "code_prep_fid_erasure",
+     "value": 0.995,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：擦除后选 0.995(1)",
+     "uncertainty": 0.001,
+     "note": ""
+    },
+    "decode_unconditional": {
+     "name": "decode_unconditional",
+     "value": 0.874,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：0.874(4)",
+     "uncertainty": 0.004,
+     "note": ""
+    },
+    "decode_with_erasure": {
+     "name": "decode_with_erasure",
+     "value": 0.902,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：0.902(3)",
+     "uncertainty": 0.003,
+     "note": ""
+    },
+    "teleport_fid_raw": {
+     "name": "teleport_fid_raw",
+     "value": 0.771,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：0.771(9)",
+     "uncertainty": 0.009,
+     "note": ""
+    },
+    "teleport_fid_erasure_ps": {
+     "name": "teleport_fid_erasure_ps",
+     "value": 0.87,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：0.87(2)",
+     "uncertainty": 0.02,
+     "note": ""
+    },
+    "teleport_fid_adaptive": {
+     "name": "teleport_fid_adaptive",
+     "value": 0.802,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：0.802(8)",
+     "uncertainty": 0.008,
+     "note": ""
+    },
+    "transport_error_share_logical": {
+     "name": "transport_error_share_logical",
+     "value": 0.66,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：t=0 逻辑误差中运输占 66%（数值模型）",
+     "uncertainty": null,
+     "note": ""
+    },
+    "moves_per_atom": {
+     "name": "moves_per_atom",
+     "value": 4.0,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：每原子 4 次移动",
+     "uncertainty": null,
+     "note": ""
+    },
+    "sequential_move_overhead_s": {
+     "name": "sequential_move_overhead_s",
+     "value": 0.029,
+     "unit": "s",
+     "provenance": "paper_measured",
+     "source": "Y：串行移动 29 ms/原子",
+     "uncertainty": null,
+     "note": ""
+    },
+    "detection_latency_s": {
+     "name": "detection_latency_s",
+     "value": 0.025,
+     "unit": "s",
+     "provenance": "paper_measured",
+     "source": "Y：EMCCD→自适应控制 25 ms",
+     "uncertainty": null,
+     "note": ""
+    },
+    "gamma_zero_jerk": {
+     "name": "gamma_zero_jerk",
+     "value": 1.5625,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：zero-jerk 轨迹 γ=1.5625",
+     "uncertainty": null,
+     "note": ""
+    },
+    "gamma_min_jerk": {
+     "name": "gamma_min_jerk",
+     "value": 1.875,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y：minimum-jerk γ=1.875",
+     "uncertainty": null,
+     "note": ""
+    },
+    "trap_mod_freq_hz": {
+     "name": "trap_mod_freq_hz",
+     "value": 400000.0,
+     "unit": "Hz",
+     "provenance": "paper_measured",
+     "source": "Y ED Fig.5：f_m=400 kHz，50% 占空",
+     "uncertainty": null,
+     "note": ""
+    },
+    "trap_mod_cycles": {
+     "name": "trap_mod_cycles",
+     "value": 1000000.0,
+     "unit": "",
+     "provenance": "paper_measured",
+     "source": "Y ED Fig.5：>10⁶ 周期",
+     "uncertainty": null,
+     "note": ""
+    },
+    "trap_mod_adab_ramp_s": {
+     "name": "trap_mod_adab_ramp_s",
+     "value": 0.0001,
+     "unit": "s",
+     "provenance": "paper_measured",
+     "source": "Y：占空比绝热渐变 100 μs",
+     "uncertainty": null,
+     "note": ""
+    }
+   }
+  }
+ },
+ "output_dir": "outputs/paper_integration/run_formal_yb",
+ "trials": 200000,
+ "seed": 20260918,
+ "elapsed_s": 92.3966600894928
+}
