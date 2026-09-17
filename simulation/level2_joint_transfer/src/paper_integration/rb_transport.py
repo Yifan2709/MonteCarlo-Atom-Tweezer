@@ -73,7 +73,10 @@ def run_single_transport(distance_m: float, duration_s: float, shots: int,
 
 def analytic_delta_n_const_accel(distance_m: float, duration_s: float,
                                  omega_rad_s: float, mass_kg: float) -> float:
-    """R 等式(2)：常加速度轮廓 ΔN = ½(6D/(x_zpf ω₀²T²))²。"""
+    """Legacy API name: R Eq.(2) is cubic/constant-JERK, frequency-averaged.
+
+    Requires omega*T >> 1 and frequency averaging; not a constant-accel result.
+    """
     x_zpf = np.sqrt(HBAR / (2.0 * mass_kg * omega_rad_s))
     ratio = 6.0 * distance_m / (x_zpf * omega_rad_s ** 2 * duration_s ** 2)
     return 0.5 * ratio ** 2
@@ -117,12 +120,13 @@ def evaluate_structure_criteria(rows: list[dict]) -> dict:
               if abs(r["distance_m"] - d_paper) < 1e-12
               and abs(r["duration_s"] - t_paper) < 1e-12]
     if anchor:
-        out["C3_anchor_110um_300us"] = {
+        out["C3_anchor_55um_per_atom_300us"] = {
             "survival": anchor[0]["survival"],
-            "speed_m_per_s": d_paper / t_paper,
+            "atom_speed_m_per_s": d_paper / t_paper,
+            "pair_separation_speed_m_per_s": 2 * d_paper / t_paper,
             "paper_flat_speed": rb.get("bell_flat_speed_m_per_s").value,
             "ok": bool(anchor[0]["survival"] > 0.95
-                       and d_paper / t_paper
+                       and 2 * d_paper / t_paper
                        <= rb.get("bell_flat_speed_m_per_s").value),
         }
     return out

@@ -39,20 +39,40 @@ def run_single_move(distance_m: float, move_time_s: float, traj_kind: str,
                     temperature_uK: float = 5.0,
                     handoff_time_s: float | None = None,
                     alignment_sigma_m: float | None = None) -> dict:
-    """一次单程（交接 ramp + 移动），返回存活率与末态能量。"""
+    """ED2 defaults to pure AOD transport; explicit handoff is a separate protocol.
+
+    Legacy parameter registry is conditional, not an independently calibrated
+    recreation of the authors' apparatus. Do not certify experiment agreement
+    from evaluate_structure_criteria.
+    """
     yb = REGISTRIES["yb171_2026_native"]
     if handoff_time_s is None:
-        handoff_time_s = yb.get("handoff_time_s").value
+        handoff_time_s = 0.0
     if alignment_sigma_m is None:
         alignment_sigma_m = yb.get("alignment_sigma_m").value
     ph = yb_physics(tau_eff)
     ph_move = yb_physics(tau_eff)
     ph_move.slm_depth_j = 0.0        # 交接完成后 SLM 关闭，原子随 AOD 移动
     rng = np.random.default_rng(seed)
-    pos, vel = sample_bound_thermal_3d(seed, temperature_uK, shots, ph)
+    pos, vel = sample_bound_thermal_3d(seed, temperature_uK, shots, ph_move)
     offs = alignment_sigma_m * rng.standard_normal(shots)
 
     depth = ph.depth_j
+    if handoff_time_s <= 0:
+        traj = poly_trajectory(traj_kind, distance_m, move_time_s, dt_s)
+        seg = Segment("move", traj.t_s, traj.x_m, np.zeros_like(traj.x_m),
+                      np.full_like(traj.t_s, depth), traj.v_m_s)
+        res = propagate(pos, vel, [seg], ph_move, dt_s)
+        e = res["final_energy_j"][res["alive"]] + depth
+        return {"distance_m": distance_m, "move_time_s": move_time_s,
+                "traj": traj_kind, "tau_eff_s_per_m": tau_eff,
+                "shots": shots, "seed": seed, "dt_s": dt_s,
+                "temperature_uK": temperature_uK, "protocol": "pure_AOD_ED2",
+                "survival": res["survival_final"],
+                "wilson95_halfwidth": _wilson_half(res["survival_final"], shots),
+                "mean_excitation_quanta_alive": float(np.mean(e))/(1.054571817e-34*yb.get("omega_r_rad_s").value) if len(e) else float("nan"),
+                "checkpoints": res["checkpoints"],
+                "loss_stage_counts": {"move": int((~res["alive"]).sum())}}
     n_ramp = int(round(handoff_time_s / dt_s))
     t_ramp = np.arange(n_ramp + 1) * dt_s
     traj = poly_trajectory(traj_kind, distance_m, move_time_s, dt_s)
@@ -70,8 +90,8 @@ def run_single_move(distance_m: float, move_time_s: float, traj_kind: str,
         Segment("handoff", t_all[:n_ramp + 1], cx[:n_ramp + 1],
                 np.zeros(n_ramp + 1), depth_all[:n_ramp + 1],
                 slm_depth_j=slm_all[:n_ramp + 1]),
-        Segment("move", t_all, cx, np.zeros_like(cx), depth_all, vx,
-                slm_depth_j=slm_all),
+        Segment("move", t_all[n_ramp:], cx[n_ramp:], np.zeros_like(cx[n_ramp:]),
+                depth_all[n_ramp:], vx[n_ramp:], slm_depth_j=slm_all[n_ramp:]),
     ]
     res = propagate(pos, vel, segs, ph, dt_s, offsets_m=offs)
     alive_e = res["final_energy_j"][res["alive"]]
@@ -112,7 +132,7 @@ def scan_moves(distance_m: float, move_times_s: list[float], shots: int,
             for i, t in enumerate(move_times_s):
                 row = run_single_move(
                     distance_m, t, traj, tau, shots,
-                    seed + 7919 * i + 131 * int(tau * 10) + hash(traj) % 997,
+                    seed,
                     dt_s, temperature_uK)
                 rows.append(row)
     return rows

@@ -29,7 +29,7 @@ def _mk(config, name, value, unit, prov, source, unc=None, note=""):
 cs = register("cs_existing")
 _mk(cs, "mass_u", 132.90545196, "u", "external_measured", "Cs-133 同位素质量")
 _mk(cs, "aod_wavelength_m", 1055e-9, "m", "paper_measured", "C Ext. Data Fig.2")
-_mk(cs, "aod_waist_m", 1.17e-6, "m", "paper_measured", "C AOD 阱参数")
+_mk(cs, "aod_waist_m", 1.17e-6, "m", "assumed_sensitivity", "SLM measured waist; AOD matched-pupil assumption, not an AOD measurement")
 _mk(cs, "aod_depth_uK", 280.0, "uK", "paper_measured", "C Methods/Fig.6")
 _mk(cs, "slm_depth_uK", 140.0, "uK", "paper_measured", "C Methods（转移时）")
 _mk(cs, "temperature_uK", 25.0, "uK", "assumed_sensitivity",
@@ -58,8 +58,10 @@ _mk(rb, "waist_m", _w, "m", "paper_derived",
     "w=sqrt(4U/(m·ω_r²)), U=h·4MHz, ω_r=2π·40kHz", note="≈1.08 μm")
 _mk(rb, "zr_m", math.pi * _w**2 / 828e-9, "m", "paper_derived",
     "zR=π w²/λ")
-_mk(rb, "bell_move_distance_m", 110e-6, "m", "paper_measured",
-    "R 图1：Bell 对分离 110 μm")
+_mk(rb, "bell_pair_separation_m", 110e-6, "m", "paper_measured",
+    "R Fig1: separation of two atoms, 2D")
+_mk(rb, "bell_move_distance_m", 55e-6, "m", "paper_derived",
+    "R Methods and ED2a: EACH atom moves D=55 um")
 _mk(rb, "bell_move_time_s", 300e-6, "s", "paper_measured", "R 图1：300 μs")
 _mk(rb, "bell_flat_speed_m_per_s", 0.55e-6 / 1e-6, "m/s", "paper_measured",
     "R 图1d：b≲0.55 μm/μs 保真度不受影响")
@@ -97,7 +99,7 @@ _mk(rb, "trap_drop_s", 500e-9, "s", "paper_measured", "R：每次 CZ 关阱 500 
 yb = register("yb171_2026_native")
 _mk(yb, "mass_u", 170.9363316, "u", "external_measured", "Yb-171 同位素质量")
 _mk(yb, "wavelength_m", 487e-9, "m", "paper_measured", "Y：487 nm 光阱")
-_mk(yb, "waist_m", 0.77e-6, "m", "paper_measured", "Y Methods：w=0.77 μm")
+_mk(yb, "waist_m", 0.77e-6, "m", "assumed_sensitivity", "Legacy hypothesis: no 0.77 um value located in original Y Methods/ED or source data")
 _mk(yb, "zr_m", math.pi * 0.77e-6**2 / 487e-9, "m", "paper_derived", "zR=π w²/λ")
 # 存储阱深由 fr=30 kHz 反推（paper_derived）；门区调制平均深度为实测
 _ybm = 170.9363316 * U_TO_KG
@@ -108,13 +110,13 @@ _mk(yb, "storage_depth_uK", _U_yb / KB / 1e-6, "uK", "paper_derived",
     "U=m·ω_r²·w²/4，ω_r=2π·30 kHz（fr=30 kHz）", note="≈109 μK")
 _mk(yb, "gate_zone_avg_depth_uK", 37.0, "uK", "paper_measured",
     "Y ED Fig.5：50% 占空比 V_avg=37 μK")
-_mk(yb, "omega_r_rad_s", 2 * math.pi * 30e3, "rad/s", "paper_measured",
-    "Y ED Fig.5：fr=30 kHz")
+_mk(yb, "omega_r_rad_s", 2 * math.pi * 30e3, "rad/s", "assumed_sensitivity",
+    "Y ED5 periodic modulation frequency scale; not an independent ED2 transport calibration")
 _mk(yb, "move_time_s", 0.89e-3, "s", "paper_measured", "Y：单程移动 0.89 ms")
 _mk(yb, "handoff_time_s", 0.78e-3, "s", "paper_measured",
     "Y：每次交接 ramp 0.78 ms（单程两次）")
-_mk(yb, "zone_distance_m", 50e-6, "m", "assumed_sensitivity",
-    "存储区-门区间距：论文文本未给出精确值，默认 50 μm，Y1 中作灵敏度扫描")
+_mk(yb, "zone_distance_m", 50e-6, "m", "paper_measured",
+    "Zenodo 19491381 extended_data_fig3a.csv: position range 0 to 49.999998 um")
 # 有效透镜增益：zs(t)=tau_eff·zR·ẋ(t)。映射 level3 的 zs=2σ·zR·ċ/v_s（τ_eff=2σ/v_s）；
 # 仓库 Level 3 的有效场景 v_s≈0.54 m/s、σ=1 → τ_eff≈3.7 s/m，量级一致。
 # 论文的 τ_AOD=w_AOD/v_s 具体数值在可获取文本中未给出；按“失焦在快速运输区间

@@ -102,7 +102,7 @@ def sample_bound_thermal_3d(seed: int, temperature_uK: float, n: int,
         e = (0.5 * ph.mass_kg * np.sum(vel**2, axis=1)
              + total_potential(pos[:, 0], pos[:, 1], pos[:, 2], (0.0, 0.0),
                                ph.depth_j, ph))
-        pending = pending[e >= 0]
+        pending = pending[(e[pending] >= 0) | ~np.isfinite(e[pending])]
         if not len(pending):
             break
     if len(pending):
@@ -161,6 +161,9 @@ def propagate(pos0, vel0, segments: list[Segment], ph, dt_s: float,
 
         ax, ay, az = accel_at(0, pos[:, 0], pos[:, 1], pos[:, 2])
         for i in range(steps):
+            dt_s = float(seg.t_s[i + 1] - seg.t_s[i])
+            if dt_s <= 0:
+                raise ValueError("Segment times must be strictly increasing")
             pos[:, 0] += vel[:, 0] * dt_s + 0.5 * ax * dt_s**2
             pos[:, 1] += vel[:, 1] * dt_s + 0.5 * ay * dt_s**2
             pos[:, 2] += vel[:, 2] * dt_s + 0.5 * az * dt_s**2
@@ -174,7 +177,13 @@ def propagate(pos0, vel0, segments: list[Segment], ph, dt_s: float,
             u = total_potential(pos[:, 0], pos[:, 1], pos[:, 2],
                                 (cx[-1], cy[-1]), depth[-1], ph,
                                 (zs_x[-1], zs_y[-1]), sd_end)
-            e = 0.5 * ph.mass_kg * np.sum(vel**2, axis=1) + u
+            # A single uniformly translating trap must be judged in its rest frame.
+            # Two traps moving relative to one another have no common rest frame.
+            moving = abs(vx[-1]) + abs(vy[-1]) > 1e-12
+            if moving and (ph.slm_depth_j if sd_end is None else sd_end) > 0:
+                raise ValueError("Judge multi-trap handoffs only at rest")
+            relative_vel = vel - np.array([vx[-1], vy[-1], 0.])
+            e = 0.5 * ph.mass_kg * np.sum(relative_vel**2, axis=1) + u
             lost_now = alive & (e >= 0)
             stage_of_atom[lost_now] = seg.name
             alive &= e < 0
@@ -187,8 +196,10 @@ def propagate(pos0, vel0, segments: list[Segment], ph, dt_s: float,
     ph_last = ph[-1] if isinstance(ph, (list, tuple)) else ph
     u = total_potential(pos[:, 0], pos[:, 1], pos[:, 2],
                        (segments[-1].cx_m[-1] + offs, segments[-1].cy_m[-1]),
-                       segments[-1].depth_aod_j[-1], ph_last, (0.0, 0.0))
-    e_final = 0.5 * ph.mass_kg * np.sum(vel**2, axis=1) + u
+                       segments[-1].depth_aod_j[-1], ph_last, (zs_x[-1], zs_y[-1]),
+                       None if slm_d is None else slm_d[-1])
+    relative_vel = vel - np.array([vx[-1], vy[-1], 0.])
+    e_final = 0.5 * ph_last.mass_kg * np.sum(relative_vel**2, axis=1) + u
     return {
         "n0": n0,
         "alive": alive,

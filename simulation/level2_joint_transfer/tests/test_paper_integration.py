@@ -23,8 +23,8 @@ H_PLANCK = 6.62607015e-34
 
 # ---------------------------------------------------------------- 基元
 def test_gamma_family_min_jerk_exact():
-    a, b, c = trajectories.gamma_family_coeffs(1.875)
-    assert abs(a - 10) < 1e-3 and abs(b + 15) < 1e-3 and abs(c - 6) < 1e-3
+    c2, a, b, c = trajectories.gamma_family_coeffs(1.875)
+    assert c2 == 0 and a == 10 and b == -15 and c == 6
 
 
 def test_trajectories_endpoints_and_peak_ordering():
