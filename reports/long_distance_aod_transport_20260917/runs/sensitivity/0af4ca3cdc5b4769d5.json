@@ -1,0 +1,156 @@
+{
+  "config": {
+    "species": "Cs",
+    "mass": 2.2069469514370953e-25,
+    "wavelength": 1.055e-06,
+    "slm_wavelength": 1.061e-06,
+    "waist": 1.11e-06,
+    "depth_uK": 280.0,
+    "slm_depth_uK": 140.0,
+    "temperature_uK": 10.0,
+    "tau_us": 5,
+    "geometry": "x",
+    "trajectory": "min_jerk",
+    "distance_um": 510.0,
+    "duration_us": 1600,
+    "protocol": "B",
+    "repeats": 10,
+    "ramp_us": 200.0,
+    "hold_us": 100.0,
+    "disorder": 0.0,
+    "alignment_nm": 0.0,
+    "rin": 0.0,
+    "pointing": 0.0,
+    "dt_us": 0.1,
+    "noise_us": 0.2,
+    "shots": 512,
+    "seed": 26091701
+  },
+  "kinematics": {
+    "average_m_s": 0.31875,
+    "peak_m_s": 0.59765625,
+    "peak_x_m_s": 0.59765625,
+    "peak_y_m_s": 0.0,
+    "peak_accel_m_s2": 1150.1899894012083,
+    "interior_peak_jerk_m_s3": 7470703.125000001,
+    "acceleration_join_jump_m_s2": 0.0,
+    "complete_oneway_us": 2100.0,
+    "omega_r_rad_s": 238468.88814965388,
+    "maximum_static_force_acceleration": 19142.96458254997,
+    "tau_over_T": 0.003125
+  },
+  "observations": [
+    {
+      "repeat": 1,
+      "alive": 512,
+      "survival": 1.0,
+      "lower": 0.9928210499737405,
+      "upper": 1.0,
+      "conditional_loss": 0.0,
+      "median_energy_uK": -108.02690418883908,
+      "energy_p95_uK": -79.39876295214029
+    },
+    {
+      "repeat": 2,
+      "alive": 512,
+      "survival": 1.0,
+      "lower": 0.9928210499737405,
+      "upper": 1.0,
+      "conditional_loss": 0.0,
+      "median_energy_uK": -103.11699959611812,
+      "energy_p95_uK": -74.3370597889198
+    },
+    {
+      "repeat": 3,
+      "alive": 512,
+      "survival": 1.0,
+      "lower": 0.9928210499737405,
+      "upper": 1.0,
+      "conditional_loss": 0.0,
+      "median_energy_uK": -100.64401257231862,
+      "energy_p95_uK": -73.059075082047
+    },
+    {
+      "repeat": 4,
+      "alive": 512,
+      "survival": 1.0,
+      "lower": 0.9928210499737405,
+      "upper": 1.0,
+      "conditional_loss": 0.0,
+      "median_energy_uK": -99.09177005340996,
+      "energy_p95_uK": -70.4495209893187
+    },
+    {
+      "repeat": 5,
+      "alive": 512,
+      "survival": 1.0,
+      "lower": 0.9928210499737405,
+      "upper": 1.0,
+      "conditional_loss": 0.0,
+      "median_energy_uK": -99.40273009867656,
+      "energy_p95_uK": -67.23017103021674
+    },
+    {
+      "repeat": 6,
+      "alive": 512,
+      "survival": 1.0,
+      "lower": 0.9928210499737405,
+      "upper": 1.0,
+      "conditional_loss": 0.0,
+      "median_energy_uK": -98.00871131779621,
+      "energy_p95_uK": -63.56816243170209
+    },
+    {
+      "repeat": 7,
+      "alive": 512,
+      "survival": 1.0,
+      "lower": 0.9928210499737405,
+      "upper": 1.0,
+      "conditional_loss": 0.0,
+      "median_energy_uK": -97.58451628905188,
+      "energy_p95_uK": -62.015581828402006
+    },
+    {
+      "repeat": 8,
+      "alive": 511,
+      "survival": 0.998046875,
+      "lower": 0.9891663430552455,
+      "upper": 0.9999505523788546,
+      "conditional_loss": 0.001953125,
+      "median_energy_uK": -97.59361155399291,
+      "energy_p95_uK": -61.096252985768515
+    },
+    {
+      "repeat": 9,
+      "alive": 511,
+      "survival": 0.998046875,
+      "lower": 0.9891663430552455,
+      "upper": 0.9999505523788546,
+      "conditional_loss": 0.0,
+      "median_energy_uK": -96.58326028458193,
+      "energy_p95_uK": -59.790547787285604
+    },
+    {
+      "repeat": 10,
+      "alive": 511,
+      "survival": 0.998046875,
+      "lower": 0.9891663430552455,
+      "upper": 0.9999505523788546,
+      "conditional_loss": 0.0,
+      "median_energy_uK": -96.17466492339328,
+      "energy_p95_uK": -56.80265092814645
+    }
+  ],
+  "stage_labels": [
+    "pickup",
+    "move",
+    "dropoff",
+    "hold"
+  ],
+  "runtime_s": 0.5759794000186957,
+  "source_sha256": {
+    "run_study.py": "04aac9f0dfe53a041ff7a89b335ad6ab30ed8d5e70e4b01af0c848a504455b09",
+    "model.py": "a1cad921c8933754e14736f34e18ac327b0d83553d3edac6e422fb636f148d91",
+    "exact_trajectories.py": "00ebae602e611cabe1edadd160887f242e93decccadf568a9bd84cb78abf7247"
+  }
+}

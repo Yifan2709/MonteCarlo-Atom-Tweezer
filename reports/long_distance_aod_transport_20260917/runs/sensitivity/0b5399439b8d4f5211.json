@@ -1,0 +1,156 @@
+{
+  "config": {
+    "species": "Cs",
+    "mass": 2.2069469514370953e-25,
+    "wavelength": 1.055e-06,
+    "slm_wavelength": 1.061e-06,
+    "waist": 1.11e-06,
+    "depth_uK": 280.0,
+    "slm_depth_uK": 140.0,
+    "temperature_uK": 19.0,
+    "tau_us": 3.5,
+    "geometry": "x",
+    "trajectory": "min_jerk",
+    "distance_um": 510.0,
+    "duration_us": 3000,
+    "protocol": "B",
+    "repeats": 10,
+    "ramp_us": 200.0,
+    "hold_us": 100.0,
+    "disorder": 0.0,
+    "alignment_nm": 0.0,
+    "rin": 0.0,
+    "pointing": 0.0,
+    "dt_us": 0.1,
+    "noise_us": 0.2,
+    "shots": 512,
+    "seed": 26091701
+  },
+  "kinematics": {
+    "average_m_s": 0.16999999999999998,
+    "peak_m_s": 0.3187499999999999,
+    "peak_x_m_s": 0.3187499999999999,
+    "peak_y_m_s": 0.0,
+    "peak_accel_m_s2": 327.16515254078814,
+    "interior_peak_jerk_m_s3": 1133333.3333333333,
+    "acceleration_join_jump_m_s2": 0.0,
+    "complete_oneway_us": 3500.0,
+    "omega_r_rad_s": 238468.88814965388,
+    "maximum_static_force_acceleration": 19142.96458254997,
+    "tau_over_T": 0.0011666666666666668
+  },
+  "observations": [
+    {
+      "repeat": 1,
+      "alive": 512,
+      "survival": 1.0,
+      "lower": 0.9928210499737405,
+      "upper": 1.0,
+      "conditional_loss": 0.0,
+      "median_energy_uK": -92.47813319438956,
+      "energy_p95_uK": -42.85753806505109
+    },
+    {
+      "repeat": 2,
+      "alive": 510,
+      "survival": 0.99609375,
+      "lower": 0.9859610948857555,
+      "upper": 0.9995265844257469,
+      "conditional_loss": 0.00390625,
+      "median_energy_uK": -92.81873964009321,
+      "energy_p95_uK": -44.16345303381804
+    },
+    {
+      "repeat": 3,
+      "alive": 510,
+      "survival": 0.99609375,
+      "lower": 0.9859610948857555,
+      "upper": 0.9995265844257469,
+      "conditional_loss": 0.0,
+      "median_energy_uK": -92.90769160823217,
+      "energy_p95_uK": -43.779393423443636
+    },
+    {
+      "repeat": 4,
+      "alive": 510,
+      "survival": 0.99609375,
+      "lower": 0.9859610948857555,
+      "upper": 0.9995265844257469,
+      "conditional_loss": 0.0,
+      "median_energy_uK": -92.5703465159569,
+      "energy_p95_uK": -45.611711872338375
+    },
+    {
+      "repeat": 5,
+      "alive": 507,
+      "survival": 0.990234375,
+      "lower": 0.9773583793127729,
+      "upper": 0.9968217392001938,
+      "conditional_loss": 0.00588235294117645,
+      "median_energy_uK": -92.4825966681669,
+      "energy_p95_uK": -46.270100000869924
+    },
+    {
+      "repeat": 6,
+      "alive": 507,
+      "survival": 0.990234375,
+      "lower": 0.9773583793127729,
+      "upper": 0.9968217392001938,
+      "conditional_loss": 0.0,
+      "median_energy_uK": -93.17225130401386,
+      "energy_p95_uK": -45.59287095939441
+    },
+    {
+      "repeat": 7,
+      "alive": 507,
+      "survival": 0.990234375,
+      "lower": 0.9773583793127729,
+      "upper": 0.9968217392001938,
+      "conditional_loss": 0.0,
+      "median_energy_uK": -93.17533628842587,
+      "energy_p95_uK": -45.595774510630875
+    },
+    {
+      "repeat": 8,
+      "alive": 507,
+      "survival": 0.990234375,
+      "lower": 0.9773583793127729,
+      "upper": 0.9968217392001938,
+      "conditional_loss": 0.0,
+      "median_energy_uK": -93.15022688163465,
+      "energy_p95_uK": -44.970066662704774
+    },
+    {
+      "repeat": 9,
+      "alive": 506,
+      "survival": 0.98828125,
+      "lower": 0.9746687188200737,
+      "upper": 0.9956876165776571,
+      "conditional_loss": 0.0019723865877712132,
+      "median_energy_uK": -93.00223345361505,
+      "energy_p95_uK": -47.17713967208652
+    },
+    {
+      "repeat": 10,
+      "alive": 506,
+      "survival": 0.98828125,
+      "lower": 0.9746687188200737,
+      "upper": 0.9956876165776571,
+      "conditional_loss": 0.0,
+      "median_energy_uK": -93.39068997423136,
+      "energy_p95_uK": -46.29536839947375
+    }
+  ],
+  "stage_labels": [
+    "pickup",
+    "move",
+    "dropoff",
+    "hold"
+  ],
+  "runtime_s": 0.9402834000065923,
+  "source_sha256": {
+    "run_study.py": "04aac9f0dfe53a041ff7a89b335ad6ab30ed8d5e70e4b01af0c848a504455b09",
+    "model.py": "a1cad921c8933754e14736f34e18ac327b0d83553d3edac6e422fb636f148d91",
+    "exact_trajectories.py": "00ebae602e611cabe1edadd160887f242e93decccadf568a9bd84cb78abf7247"
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "config": {
+    "species": "Cs",
+    "mass": 2.2069469514370953e-25,
+    "wavelength": 1.055e-06,
+    "slm_wavelength": 1.061e-06,
+    "waist": 1.11e-06,
+    "depth_uK": 280.0,
+    "slm_depth_uK": 140.0,
+    "temperature_uK": 19.0,
+    "tau_us": 5.0,
+    "geometry": "x",
+    "trajectory": "min_jerk",
+    "distance_um": 270.0,
+    "duration_us": 858.5,
+    "protocol": "A",
+    "repeats": 10,
+    "ramp_us": 200.0,
+    "hold_us": 100.0,
+    "disorder": 0.0,
+    "alignment_nm": 0.0,
+    "rin": 0.0,
+    "pointing": 0.0,
+    "dt_us": 0.1,
+    "noise_us": 0.2,
+    "shots": 1024,
+    "seed": 26091791
+  },
+  "kinematics": {
+    "average_m_s": 0.31450203843913804,
+    "peak_m_s": 0.5896913220733838,
+    "peak_x_m_s": 0.5896913220733838,
+    "peak_y_m_s": 0.0,
+    "peak_accel_m_s2": 2115.059249313017,
+    "interior_peak_jerk_m_s3": 25603192.17818496,
+    "acceleration_join_jump_m_s2": 0.0,
+    "complete_oneway_us": 958.5,
+    "omega_r_rad_s": 238468.88814965388,
+    "maximum_static_force_acceleration": 19142.96458254997,
+    "tau_over_T": 0.005824111822947
+  },
+  "observations": [
+    {
+      "repeat": 1,
+      "alive": 1020,
+      "survival": 0.99609375,
+      "lower": 0.9900288944959906,
+      "upper": 0.9989346840702835,
+      "conditional_loss": 0.00390625,
+      "median_energy_uK": -198.7609218296742,
+      "energy_p95_uK": -135.91780654509762
+    },
+    {
+      "repeat": 2,
+      "alive": 1009,
+      "survival": 0.9853515625,
+      "lower": 0.975954564937949,
+      "upper": 0.9917788164354211,
+      "conditional_loss": 0.010784313725490158,
+      "median_energy_uK": -177.8886312843081,
+      "energy_p95_uK": -122.20773950655524
+    },
+    {
+      "repeat": 3,
+      "alive": 995,
+      "survival": 0.9716796875,
+      "lower": 0.959579173760646,
+      "upper": 0.9809531798212371,
+      "conditional_loss": 0.013875123885034646,
+      "median_energy_uK": -171.8080939100678,
+      "energy_p95_uK": -116.34114836212737
+    },
+    {
+      "repeat": 4,
+      "alive": 982,
+      "survival": 0.958984375,
+      "lower": 0.9449607204776376,
+      "upper": 0.9702824339867907,
+      "conditional_loss": 0.013065326633165841,
+      "median_energy_uK": -174.43805649102308,
+      "energy_p95_uK": -108.83258857088688
+    },
+    {
+      "repeat": 5,
+      "alive": 963,
+      "survival": 0.9404296875,
+      "lower": 0.9241337823600928,
+      "upper": 0.954130589879593,
+      "conditional_loss": 0.0193482688391039,
+      "median_energy_uK": -178.45180675756754,
+      "energy_p95_uK": -107.67208624319963
+    },
+    {
+      "repeat": 6,
+      "alive": 934,
+      "survival": 0.912109375,
+      "lower": 0.8930721094287422,
+      "upper": 0.9287348585010096,
+      "conditional_loss": 0.03011422637590866,
+      "median_energy_uK": -176.6365264944843,
+      "energy_p95_uK": -106.6581766110901
+    },
+    {
+      "repeat": 7,
+      "alive": 910,
+      "survival": 0.888671875,
+      "lower": 0.86779067960323,
+      "upper": 0.907286351854691,
+      "conditional_loss": 0.025695931477516032,
+      "median_energy_uK": -174.01893321585442,
+      "energy_p95_uK": -102.8980271194717
+    },
+    {
+      "repeat": 8,
+      "alive": 880,
+      "survival": 0.859375,
+      "lower": 0.8365618721948297,
+      "upper": 0.8800985629211848,
+      "conditional_loss": 0.03296703296703296,
+      "median_energy_uK": -174.3679166235615,
+      "energy_p95_uK": -103.82082196353059
+    },
+    {
+      "repeat": 9,
+      "alive": 849,
+      "survival": 0.8291015625,
+      "lower": 0.8046207681115696,
+      "upper": 0.8516730179844142,
+      "conditional_loss": 0.035227272727272774,
+      "median_energy_uK": -173.50480935111128,
+      "energy_p95_uK": -100.56658755536665
+    },
+    {
+      "repeat": 10,
+      "alive": 822,
+      "survival": 0.802734375,
+      "lower": 0.7770173812529874,
+      "upper": 0.8266975331347511,
+      "conditional_loss": 0.03180212014134276,
+      "median_energy_uK": -174.3022895668575,
+      "energy_p95_uK": -106.06707746029083
+    }
+  ],
+  "stage_labels": [
+    "move",
+    "hold"
+  ],
+  "runtime_s": 1.5019257999956608,
+  "source_sha256": {
+    "run_study.py": "3eac427a1e515dfbf2c98566c8e34c2a6018645ece62d4bd819dafa6a71cb7ec",
+    "model.py": "a1cad921c8933754e14736f34e18ac327b0d83553d3edac6e422fb636f148d91",
+    "exact_trajectories.py": "00ebae602e611cabe1edadd160887f242e93decccadf568a9bd84cb78abf7247"
+  }
+}

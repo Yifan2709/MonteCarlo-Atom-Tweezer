@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="209.163" timestamp="2026-09-17T22:54:19.990175+08:00" hostname="DESKTOP-U9MDM34"><testcase classname="tests.test_level3" name="test_cli_all_stages_smoke" time="208.719"><failure message="RuntimeError: preflight 未通过，停止大规模扫描：['existing_tests']">tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-28/test_cli_all_stages_smoke0')
+
+    @pytest.mark.slow
+    def test_cli_all_stages_smoke(tmp_path):
+        config_path = _tiny_config(tmp_path)
+&gt;       assert level3_main(["--config", str(config_path), "--stage", "all"]) == 0
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+simulation\level2_joint_transfer\tests\test_level3.py:249: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+simulation\level2_joint_transfer\src\level3_3d_transport_lensing\level3_cli.py:573: in main
+    results["preflight"] = stage_preflight(cfg, output_dir)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cfg = Level3Config(name='3d_aod_transport_lensing', mass_u=132.90545196, wavelength_nm=1055.0, waist_um=1.17, depth_uK=280.0...h('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-28/test_cli_all_stages_smoke0/tiny3.yaml'))
+output_dir = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-28/test_cli_all_stages_smoke0/outputs/level3_3d_transport_lensing/tiny_test')
+
+    def stage_preflight(cfg: Level3Config, output_dir: Path) -&gt; dict:
+        """16 项预检查，失败抛异常。"""
+        started = time.time()
+        checks = run_preflight(cfg)
+        checks["elapsed_s"] = time.time() - started
+        save_json(output_dir / "preflight.json", checks)
+        if not checks["all_passed"]:
+            failed = [k for k in checks["critical_checks"]
+                      if not (checks[k].get("passed", False)
+                              if isinstance(checks[k], dict) else False)]
+&gt;           raise RuntimeError(f"preflight 未通过，停止大规模扫描：{failed}")
+E           RuntimeError: preflight 未通过，停止大规模扫描：['existing_tests']
+
+simulation\level2_joint_transfer\src\level3_3d_transport_lensing\level3_cli.py:80: RuntimeError</failure></testcase></testsuite></testsuites>

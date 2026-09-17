@@ -1,0 +1,19 @@
+........................................................................ [ 29%]
+........................................................................ [ 58%]
+........................................FF.............................. [ 87%]
+................................                                         [100%]
+================================== FAILURES ===================================
+___________________________ test_cli_help_and_smoke ___________________________
+simulation\level2_joint_transfer\tests\test_level5.py:593: in test_cli_help_and_smoke
+    assert proc.returncode == 0
+E   assert 1 == 0
+E    +  where 1 = CompletedProcess(args=['C:\\Users\\Administrator\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\...ification for 'level5_finite_pulse_irb.level5_cli' (ModuleNotFoundError: No module named 'level5_finite_pulse_irb')\n").returncode
+______________________ test_cli_preflight_fast_dev_pool _______________________
+simulation\level2_joint_transfer\tests\test_level5.py:637: in test_cli_preflight_fast_dev_pool
+    assert not failed, failed
+E   AssertionError: ['build_install_import']
+E   assert not ['build_install_import']
+=========================== short test summary info ===========================
+FAILED simulation\level2_joint_transfer\tests\test_level5.py::test_cli_help_and_smoke
+FAILED simulation\level2_joint_transfer\tests\test_level5.py::test_cli_preflight_fast_dev_pool
+2 failed, 246 passed, 10 deselected in 216.48s (0:03:36)

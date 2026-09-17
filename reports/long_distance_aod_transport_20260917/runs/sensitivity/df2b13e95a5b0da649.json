@@ -1,0 +1,156 @@
+{
+  "config": {
+    "species": "Cs",
+    "mass": 2.2069469514370953e-25,
+    "wavelength": 1.055e-06,
+    "slm_wavelength": 1.061e-06,
+    "waist": 1.17e-06,
+    "depth_uK": 280.0,
+    "slm_depth_uK": 140.0,
+    "temperature_uK": 19.0,
+    "tau_us": 5,
+    "geometry": "x",
+    "trajectory": "min_jerk",
+    "distance_um": 510.0,
+    "duration_us": 1000,
+    "protocol": "B",
+    "repeats": 10,
+    "ramp_us": 200.0,
+    "hold_us": 100.0,
+    "disorder": 0.0,
+    "alignment_nm": 0.0,
+    "rin": 0.0,
+    "pointing": 0.0,
+    "dt_us": 0.1,
+    "noise_us": 0.2,
+    "shots": 512,
+    "seed": 26091701
+  },
+  "kinematics": {
+    "average_m_s": 0.5099999999999999,
+    "peak_m_s": 0.9562499999999998,
+    "peak_x_m_s": 0.9562499999999998,
+    "peak_y_m_s": 0.0,
+    "peak_accel_m_s2": 2944.4863728670935,
+    "interior_peak_jerk_m_s3": 30599999.999999993,
+    "acceleration_join_jump_m_s2": 0.0,
+    "complete_oneway_us": 1500.0,
+    "omega_r_rad_s": 226239.71439838957,
+    "maximum_static_force_acceleration": 18161.274091137147,
+    "tau_over_T": 0.005
+  },
+  "observations": [
+    {
+      "repeat": 1,
+      "alive": 46,
+      "survival": 0.08984375,
+      "lower": 0.06652757606419021,
+      "upper": 0.11801984492278575,
+      "conditional_loss": 0.91015625,
+      "median_energy_uK": -56.92960008932609,
+      "energy_p95_uK": -10.219562374026362
+    },
+    {
+      "repeat": 2,
+      "alive": 7,
+      "survival": 0.013671875,
+      "lower": 0.00551399998131654,
+      "upper": 0.027965446339922782,
+      "conditional_loss": 0.8478260869565217,
+      "median_energy_uK": -64.45830401275681,
+      "energy_p95_uK": -31.622445772054046
+    },
+    {
+      "repeat": 3,
+      "alive": 1,
+      "survival": 0.001953125,
+      "lower": 4.944762114539529e-05,
+      "upper": 0.010833656944754487,
+      "conditional_loss": 0.8571428571428572,
+      "median_energy_uK": -61.9125619392472,
+      "energy_p95_uK": -61.9125619392472
+    },
+    {
+      "repeat": 4,
+      "alive": 1,
+      "survival": 0.001953125,
+      "lower": 4.944762114539529e-05,
+      "upper": 0.010833656944754487,
+      "conditional_loss": 0.0,
+      "median_energy_uK": -67.00667938185575,
+      "energy_p95_uK": -67.00667938185575
+    },
+    {
+      "repeat": 5,
+      "alive": 0,
+      "survival": 0.0,
+      "lower": 0.0,
+      "upper": 0.007178950026259454,
+      "conditional_loss": 1.0,
+      "median_energy_uK": null,
+      "energy_p95_uK": null
+    },
+    {
+      "repeat": 6,
+      "alive": 0,
+      "survival": 0.0,
+      "lower": 0.0,
+      "upper": 0.007178950026259454,
+      "conditional_loss": 1.0,
+      "median_energy_uK": null,
+      "energy_p95_uK": null
+    },
+    {
+      "repeat": 7,
+      "alive": 0,
+      "survival": 0.0,
+      "lower": 0.0,
+      "upper": 0.007178950026259454,
+      "conditional_loss": 1.0,
+      "median_energy_uK": null,
+      "energy_p95_uK": null
+    },
+    {
+      "repeat": 8,
+      "alive": 0,
+      "survival": 0.0,
+      "lower": 0.0,
+      "upper": 0.007178950026259454,
+      "conditional_loss": 1.0,
+      "median_energy_uK": null,
+      "energy_p95_uK": null
+    },
+    {
+      "repeat": 9,
+      "alive": 0,
+      "survival": 0.0,
+      "lower": 0.0,
+      "upper": 0.007178950026259454,
+      "conditional_loss": 1.0,
+      "median_energy_uK": null,
+      "energy_p95_uK": null
+    },
+    {
+      "repeat": 10,
+      "alive": 0,
+      "survival": 0.0,
+      "lower": 0.0,
+      "upper": 0.007178950026259454,
+      "conditional_loss": 1.0,
+      "median_energy_uK": null,
+      "energy_p95_uK": null
+    }
+  ],
+  "stage_labels": [
+    "pickup",
+    "move",
+    "dropoff",
+    "hold"
+  ],
+  "runtime_s": 0.05838110001059249,
+  "source_sha256": {
+    "run_study.py": "04aac9f0dfe53a041ff7a89b335ad6ab30ed8d5e70e4b01af0c848a504455b09",
+    "model.py": "a1cad921c8933754e14736f34e18ac327b0d83553d3edac6e422fb636f148d91",
+    "exact_trajectories.py": "00ebae602e611cabe1edadd160887f242e93decccadf568a9bd84cb78abf7247"
+  }
+}

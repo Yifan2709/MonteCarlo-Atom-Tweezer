@@ -1,0 +1,144 @@
+{
+  "force_derivative_max_scaled": 7.990022274549179e-10,
+  "pointing_derivative_max_scaled": 7.065861849404374e-10,
+  "static": [
+    {
+      "dt_us": 0.1,
+      "max_energy_drift_over_depth": 9.438019300897964e-06
+    },
+    {
+      "dt_us": 0.05,
+      "max_energy_drift_over_depth": 2.3586400478974745e-06
+    },
+    {
+      "dt_us": 0.025,
+      "max_energy_drift_over_depth": 5.896057166584422e-07
+    }
+  ],
+  "galilean": [
+    {
+      "dt_us": 0.1,
+      "max_state_difference": 1.9744969548263214e-13
+    },
+    {
+      "dt_us": 0.05,
+      "max_state_difference": 3.0522806504507116e-13
+    },
+    {
+      "dt_us": 0.025,
+      "max_state_difference": 3.2288755003051506e-13
+    }
+  ],
+  "harmonic": [
+    {
+      "trajectory": "rb_cubic",
+      "energy_fourier_J": 1.1024908601369567e-28,
+      "energy_DOP853_J": 1.1024908596728862e-28,
+      "relative_error": 4.209291804002646e-10
+    },
+    {
+      "trajectory": "zero_jerk",
+      "energy_fourier_J": 6.901068618096206e-29,
+      "energy_DOP853_J": 6.901067728757312e-29,
+      "relative_error": 1.2886973643766453e-07
+    },
+    {
+      "trajectory": "min_jerk",
+      "energy_fourier_J": 7.055291983286341e-30,
+      "energy_DOP853_J": 7.055291984090438e-30,
+      "relative_error": 1.1397083277131514e-10
+    }
+  ],
+  "gaussian_reference": [
+    {
+      "tau_us": 0.0,
+      "max_scaled_state_error": 0.0003406436352098313
+    },
+    {
+      "tau_us": 2.0,
+      "max_scaled_state_error": 0.00022238315660964026
+    }
+  ],
+  "noise": [
+    {
+      "mode": "rin",
+      "dt_us": 0.1,
+      "n": 16384,
+      "mean": 1.0083584636091152,
+      "variance": 0.009077437661820096,
+      "reference_mean": 1.0089222117114904,
+      "reference_variance": 0.00908213369549249,
+      "mean_z": -0.7571834576933396,
+      "variance_SE": 0.00010253411399643586,
+      "variance_z": -0.04579971961874513
+    },
+    {
+      "mode": "rin",
+      "dt_us": 0.05,
+      "n": 16384,
+      "mean": 1.007913873711355,
+      "variance": 0.008949724708267933,
+      "reference_mean": 1.0089222117114904,
+      "reference_variance": 0.00908213369549249,
+      "mean_z": -1.3543227023722193,
+      "variance_SE": 0.00010295351550532719,
+      "variance_z": -1.2861045742309283
+    },
+    {
+      "mode": "rin",
+      "dt_us": 0.025,
+      "n": 16384,
+      "mean": 1.0089127760623042,
+      "variance": 0.009005068108006406,
+      "reference_mean": 1.0089222117114904,
+      "reference_variance": 0.00908213369549249,
+      "mean_z": -0.012673244391052215,
+      "variance_SE": 0.00010409865047469218,
+      "variance_z": -0.7403130312896729
+    },
+    {
+      "mode": "pointing",
+      "dt_us": 0.1,
+      "n": 16384,
+      "mean": 1.126963556804495,
+      "variance": 0.27310027238182144,
+      "reference_mean": 1.1262421819800672,
+      "reference_variance": 0.2684214524712227,
+      "mean_z": 0.17822242154820694,
+      "variance_SE": 0.003678400072992282,
+      "variance_z": 1.2719714598071619
+    },
+    {
+      "mode": "pointing",
+      "dt_us": 0.05,
+      "n": 16384,
+      "mean": 1.120609114437363,
+      "variance": 0.2647010957621565,
+      "reference_mean": 1.1262421819800672,
+      "reference_variance": 0.2684214524712227,
+      "mean_z": -1.3917022111241781,
+      "variance_SE": 0.003326306252606298,
+      "variance_z": -1.1184648756112345
+    },
+    {
+      "mode": "pointing",
+      "dt_us": 0.025,
+      "n": 16384,
+      "mean": 1.1238475319457446,
+      "variance": 0.2732333410896444,
+      "reference_mean": 1.1262421819800672,
+      "reference_variance": 0.2684214524712227,
+      "mean_z": -0.5916207683239585,
+      "variance_SE": 0.00359167228294959,
+      "variance_z": 1.339734875385144
+    }
+  ],
+  "published_trajectory_max_error": {
+    "acceleration_zero_jerk_L_T2": 5.329070518200751e-15,
+    "jerk_zero_jerk_L_T3": 1.509903313490213e-14,
+    "acceleration_min_jerk_L_T2": 4.1300296516055823e-14,
+    "jerk_min_jerk_L_T3": 1.1368683772161603e-13
+  },
+  "continuity_max_state_difference": 0.0,
+  "passed": true
+}

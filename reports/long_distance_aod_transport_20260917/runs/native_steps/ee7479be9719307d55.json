@@ -1,0 +1,64 @@
+{
+  "config": {
+    "species": "Yb",
+    "mass": 2.8384645652309205e-25,
+    "wavelength": 4.87e-07,
+    "slm_wavelength": 1.061e-06,
+    "waist": 7.7e-07,
+    "depth_uK": 95.98486146732442,
+    "slm_depth_uK": 140.0,
+    "temperature_uK": 5,
+    "tau_us": 2.0,
+    "geometry": "x",
+    "trajectory": "zero_jerk",
+    "distance_um": 50,
+    "duration_us": 231.0,
+    "protocol": "A",
+    "repeats": 1,
+    "ramp_us": 200.0,
+    "hold_us": 100.0,
+    "disorder": 0.0,
+    "alignment_nm": 0.0,
+    "rin": 0.0,
+    "pointing": 0.0,
+    "dt_us": 0.1,
+    "noise_us": 0.2,
+    "shots": 4096,
+    "seed": 26091761
+  },
+  "kinematics": {
+    "average_m_s": 0.21645021645021645,
+    "peak_m_s": 0.3382034632034632,
+    "peak_x_m_s": 0.3382034632034632,
+    "peak_y_m_s": 0.0,
+    "peak_accel_m_s2": 4685.069620134556,
+    "interior_peak_jerk_m_s3": 60845060.00174748,
+    "acceleration_join_jump_m_s2": 4685.069620134556,
+    "complete_oneway_us": 331.0,
+    "omega_r_rad_s": 177476.37295695557,
+    "maximum_static_force_acceleration": 7355.201545779551,
+    "tau_over_T": 0.008658008658008658
+  },
+  "observations": [
+    {
+      "repeat": 1,
+      "alive": 1590,
+      "survival": 0.38818359375,
+      "lower": 0.3732213186451359,
+      "upper": 0.4033055434435622,
+      "conditional_loss": 0.61181640625,
+      "median_energy_uK": -36.581786506855416,
+      "energy_p95_uK": -6.592606855508942
+    }
+  ],
+  "stage_labels": [
+    "move",
+    "hold"
+  ],
+  "runtime_s": 0.26295800000661984,
+  "source_sha256": {
+    "run_study.py": "fe2060aad8496d2bc3eb057582ee6651118484fe7e2f6b7071699845445bc465",
+    "model.py": "a1cad921c8933754e14736f34e18ac327b0d83553d3edac6e422fb636f148d91",
+    "exact_trajectories.py": "00ebae602e611cabe1edadd160887f242e93decccadf568a9bd84cb78abf7247"
+  }
+}
