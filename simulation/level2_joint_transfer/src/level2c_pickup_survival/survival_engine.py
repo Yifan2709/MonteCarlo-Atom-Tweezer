@@ -35,9 +35,9 @@ def time_reverse_waveform(waveform):
     """
     if isinstance(waveform, PickupSequentialWaveform):
         direction = "dropoff" if waveform.direction == "pickup" else "pickup"
-        return PickupSequentialWaveform(waveform.duration_s, waveform.ramp_fraction,
-                                        waveform.final_center_m, waveform.final_depth_j,
-                                        direction=direction)
+        return type(waveform)(waveform.duration_s, waveform.ramp_fraction,
+                              waveform.final_center_m, waveform.final_depth_j,
+                              direction=direction)
     if isinstance(waveform, MLCubicWaveform):
         return MLCubicWaveform(waveform.duration_s, waveform.control_s,
                                waveform.center_values_m[::-1].copy(),

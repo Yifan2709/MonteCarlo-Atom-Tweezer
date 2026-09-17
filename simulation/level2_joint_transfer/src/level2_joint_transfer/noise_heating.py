@@ -5,17 +5,16 @@
 
 - 光子反冲: P_rec = 2·E_r·Γ_sc —— 常数功率，能量线性增长（扩散型）；
 - 强度噪声: P_par = Γ_par·E_ref —— 常数功率（线性化近似），其中
-  Γ_par = (π²/4)·ν₀²·S_RIN(2ν₀)，E_ref = k_B·T_ref（参考热能，
+  Γ_par = π²·ν₀²·S_RIN(2ν₀)，E_ref = k_B·T_ref（参考热能，
   默认取初始系综温度）；
-- 指向/位置噪声: P_pt = m·ω₀⁴·S_x(ν₀)/8 —— 常数功率，线性增长。
-  PSD 均为单边每 Hz 约定；纯音锚点：ε_I = ε₀cos(2ω₀t) 时严格解
-  E(t) = E₀·exp(ε₀ω₀t/2)，可用于锁定 Γ_par 系数约定。
+- 指向/位置噪声: P_pt = m·ω₀⁴·S_x(ν₀)/4 —— 常数功率，线性增长。
+  PSD 均为单边每 Hz 约定，积分等于方差；Savard et al., PRA 56 R1095
+  (1997), Eqs. (9), (12), (15)。S_Hz(f)=2π S_rad(2πf)。
 
-强度噪声取线性化的理由：谐振子的严格参量加热 dE/dt = Γ_par·ε_osc
-（指数增长）只在噪声谱于 2ν₀（参量共振）附近有明显权重时成立；
-正常实验的光镊激光在 2ν₀ 处安静，偏离共振时谐振子模型不产生长期
-增长。一阶近似 P = Γ_par·E_ref 在 Γ_par·t ≪ 1 时与严格解逐点一致，
-对远离共振的残余技术噪声是保守上界。
+固定功率仅为 E≈E_ref 且 Γt≪1 的线性化对照，不能称为远离共振噪声的
+保守上界。单色相干调制的 Floquet 指数也不能直接锁定随机宽带 PSD 系数。
+三维谐振热平衡总激发能为 3kBT；此旧接口的 E_ref=kBT 是单模能量。
+物理随机力与阶段依赖实现见 continuous_transfer.noisy_survival。
 
 三个噪声均以函数（callable）形式外放为输入参数，签名统一为
 ``(x_m, v_m_s, t_s, e_osc_J) -> 加热功率 [W]``；默认为物理常数构造的
@@ -60,24 +59,23 @@ def recoil_scattering_rate_cs(trap_wavelength_m: float, depth_j: float,
 
 
 def parametric_rate_from_rin(nu0_hz: float, rin_psd_per_hz: float) -> float:
-    """参量共振增长率 Γ_par = (π²/4)·ν₀²·S_RIN(2ν₀)。
+    """参量共振增长率 Γ_par = π²·ν₀²·S_RIN(2ν₀)。
 
-    约定：S_RIN 为单边 PSD（每 Hz）。纯音自检：ε_I = ε₀cos(2ω₀t) 时
-    严格解 E(t) = E₀·exp(ε₀ω₀t/2)，可用于锁定耦合系数约定。
-    该增长率在线性化模型中用于构造常数功率 P = Γ_par·E_ref。
+    单边每 Hz 约定，integral S(f) df = fractional intensity variance。
+    适用于弱平稳随机噪声；相干纯音不等价于宽带随机谱。
     """
-    return 0.25 * pi ** 2 * nu0_hz ** 2 * rin_psd_per_hz
+    return pi ** 2 * nu0_hz ** 2 * rin_psd_per_hz
 
 
 def pointing_power_from_psd(mass_kg: float, nu0_hz: float,
                             position_psd_m2_per_hz: float) -> float:
-    """指向噪声恒定加热功率 P = m·ω₀⁴·S_x(ν₀)/8，S_x 为单边每 Hz PSD。
+    """指向噪声恒定加热功率 P = m·ω₀⁴·S_x(ν₀)/4，S_x 为单边每 Hz PSD。
 
     约定经 Green 函数法推导（速度冲击响应核 + 双边/单边谱换算）；
     共振处几十 pm/√Hz 即可在亚毫秒内显著加热，nm/√Hz 对应 K/s 量级。
     """
     omega0 = 2.0 * pi * nu0_hz
-    return mass_kg * omega0 ** 4 * position_psd_m2_per_hz / 8.0
+    return mass_kg * omega0 ** 4 * position_psd_m2_per_hz / 4.0
 
 
 class MeanHeating:

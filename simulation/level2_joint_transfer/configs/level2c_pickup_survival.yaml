@@ -74,7 +74,7 @@ robustness:
 # - 反冲：两套光路分别按两能级近似计算后求和
 #   Γ_sc(1055nm, 280µK) ≈ 2.84/s + Γ_sc(1061nm, 140µK) ≈ 1.39/s ≈ 4.23/s；
 #   trap_wavelength_nm 取 AOD 1055 nm（E_r 由此计算）。
-# - 参量：Γ_par = (π²/4)·ν₀²·S_RIN(2ν₀)，S_RIN = 1e-8/Hz 为 assumed_sensitivity_only；
+# - 参量：Γ_par = π²·ν₀²·S_RIN(2ν₀)，S_RIN = 1e-8/Hz 为 assumed_sensitivity_only；
 #   ν₀ 显式取 AOD 阱解析阱频 36007 Hz（原子大部分时间束缚于 AOD）。
 # - 指向：S_x = 1 pm/√Hz（1e-24 m²/Hz）安静光学假设，assumed_sensitivity_only。
 noise_mean_heating:

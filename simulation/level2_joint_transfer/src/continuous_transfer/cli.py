@@ -127,7 +127,8 @@ def case_inputs(settings, temperature, shots, seed, arm):
 
 def run_case(settings, *, stage, temperature, key, arm, shots, seed, dt_us, out):
     cfg,physics,pos,vel,draws,powers,sampling = case_inputs(settings,temperature,shots,seed,arm)
-    wave = waveform_for(key,cfg,ROOT/settings["ml_waveform"])
+    wave = waveform_for(key,cfg,ROOT/settings["ml_waveform"],
+                        manual_profile=settings.get("manual_profile", "paper_cubic"))
     protocol = build_protocol(wave,cfg.roundtrip.wait_s,dt_us*1e-6,
         arm="extended" if arm == "extended" else "matched",
         long_distance_m=settings["long_distance_um"]*1e-6,

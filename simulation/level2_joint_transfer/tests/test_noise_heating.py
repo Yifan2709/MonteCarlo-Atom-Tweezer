@@ -52,13 +52,13 @@ def test_recoil_energy_and_scattering_rate_cs_1061nm(cfg):
 def test_parametric_and_pointing_formulas(cfg):
     nu0 = 25.46e3
     rate = parametric_rate_from_rin(nu0, 1.0e-8)
-    assert abs(rate / (0.25 * math.pi ** 2 * nu0 ** 2 * 1.0e-8) - 1.0) < 1e-12
-    assert 14.0 < rate < 18.0  # (π²/4)ν₀²S_RIN ≈ 16 s^-1
+    assert abs(rate / (math.pi ** 2 * nu0 ** 2 * 1.0e-8) - 1.0) < 1e-12
+    assert 56.0 < rate < 72.0  # π²ν₀²S_RIN ≈ 64 s^-1
     omega0 = 2.0 * math.pi * nu0
     power = pointing_power_from_psd(cfg.atom.mass_kg, nu0, 1.0e-18)
-    analytic = cfg.atom.mass_kg * omega0 ** 4 * 1.0e-18 / 8.0
+    analytic = cfg.atom.mass_kg * omega0 ** 4 * 1.0e-18 / 4.0
     assert abs(power / analytic - 1.0) < 1e-12
-    assert abs(power * UK_PER_JOULE - 1.31e6) / 1.31e6 < 0.05  # 1 nm/√Hz 共振 ≈ 1.3 K/s
+    assert abs(power * UK_PER_JOULE - 2.62e6) / 2.62e6 < 0.05  # 1 nm/√Hz 共振 ≈ 2.6 K/s
 
 
 # ------------------------------------------------ 机制：常数功率线性增长
@@ -190,13 +190,13 @@ def test_heating_from_config_disabled_and_enabled(cfg):
     assert described["provenance"] == "assumed_sensitivity_only"
     derived = described["channels"]
     assert 0.2 < derived["recoil"]["power_uK_per_s"] < 0.6  # 2×64nK×2.8/s ≈ 0.36 μK/s
-    assert 12.0 < derived["parametric"]["rate_per_s"] < 20.0
-    # 参量 = Γ_par × k_B·T_ref，T_ref 缺省取初始系综温度 5 μK → ~80 μK/s
-    assert 60.0 < derived["parametric"]["power_uK_per_s"] < 100.0
+    assert 48.0 < derived["parametric"]["rate_per_s"] < 80.0
+    # 参量 = Γ_par × k_B·T_ref，T_ref 缺省取初始系综温度 5 μK → ~320 μK/s
+    assert 240.0 < derived["parametric"]["power_uK_per_s"] < 400.0
     assert derived["parametric"]["kind"] == "constant_power"
     assert derived["parametric"]["reference_temperature_uK"] == 5.0
-    # 1 pm/√Hz @25.5 kHz → m·ω₀⁴·S_x/8 ≈ 1.3 μK/s
-    assert 0.8 < derived["pointing"]["power_uK_per_s"] < 2.0
+    # 1 pm/√Hz @25.5 kHz → m·ω₀⁴·S_x/4 ≈ 2.6 μK/s
+    assert 1.6 < derived["pointing"]["power_uK_per_s"] < 4.0
     # 显式速率优先于推导，功率随之线性放大
     explicit = replace(cfg, noise_mean_heating=replace(cfg.noise_mean_heating, enabled=True,
                                                        parametric_rate_s=123.0))

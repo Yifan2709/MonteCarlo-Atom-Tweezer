@@ -28,11 +28,18 @@ class ContinuousProtocol:
     checkpoint_times_s: tuple
 
 
-def waveform_for(key, cfg, ml_path):
+def waveform_for(key, cfg, ml_path, manual_profile="paper_cubic"):
     physics = physics_from_config(cfg.base)
     if key.startswith("manual_"):
         duration = float(key.removeprefix("manual_").removesuffix("us"))
-        return build_waveform(pickup_spec(duration, cfg), physics)
+        wave = build_waveform(pickup_spec(duration, cfg), physics)
+        if manual_profile == "legacy_piecewise":
+            return wave
+        if manual_profile != "paper_cubic":
+            raise ValueError(f"Unknown manual profile {manual_profile}")
+        from .paper_waveforms import PaperManualWaveform
+        return PaperManualWaveform(wave.duration_s, wave.ramp_fraction,
+                                   wave.final_center_m, wave.final_depth_j)
     if key != "ml_400us":
         raise ValueError(f"Unknown waveform {key}")
     raw = json.loads(ml_path.read_text(encoding="utf-8"))
