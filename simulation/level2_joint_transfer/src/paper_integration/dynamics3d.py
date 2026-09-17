@@ -5,8 +5,9 @@
 - 含透镜：lensing_potential_and_force，轴间焦点偏移 zs_i = τ_eff·zR·ẋ_i
   （level3 表达 zs=2σ·zR·ċ/v_s 的等价参数化，τ_eff=2σ/v_s）
 
-损失判据：总能量（动能+全部阱势，阱底为 0、无穷远为 0）E ≥ 0 判失阱；
-与 continuous_transfer 的吸收性损失同口径。能量在检查点（交接/移动边界）评估。
+势能零点在无穷远，阱底为负。静止检查点使用 K+U；单个匀速移动阱使用
+相对阱的动能。运动中的多阱不支持此简化判据。E>=0 是检查点失败，
+不等于已经穿过逃逸面；加速阶段不应设置judge。
 """
 from __future__ import annotations
 
@@ -52,7 +53,7 @@ class Segment:
 
 def total_potential(x, y, z, center, depth_j, ph: TrapPhysics,
                     lens_zs=(0.0, 0.0), slm_depth_j: float | None = None):
-    """AOD 阱（可选透镜）+ SLM 静态阱的总势，零点在阱底/无穷远一致。"""
+    """AOD + static SLM potential; zero at infinity, negative trap bottoms."""
     cx, cy = center
     if ph.lensing_on:
         u, _, _, _ = lensing_potential_and_force(
