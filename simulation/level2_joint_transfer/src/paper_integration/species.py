@@ -4,8 +4,8 @@
 数值来源：R = Bluvstein et al., Nature 604, 451 (2022)（arXiv:2112.03923）；
 Y = Zhang et al., Nat. Phys. 22, 910 (2026)（arXiv:2506.13724v2）；
 C = Manetsch et al.（arXiv:2403.12021v4，仓库现有对标）。
-注：本环境网络受限，无法下载 Y 的 Zenodo 源数据与 R 的期刊版补充材料，
-论文数值取自 arXiv 公开版本正文/Methods/ED；未能获取的参数显式标 assumed。
+注：旧注册表建立时缺少作者源数据。长距离研究现已保存 Y 的 Zenodo 数据；
+ED2 完整模拟输入仍缺失。登记项须逐条核对来源，不能仅凭 paper_measured 标签认证。
 """
 from __future__ import annotations
 

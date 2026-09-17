@@ -27,7 +27,7 @@ def main():
         physics_commit='63dc14e29c41e229d88cc97d8a33549fe8ada4ef',
         baseline_remote_commit='1fed6329e95c4439820aff31d644376b817b5d6f',
         source_files_sha256=hashes,source_snapshot_sha256=sha(ROOT/'source_snapshot.zip'),
-        papers_sha256={p.name:sha(p) for p in [paper_dir/'bluvstein_2022.pdf',paper_dir/'zhang_2026.pdf']},
+        papers_sha256={p.name:sha(p) for p in [paper_dir/'bluvstein_2022.pdf',paper_dir/'zhang_2026.pdf',REPO/'2403.12021v4.pdf']},
         dependency_versions={n:importlib.metadata.version(n) for n in ['numpy','scipy','numba','llvmlite','matplotlib','pandas','pdfplumber','pypdf','pypdfium2','pytest']},
         raw_data_policy='All runs/*.npz kept locally and hashed below, excluded only from Git; copy them with the study for full archival transfer.',
         experimental_validation='Incomplete: quantitative paper residuals retained; Cs apparatus parameters uncalibrated.',
