@@ -1,0 +1,34 @@
+{
+  "case": {
+    "temperature": 15,
+    "rin": 6e-09,
+    "pointing": 1e-24,
+    "vs": 0,
+    "jitter_nm": 10.0,
+    "alignment_nm": 50.0,
+    "manual": "paper_cubic",
+    "model": "diffusion",
+    "shots": 256,
+    "seed": 26091611,
+    "dt_us": 0.025,
+    "noise_us": 0.05,
+    "id": "waist_screen_1.14",
+    "slm_rin": 0,
+    "slm_pointing": 0,
+    "ml_vector": true,
+    "waist_um": 1.14
+  },
+  "joint_rmse_pp": 7.1638174296365795,
+  "curve_rmse_pp": [
+    4.893049656385504,
+    12.233222560265084,
+    5.302916341854196,
+    1.88852582273111
+  ],
+  "s60": [
+    0.13671875,
+    0.6015625,
+    0.65625,
+    0.7109375
+  ]
+}

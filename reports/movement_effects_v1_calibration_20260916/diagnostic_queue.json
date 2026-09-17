@@ -1,0 +1,40 @@
+[
+  {
+    "id": "baseline_current",
+    "manual": "legacy_piecewise",
+    "model": "legacy",
+    "shots": 1024
+  },
+  {
+    "id": "coefficients_only",
+    "manual": "legacy_piecewise",
+    "model": "corrected_constant"
+  },
+  {
+    "id": "waveform_only",
+    "manual": "paper_cubic",
+    "model": "legacy"
+  },
+  {
+    "id": "corrected_both",
+    "model": "corrected_constant"
+  },
+  {
+    "id": "lensing_off",
+    "model": "corrected_constant",
+    "vs": 0
+  },
+  {
+    "id": "jitter_off",
+    "model": "corrected_constant",
+    "jitter_nm": 0
+  },
+  {
+    "id": "diffusion_T15",
+    "model": "diffusion"
+  },
+  {
+    "id": "local_mean_T15",
+    "model": "local_mean"
+  }
+]

@@ -1,0 +1,99 @@
+{
+  "name": "movement_effects_v1",
+  "commit": {
+    "sha": "c4775da561be0bf746448c52c5d2a5228937fbdd",
+    "node_id": "C_kwDOUbnU7toAKGM0Nzc1ZGE1NjFiZTBiZjc0NjQ0OGM1MmM1ZDJhNTIyODkzN2ZiZGQ",
+    "commit": {
+      "author": {
+        "name": "Yifan2709",
+        "email": "18256979230@163.com",
+        "date": "2026-09-16T12:33:53Z"
+      },
+      "committer": {
+        "name": "Yifan2709",
+        "email": "18256979230@163.com",
+        "date": "2026-09-16T12:33:53Z"
+      },
+      "message": "Unified Fig. 6d rerun at common T0=Tref=15 uK with site-bound init + parameter audit\n\n- configs/continuous_fig6d_unified_T15.yaml: frozen unified baseline; T0 and\n  Tref configured as independent items; matched arm only; N=4096, seed 23003\n  (archived confirmation pool), dt=0.0125 us with 0.025 us paired check.\n- outputs/.../run_20260916_unified_T15: four formal curves (manual 200/400/600,\n  ML 400 replay) to n=60, paired timestep check, integrity verification (zero\n  initially unbound atoms, CRN bit-identical across waveforms, NPZ recount),\n  4-subplot comparison figure, survival/S(n)/loss-rate/metrics CSVs, 26-row\n  per-curve parameter audit, archive contrast recomputed against the current\n  vector reference, REPORT.md with reproduction commands and source hashes.\n- Result reported honestly: all four curves fail the ±0.02 engineering band\n  (RMSE 0.070-0.194); historical per-curve temperature picks (5/15/25/25 uK)\n  confirmed as fit degrees of freedom, not physics; no per-curve tuning added.\n- README: index entry for the new report.",
+      "tree": {
+        "sha": "616c3a19589410b18692f0200f44dca02448a7c9",
+        "url": "https://api.github.com/repos/Yifan2709/MonteCarlo-Atom-Tweezer/git/trees/616c3a19589410b18692f0200f44dca02448a7c9"
+      },
+      "url": "https://api.github.com/repos/Yifan2709/MonteCarlo-Atom-Tweezer/git/commits/c4775da561be0bf746448c52c5d2a5228937fbdd",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null,
+        "verified_at": null
+      }
+    },
+    "url": "https://api.github.com/repos/Yifan2709/MonteCarlo-Atom-Tweezer/commits/c4775da561be0bf746448c52c5d2a5228937fbdd",
+    "html_url": "https://github.com/Yifan2709/MonteCarlo-Atom-Tweezer/commit/c4775da561be0bf746448c52c5d2a5228937fbdd",
+    "comments_url": "https://api.github.com/repos/Yifan2709/MonteCarlo-Atom-Tweezer/commits/c4775da561be0bf746448c52c5d2a5228937fbdd/comments",
+    "author": {
+      "login": "Yifan2709",
+      "id": 20140220,
+      "node_id": "MDQ6VXNlcjIwMTQwMjIw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/20140220?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Yifan2709",
+      "html_url": "https://github.com/Yifan2709",
+      "followers_url": "https://api.github.com/users/Yifan2709/followers",
+      "following_url": "https://api.github.com/users/Yifan2709/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Yifan2709/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Yifan2709/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Yifan2709/subscriptions",
+      "organizations_url": "https://api.github.com/users/Yifan2709/orgs",
+      "repos_url": "https://api.github.com/users/Yifan2709/repos",
+      "events_url": "https://api.github.com/users/Yifan2709/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Yifan2709/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Yifan2709",
+      "id": 20140220,
+      "node_id": "MDQ6VXNlcjIwMTQwMjIw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/20140220?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Yifan2709",
+      "html_url": "https://github.com/Yifan2709",
+      "followers_url": "https://api.github.com/users/Yifan2709/followers",
+      "following_url": "https://api.github.com/users/Yifan2709/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Yifan2709/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Yifan2709/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Yifan2709/subscriptions",
+      "organizations_url": "https://api.github.com/users/Yifan2709/orgs",
+      "repos_url": "https://api.github.com/users/Yifan2709/repos",
+      "events_url": "https://api.github.com/users/Yifan2709/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Yifan2709/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0153053e2d05aca3d77d091d59afb794bf25894e",
+        "url": "https://api.github.com/repos/Yifan2709/MonteCarlo-Atom-Tweezer/commits/0153053e2d05aca3d77d091d59afb794bf25894e",
+        "html_url": "https://github.com/Yifan2709/MonteCarlo-Atom-Tweezer/commit/0153053e2d05aca3d77d091d59afb794bf25894e"
+      }
+    ]
+  },
+  "_links": {
+    "self": "https://api.github.com/repos/Yifan2709/MonteCarlo-Atom-Tweezer/branches/movement_effects_v1",
+    "html": "https://github.com/Yifan2709/MonteCarlo-Atom-Tweezer/tree/movement_effects_v1"
+  },
+  "protected": false,
+  "protection": {
+    "enabled": false,
+    "required_status_checks": {
+      "enforcement_level": "off",
+      "contexts": [],
+      "checks": []
+    }
+  },
+  "protection_url": "https://api.github.com/repos/Yifan2709/MonteCarlo-Atom-Tweezer/branches/movement_effects_v1/protection"
+}

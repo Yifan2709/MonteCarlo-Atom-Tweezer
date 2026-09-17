@@ -1,0 +1,40 @@
+baseline_current manual_200us rmse_pp 19.469 S60 0.0146 seconds 1.0
+baseline_current manual_400us rmse_pp 6.544 S60 0.5049 seconds 4.5
+baseline_current manual_600us rmse_pp 15.183 S60 0.8848 seconds 8.0
+baseline_current ml_400us rmse_pp 12.774 S60 0.9482 seconds 5.6
+SUMMARY {"case": {"temperature": 15.0, "rin": 1e-08, "pointing": 1e-24, "vs": 0.5391689206547424, "jitter_nm": 10.0, "alignment_nm": 50.0, "manual": "legacy_piecewise", "model": "legacy", "shots": 1024, "seed": 26091611, "dt_us": 0.025, "noise_us": 0.05, "id": "baseline_current"}, "joint_rmse_pp": 14.279133452257343, "curve_rmse_pp": [19.46865735528788, 6.544302120987533, 15.183357401296366, 12.774339792945492], "s60": [0.0146484375, 0.5048828125, 0.884765625, 0.9482421875]}
+coefficients_only manual_200us rmse_pp 20.675 S60 0.0078 seconds 0.3
+coefficients_only manual_400us rmse_pp 4.43 S60 0.3047 seconds 1.0
+coefficients_only manual_600us rmse_pp 6.179 S60 0.6211 seconds 2.0
+coefficients_only ml_400us rmse_pp 9.33 S60 0.8516 seconds 1.4
+SUMMARY {"case": {"temperature": 15.0, "rin": 1e-08, "pointing": 1e-24, "vs": 0.5391689206547424, "jitter_nm": 10.0, "alignment_nm": 50.0, "manual": "legacy_piecewise", "model": "corrected_constant", "shots": 256, "seed": 26091611, "dt_us": 0.025, "noise_us": 0.05, "id": "coefficients_only"}, "joint_rmse_pp": 11.961505552301725, "curve_rmse_pp": [20.675170435909216, 4.429997101986373, 6.178552586887668, 9.329973277804271], "s60": [0.0078125, 0.3046875, 0.62109375, 0.8515625]}
+waveform_only manual_200us rmse_pp 4.251 S60 0.1016 seconds 0.4
+waveform_only manual_400us rmse_pp 20.234 S60 0.7617 seconds 1.3
+waveform_only manual_600us rmse_pp 18.148 S60 0.9453 seconds 2.1
+waveform_only ml_400us rmse_pp 12.592 S60 0.9375 seconds 1.4
+SUMMARY {"case": {"temperature": 15.0, "rin": 1e-08, "pointing": 1e-24, "vs": 0.5391689206547424, "jitter_nm": 10.0, "alignment_nm": 50.0, "manual": "paper_cubic", "model": "legacy", "shots": 256, "seed": 26091611, "dt_us": 0.025, "noise_us": 0.05, "id": "waveform_only"}, "joint_rmse_pp": 15.127926310518394, "curve_rmse_pp": [4.251367023420275, 20.234081164777642, 18.148423367547494, 12.59202862717203], "s60": [0.1015625, 0.76171875, 0.9453125, 0.9375]}
+corrected_both manual_200us rmse_pp 8.631 S60 0.043 seconds 0.3
+corrected_both manual_400us rmse_pp 14.658 S60 0.6211 seconds 1.3
+corrected_both manual_600us rmse_pp 11.893 S60 0.7617 seconds 2.1
+corrected_both ml_400us rmse_pp 9.33 S60 0.8516 seconds 1.4
+SUMMARY {"case": {"temperature": 15.0, "rin": 1e-08, "pointing": 1e-24, "vs": 0.5391689206547424, "jitter_nm": 10.0, "alignment_nm": 50.0, "manual": "paper_cubic", "model": "corrected_constant", "shots": 256, "seed": 26091611, "dt_us": 0.025, "noise_us": 0.05, "id": "corrected_both"}, "joint_rmse_pp": 11.378079943071949, "curve_rmse_pp": [8.630596564254969, 14.658268884289818, 11.892954538723094, 9.329973277804271], "s60": [0.04296875, 0.62109375, 0.76171875, 0.8515625]}
+lensing_off manual_200us rmse_pp 6.394 S60 0.1289 seconds 4.2
+lensing_off manual_400us rmse_pp 19.544 S60 0.7188 seconds 1.4
+lensing_off manual_600us rmse_pp 12.457 S60 0.793 seconds 2.0
+lensing_off ml_400us rmse_pp 9.299 S60 0.8477 seconds 1.4
+SUMMARY {"case": {"temperature": 15.0, "rin": 1e-08, "pointing": 1e-24, "vs": 0, "jitter_nm": 10.0, "alignment_nm": 50.0, "manual": "paper_cubic", "model": "corrected_constant", "shots": 256, "seed": 26091611, "dt_us": 0.025, "noise_us": 0.05, "id": "lensing_off"}, "joint_rmse_pp": 12.88882802014454, "curve_rmse_pp": [6.393935425445328, 19.54393655678631, 12.4568155133978, 9.29878657869784], "s60": [0.12890625, 0.71875, 0.79296875, 0.84765625]}
+jitter_off manual_200us rmse_pp 6.044 S60 0.0469 seconds 0.3
+jitter_off manual_400us rmse_pp 13.401 S60 0.5977 seconds 1.3
+jitter_off manual_600us rmse_pp 11.943 S60 0.7734 seconds 2.0
+jitter_off ml_400us rmse_pp 9.567 S60 0.875 seconds 1.4
+SUMMARY {"case": {"temperature": 15.0, "rin": 1e-08, "pointing": 1e-24, "vs": 0.5391689206547424, "jitter_nm": 0, "alignment_nm": 50.0, "manual": "paper_cubic", "model": "corrected_constant", "shots": 256, "seed": 26091611, "dt_us": 0.025, "noise_us": 0.05, "id": "jitter_off"}, "joint_rmse_pp": 10.610194435951945, "curve_rmse_pp": [6.044088971117674, 13.401447887302032, 11.943252989289439, 9.567329561679838], "s60": [0.046875, 0.59765625, 0.7734375, 0.875]}
+diffusion_T15 manual_200us rmse_pp 9.972 S60 0.0391 seconds 3.7
+diffusion_T15 manual_400us rmse_pp 2.487 S60 0.3711 seconds 2.3
+diffusion_T15 manual_600us rmse_pp 17.896 S60 0.2422 seconds 3.1
+diffusion_T15 ml_400us rmse_pp 14.253 S60 0.4062 seconds 2.5
+SUMMARY {"case": {"temperature": 15.0, "rin": 1e-08, "pointing": 1e-24, "vs": 0.5391689206547424, "jitter_nm": 10.0, "alignment_nm": 50.0, "manual": "paper_cubic", "model": "diffusion", "shots": 256, "seed": 26091611, "dt_us": 0.025, "noise_us": 0.05, "id": "diffusion_T15"}, "joint_rmse_pp": 12.540421290556317, "curve_rmse_pp": [9.972262365116432, 2.4874875493114663, 17.895853983214998, 14.253191355037064], "s60": [0.0390625, 0.37109375, 0.2421875, 0.40625]}
+local_mean_T15 manual_200us rmse_pp 9.382 S60 0.0312 seconds 0.4
+local_mean_T15 manual_400us rmse_pp 6.671 S60 0.3125 seconds 1.5
+local_mean_T15 manual_600us rmse_pp 10.471 S60 0.3242 seconds 2.2
+local_mean_T15 ml_400us rmse_pp 4.263 S60 0.5547 seconds 1.6
+SUMMARY {"case": {"temperature": 15.0, "rin": 1e-08, "pointing": 1e-24, "vs": 0.5391689206547424, "jitter_nm": 10.0, "alignment_nm": 50.0, "manual": "paper_cubic", "model": "local_mean", "shots": 256, "seed": 26091611, "dt_us": 0.025, "noise_us": 0.05, "id": "local_mean_T15"}, "joint_rmse_pp": 8.067447955919251, "curve_rmse_pp": [9.381819914631508, 6.671230566641037, 10.47081175415961, 4.262992506556123], "s60": [0.03125, 0.3125, 0.32421875, 0.5546875]}

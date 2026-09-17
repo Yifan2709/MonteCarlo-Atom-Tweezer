@@ -1,0 +1,33 @@
+{
+  "case": {
+    "temperature": 16,
+    "rin": 6e-09,
+    "pointing": 1e-24,
+    "vs": 0.412425,
+    "jitter_nm": 10.0,
+    "alignment_nm": 50.0,
+    "manual": "paper_cubic",
+    "model": "diffusion",
+    "shots": 1024,
+    "seed": 26091612,
+    "dt_us": 0.025,
+    "noise_us": 0.05,
+    "slm_rin": 0,
+    "slm_pointing": 0,
+    "ml_vector": true,
+    "id": "refine_lens_T16_R6e-09"
+  },
+  "joint_rmse_pp": 6.386305540173535,
+  "curve_rmse_pp": [
+    9.766126798961563,
+    7.913934709082445,
+    1.234592841434668,
+    1.8994154607847105
+  ],
+  "s60": [
+    0.0400390625,
+    0.5322265625,
+    0.58203125,
+    0.712890625
+  ]
+}

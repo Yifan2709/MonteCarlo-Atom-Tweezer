@@ -1,0 +1,31 @@
+Traceback (most recent call last):
+  File "D:\work\MonteCarlo for Atom tweezer\reports\movement_effects_v1_calibration_20260916\run_study.py", line 112, in <module>
+    for case in cases:evaluate(case)
+                      ^^^^^^^^^^^^^^
+  File "D:\work\MonteCarlo for Atom tweezer\reports\movement_effects_v1_calibration_20260916\run_study.py", line 100, in evaluate
+    write(dest,row);rows.append(clean(row))
+    ^^^^^^^^^^^^^^^
+  File "D:\work\MonteCarlo for Atom tweezer\reports\movement_effects_v1_calibration_20260916\run_study.py", line 24, in write
+    path.write_text(json.dumps(clean(obj),ensure_ascii=False,indent=2),encoding='utf-8')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\Administrator\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\json\encoder.py", line 202, in encode
+    chunks = list(chunks)
+             ^^^^^^^^^^^^
+  File "C:\Users\Administrator\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\json\encoder.py", line 432, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "C:\Users\Administrator\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\json\encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "C:\Users\Administrator\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\json\encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "C:\Users\Administrator\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\json\encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  [Previous line repeated 1 more time]
+  File "C:\Users\Administrator\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\json\encoder.py", line 439, in _iterencode
+    o = _default(o)
+        ^^^^^^^^^^^
+  File "C:\Users\Administrator\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type WindowsPath is not JSON serializable

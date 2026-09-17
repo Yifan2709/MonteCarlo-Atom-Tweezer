@@ -1,0 +1,30 @@
+{
+  "case": {
+    "temperature": 28,
+    "rin": 3e-09,
+    "pointing": 1e-24,
+    "vs": 0,
+    "jitter_nm": 10.0,
+    "alignment_nm": 50.0,
+    "manual": "paper_cubic",
+    "model": "diffusion",
+    "shots": 256,
+    "seed": 26091611,
+    "dt_us": 0.025,
+    "noise_us": 0.05,
+    "id": "grid_T28_R3e-09"
+  },
+  "joint_rmse_pp": 10.72254691742799,
+  "curve_rmse_pp": [
+    17.937207277350836,
+    4.328913018725823,
+    7.450259478975554,
+    7.993922094151973
+  ],
+  "s60": [
+    0.0625,
+    0.46484375,
+    0.53515625,
+    0.625
+  ]
+}

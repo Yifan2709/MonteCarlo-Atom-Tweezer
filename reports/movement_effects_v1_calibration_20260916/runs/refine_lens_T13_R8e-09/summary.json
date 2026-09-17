@@ -1,0 +1,33 @@
+{
+  "case": {
+    "temperature": 13,
+    "rin": 8e-09,
+    "pointing": 1e-24,
+    "vs": 0.412425,
+    "jitter_nm": 10.0,
+    "alignment_nm": 50.0,
+    "manual": "paper_cubic",
+    "model": "diffusion",
+    "shots": 1024,
+    "seed": 26091612,
+    "dt_us": 0.025,
+    "noise_us": 0.05,
+    "slm_rin": 0,
+    "slm_pointing": 0,
+    "ml_vector": true,
+    "id": "refine_lens_T13_R8e-09"
+  },
+  "joint_rmse_pp": 6.029858056556199,
+  "curve_rmse_pp": [
+    7.159228858224632,
+    9.499736832759778,
+    1.720181607841637,
+    0.9890248878450985
+  ],
+  "s60": [
+    0.060546875,
+    0.5234375,
+    0.556640625,
+    0.6728515625
+  ]
+}

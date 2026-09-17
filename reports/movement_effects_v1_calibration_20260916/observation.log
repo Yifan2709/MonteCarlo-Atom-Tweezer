@@ -1,0 +1,10 @@
+observation_absorbing manual_200us rmse_pp 4.244 S60 0.123 seconds 11.7
+observation_absorbing manual_400us rmse_pp 6.369 S60 0.5166 seconds 18.0
+observation_absorbing manual_600us rmse_pp 3.438 S60 0.543 seconds 24.4
+observation_absorbing ml_400us rmse_pp 3.871 S60 0.6201 seconds 18.1
+SUMMARY {"case": {"temperature": 18, "rin": 7e-09, "pointing": 1e-24, "vs": 0, "jitter_nm": 10.0, "alignment_nm": 50.0, "manual": "paper_cubic", "model": "diffusion", "shots": 1024, "seed": 26091612, "dt_us": 0.025, "noise_us": 0.05, "slm_rin": 0, "slm_pointing": 0, "ml_vector": true, "id": "observation_absorbing"}, "joint_rmse_pp": 4.619910373806527, "curve_rmse_pp": [4.243767613028603, 6.368982860825121, 3.4379937085074737, 3.8705271570432123], "s60": [0.123046875, 0.5166015625, 0.54296875, 0.6201171875]}
+observation_recapture manual_200us rmse_pp 3.858 S60 0.124 seconds 11.8
+observation_recapture manual_400us rmse_pp 6.498 S60 0.5195 seconds 21.9
+observation_recapture manual_600us rmse_pp 3.24 S60 0.5439 seconds 25.7
+observation_recapture ml_400us rmse_pp 3.71 S60 0.623 seconds 14.6
+SUMMARY {"case": {"temperature": 18, "rin": 7e-09, "pointing": 1e-24, "vs": 0, "jitter_nm": 10.0, "alignment_nm": 50.0, "manual": "paper_cubic", "model": "diffusion", "shots": 1024, "seed": 26091612, "dt_us": 0.025, "noise_us": 0.05, "slm_rin": 0, "slm_pointing": 0, "ml_vector": true, "id": "observation_recapture", "absorb_at_checkpoints": false}, "joint_rmse_pp": 4.510304379109787, "curve_rmse_pp": [3.8582547437303765, 6.49825805327083, 3.239727838975575, 3.709724855540798], "s60": [0.1240234375, 0.51953125, 0.5439453125, 0.623046875]}

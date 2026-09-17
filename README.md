@@ -1,6 +1,7 @@
 # AOD–SLM 光镊 Monte Carlo
 
 主工程位于 `simulation/level2_joint_transfer/`，保留 Level 0–5 与 Level 2C。
+2026-09-16物理修正与共同参数联合标定见 [新报告](reports/movement_effects_v1_calibration_20260916/REPORT.md)。新入口明确区分历史固定功率对照与全高斯随机力扩散，四组共用初态和装置参数；复现请使用报告中的锁定配置，不使用旧默认温度扫描。结果与剩余结构性误差均据独立种子验证报告。
 2026-09-14 更新补齐统一入口、Level 3/4/5 说明、综合报告，以及 Level 5 IRB 的索引与适用性修复。
 
 2026-09-15：论文 Fig. 6d 参考已改为独立提取 PDF 矢量拟合线、散点和误差条。连续模型新增按实际 SLM 格点阱深准备束缚初态，修复先按名义阱采样、再加入位点差异而混入初始不束缚原子的问题；支持独立设置初始温度与参量加热参考。既有 PPT 使用修复前归档，不能当作本次初始化修复后的结果。600 μs 的完整曲线检查脚本为 `simulation/level2_joint_transfer/tools/study_manual600_initialization.py`，参数扫描属于诊断校准，不代表已经复现实验。

@@ -1,0 +1,33 @@
+{
+  "case": {
+    "temperature": 7,
+    "rin": 1e-08,
+    "pointing": 1e-24,
+    "vs": 0.412425,
+    "jitter_nm": 10.0,
+    "alignment_nm": 50.0,
+    "manual": "paper_cubic",
+    "model": "diffusion",
+    "shots": 256,
+    "seed": 26091611,
+    "dt_us": 0.025,
+    "noise_us": 0.05,
+    "id": "lens_T7_R1e-08",
+    "slm_rin": 0,
+    "slm_pointing": 0,
+    "ml_vector": true
+  },
+  "joint_rmse_pp": 9.619418436043903,
+  "curve_rmse_pp": [
+    4.21933990788816,
+    17.668330583875267,
+    4.843419195201426,
+    4.086734614696667
+  ],
+  "s60": [
+    0.08203125,
+    0.67578125,
+    0.57421875,
+    0.703125
+  ]
+}

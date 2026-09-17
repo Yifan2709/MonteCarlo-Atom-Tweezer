@@ -1,0 +1,41 @@
+......................F...                                               [100%]
+================================== FAILURES ===================================
+___________________ test_1d_limit_matches_original_level2c ____________________
+
+inputs = ({'level2c_config': 'configs/level2c_pickup_survival.yaml', 'ml_waveform': 'outputs/level2c_pickup_survival/scan_stage...02e-30, 'parametric': 7.066703938503259e-26, 'pointing': 1.4454368806877797e-28, 'total': 7.081914366179083e-26}, ...))
+
+    def test_1d_limit_matches_original_level2c(inputs):
+        settings,(cfg,physics,pos,vel,_,_,_) = inputs
+        wave = waveform_for("manual_400us",cfg,ROOT/settings["ml_waveform"])
+        protocol = build_protocol(wave,100e-6,.05e-6,dd=False)
+        draws = DisorderDraws.disabled(len(pos))
+        new = run_continuous(pos,vel,protocol,rounds=3,physics=physics,draws=draws,
+                             jitter_sigma_m=0,power_w=0,vs_m_s=0,eta=0)
+        old = run_survival(pos[:,0],vel[:,0],physics["mass_kg"],
+            build_roundtrip_legs(wave,100e-6,.05e-6),.05e-6,6,
+            physics["slm_depth_j"],physics["slm_waist_m"],physics["aod_waist_m"],disorder=draws,
+            record_transfers=(6,))
+        np.testing.assert_array_equal(new["alive"].sum(axis=0),old["survival_counts"])
+        snapshot = old["snapshots"][6]
+        ids = snapshot["shot_ids"]
+        kept = new["alive"][ids,6]
+>       np.testing.assert_allclose(new["states"][ids[kept],6,0],snapshot["x_m"][kept],rtol=1e-5,atol=1e-12)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-05, atol=1e-12
+E       
+E       Mismatched elements: 16 / 16 (100%)
+E       Max absolute difference among violations: 1.04785017e-06
+E       Max relative difference among violations: 47.87804251
+E        ACTUAL: array([-4.868857e-08,  2.656639e-08, -5.200685e-07, -2.493921e-07,
+E              -1.712170e-07,  3.596258e-07, -3.763039e-07, -3.512630e-07,
+E              -6.096932e-08, -2.741736e-07,  4.727929e-07,  2.532039e-07,
+E               3.794386e-07,  4.998758e-08, -2.782650e-07, -5.201456e-07])
+E        DESIRED: array([ 7.166634e-08, -1.574605e-07,  1.095256e-07,  1.111848e-07,
+E              -4.320565e-08, -4.330006e-07,  8.027295e-09, -3.547643e-07,
+E               7.519273e-07, -3.913233e-07,  3.280683e-07, -9.996425e-08,
+E               4.096124e-07,  9.797831e-08,  2.414675e-07,  5.277045e-07])
+
+simulation\level2_joint_transfer\tests\test_continuous_transfer.py:79: AssertionError
+=========================== short test summary info ===========================
+FAILED simulation\level2_joint_transfer\tests\test_continuous_transfer.py::test_1d_limit_matches_original_level2c
+1 failed, 25 passed in 2.84s

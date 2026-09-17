@@ -1,0 +1,75 @@
+........................................................................ [ 29%]
+........................................................................ [ 58%]
+........................................FF.............................. [ 87%]
+...............................                                          [100%]
+================================== FAILURES ===================================
+___________________________ test_cli_help_and_smoke ___________________________
+
+tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-24/test_cli_help_and_smoke0')
+
+    def test_cli_help_and_smoke(tmp_path):
+        root = Path(__file__).resolve().parents[1]
+        env = {k: v for k, v in os.environ.items() if k != "PYTHONPATH"}
+        proc = subprocess.run(
+            [sys.executable, "-m", "level5_finite_pulse_irb.level5_cli",
+             "--help"], cwd=str(root), capture_output=True, text=True, env=env)
+>       assert proc.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Users\\Administrator\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\...ification for 'level5_finite_pulse_irb.level5_cli' (ModuleNotFoundError: No module named 'level5_finite_pulse_irb')\n").returncode
+
+simulation\level2_joint_transfer\tests\test_level5.py:593: AssertionError
+______________________ test_cli_preflight_fast_dev_pool _______________________
+
+tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-24/test_cli_preflight_fast_dev_po0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000029DB73D1400>
+
+    def test_cli_preflight_fast_dev_pool(tmp_path, monkeypatch):
+        """CLI preflight ����ͨ����dev �� + fast-preflight��ð�̡�"""
+        root = Path(__file__).resolve().parents[1]
+        cfg_path = root / "configs/level5_finite_pulse_irb.yaml"
+        cfg = load_config(cfg_path)
+        monkeypatch.setattr(cfg, "pool_full_trajectories", 16)
+        monkeypatch.setattr(cfg, "pool_secondary_trajectories", 12)
+        monkeypatch.setattr(cfg, "joint_validation_shots", 16)
+        from level5_finite_pulse_irb import level5_cli as cli
+        out = tmp_path / "out"
+        out.mkdir()
+        l4_dir = cli._discover_level4_output(cfg)
+        from level4_roundtrip_coherence.level4_config import \
+            load_config as load4
+        from level4_roundtrip_coherence import protocol_segments as ps
+        from level4_roundtrip_coherence import upstream_artifacts as l4up
+        cfg4 = load4(root / "configs/level4_roundtrip.yaml")
+        _, resolved = l4up.build_manifest(cfg4)
+        protocols = {
+            "protocol_a": ps.build_protocol_a(
+                cfg4, resolved["nominal_vs_m_per_s"]),
+            "protocol_a_no_lensing": ps.build_protocol_a(cfg4, None),
+            "protocol_b": ps.build_protocol_b(
+                cfg4, resolved["level2_spec"], resolved["nominal_vs_m_per_s"]),
+            "static_idle": ps.build_static_idle(cfg4)}
+        pools = cli._ensure_pools(cfg, cfg4, protocols, out, log=lambda *a: None)
+        assert pools["protocol_a"].n_traj == 16
+        manifest = cli._build_upstream_manifest(cfg, l4_dir, {
+            name: {"_path": "x", "_sha256": pool.sha256()}
+            for name, pool in pools.items()})
+        from level5_finite_pulse_irb.preflight5 import Preflight5
+        pf = Preflight5(cfg, manifest, resolved, group=GROUP,
+                        pool=pools["protocol_a"],
+                        static_pool=pools["static_idle"],
+                        timeline=protocols["protocol_a"], cfg4=cfg4,
+                        run_upstream_tests=False, log=lambda *a: None)
+        checks = pf.run()
+        failed = [n for n in checks["critical_checks"]
+                  if not checks["checks"][n]["passed"]
+                  and not checks["checks"][n]["detail"].get(
+                      "skipped_dev_mode", False)]
+>       assert not failed, failed
+E       AssertionError: ['build_install_import']
+E       assert not ['build_install_import']
+
+simulation\level2_joint_transfer\tests\test_level5.py:637: AssertionError
+=========================== short test summary info ===========================
+FAILED simulation\level2_joint_transfer\tests\test_level5.py::test_cli_help_and_smoke
+FAILED simulation\level2_joint_transfer\tests\test_level5.py::test_cli_preflight_fast_dev_pool
+2 failed, 245 passed, 10 deselected in 166.81s (0:02:46)

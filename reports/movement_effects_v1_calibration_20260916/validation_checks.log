@@ -1,0 +1,15 @@
+refinement_seed21 manual_200us rmse_pp 2.939 S60 0.1538 seconds 31.9
+refinement_seed21 manual_400us rmse_pp 7.139 S60 0.5383 seconds 97.5
+refinement_seed21 manual_600us rmse_pp 2.468 S60 0.5408 seconds 138.8
+refinement_seed21 ml_400us rmse_pp 2.739 S60 0.644 seconds 103.0
+SUMMARY {"case": {"temperature": 19, "rin": 5.75e-09, "pointing": 1e-24, "vs": 0, "jitter_nm": 10.0, "alignment_nm": 50.0, "manual": "paper_cubic", "model": "diffusion", "shots": 4096, "seed": 26091621, "dt_us": 0.00625, "noise_us": 0.05, "slm_rin": 0, "slm_pointing": 0, "ml_vector": true, "waist_um": 1.11, "id": "refinement_seed21"}, "joint_rmse_pp": 4.277841417140425, "curve_rmse_pp": [2.93850645846133, 7.139461758923928, 2.4676808493922024, 2.7392563904817044], "s60": [0.15380859375, 0.538330078125, 0.540771484375, 0.64404296875]}
+noise_half_seed23 manual_200us rmse_pp 3.515 S60 0.1545 seconds 30.2
+noise_half_seed23 manual_400us rmse_pp 5.893 S60 0.5132 seconds 73.7
+noise_half_seed23 manual_600us rmse_pp 3.606 S60 0.5261 seconds 130.0
+noise_half_seed23 ml_400us rmse_pp 3.726 S60 0.6311 seconds 96.2
+SUMMARY {"case": {"temperature": 19, "rin": 5.75e-09, "pointing": 1e-24, "vs": 0, "jitter_nm": 10.0, "alignment_nm": 50.0, "manual": "paper_cubic", "model": "diffusion", "shots": 4096, "seed": 26091623, "dt_us": 0.0125, "noise_us": 0.025, "slm_rin": 0, "slm_pointing": 0, "ml_vector": true, "waist_um": 1.11, "id": "noise_half_seed23"}, "joint_rmse_pp": 4.300244150083706, "curve_rmse_pp": [3.514770217790032, 5.892731114668911, 3.606164099990415, 3.726404407952248], "s60": [0.154541015625, 0.51318359375, 0.526123046875, 0.631103515625]}
+noise_reference_seed23 manual_200us rmse_pp 3.45 S60 0.1536 seconds 20.1
+noise_reference_seed23 manual_400us rmse_pp 6.141 S60 0.5168 seconds 60.4
+noise_reference_seed23 manual_600us rmse_pp 3.873 S60 0.5283 seconds 89.3
+noise_reference_seed23 ml_400us rmse_pp 3.528 S60 0.6335 seconds 65.2
+SUMMARY {"case": {"temperature": 19, "rin": 5.75e-09, "pointing": 1e-24, "vs": 0, "jitter_nm": 10.0, "alignment_nm": 50.0, "manual": "paper_cubic", "model": "diffusion", "shots": 4096, "seed": 26091623, "dt_us": 0.0125, "noise_us": 0.05, "slm_rin": 0, "slm_pointing": 0, "ml_vector": true, "waist_um": 1.11, "id": "noise_reference_seed23"}, "joint_rmse_pp": 4.389249609142156, "curve_rmse_pp": [3.4496225687091244, 6.141263675778326, 3.8729482544042266, 3.528073828896424], "s60": [0.153564453125, 0.516845703125, 0.5283203125, 0.633544921875]}

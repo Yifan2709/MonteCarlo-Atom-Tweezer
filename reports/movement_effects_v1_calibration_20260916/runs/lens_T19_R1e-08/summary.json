@@ -1,0 +1,33 @@
+{
+  "case": {
+    "temperature": 19,
+    "rin": 1e-08,
+    "pointing": 1e-24,
+    "vs": 0.412425,
+    "jitter_nm": 10.0,
+    "alignment_nm": 50.0,
+    "manual": "paper_cubic",
+    "model": "diffusion",
+    "shots": 256,
+    "seed": 26091611,
+    "dt_us": 0.025,
+    "noise_us": 0.05,
+    "id": "lens_T19_R1e-08",
+    "slm_rin": 0,
+    "slm_pointing": 0,
+    "ml_vector": true
+  },
+  "joint_rmse_pp": 12.290957463291024,
+  "curve_rmse_pp": [
+    18.089120455669335,
+    6.093017891928859,
+    11.778895142887054,
+    10.059176148149955
+  ],
+  "s60": [
+    0.01171875,
+    0.33203125,
+    0.3671875,
+    0.48828125
+  ]
+}

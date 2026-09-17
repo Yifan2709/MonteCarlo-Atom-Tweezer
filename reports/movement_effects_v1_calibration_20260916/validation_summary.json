@@ -1,0 +1,162 @@
+{
+  "noise": [
+    {
+      "kind": "noise_h_halved",
+      "waveform": "manual_200us",
+      "reference": "noise_reference_seed23",
+      "comparison": "noise_half_seed23",
+      "max_delta_pp": 1.123046875,
+      "worst_n": 7,
+      "delta_at_worst_pp": -1.123046875,
+      "paired_se_at_worst_pp": 0.5489673574226811,
+      "final_delta_pp": 0.09765625,
+      "final_label_disagreement": 0.16064453125
+    },
+    {
+      "kind": "noise_h_halved",
+      "waveform": "manual_400us",
+      "reference": "noise_reference_seed23",
+      "comparison": "noise_half_seed23",
+      "max_delta_pp": 1.0498046875,
+      "worst_n": 25,
+      "delta_at_worst_pp": -1.0498046875,
+      "paired_se_at_worst_pp": 0.6733743262406683,
+      "final_delta_pp": -0.3662109375,
+      "final_label_disagreement": 0.340087890625
+    },
+    {
+      "kind": "noise_h_halved",
+      "waveform": "manual_600us",
+      "reference": "noise_reference_seed23",
+      "comparison": "noise_half_seed23",
+      "max_delta_pp": 1.4404296875,
+      "worst_n": 25,
+      "delta_at_worst_pp": 1.4404296875,
+      "paired_se_at_worst_pp": 0.6633846651343223,
+      "final_delta_pp": -0.2197265625,
+      "final_label_disagreement": 0.373291015625
+    },
+    {
+      "kind": "noise_h_halved",
+      "waveform": "ml_400us",
+      "reference": "noise_reference_seed23",
+      "comparison": "noise_half_seed23",
+      "max_delta_pp": 0.7080078125,
+      "worst_n": 23,
+      "delta_at_worst_pp": -0.7080078125,
+      "paired_se_at_worst_pp": 0.5453232048298241,
+      "final_delta_pp": -0.244140625,
+      "final_label_disagreement": 0.333984375
+    }
+  ],
+  "independent": [
+    {
+      "kind": "independent_seed",
+      "waveform": "manual_200us",
+      "reference": "validation_seed21",
+      "comparison": "validation_seed22",
+      "max_delta_pp": 1.953125,
+      "worst_n": 39,
+      "delta_at_worst_pp": 1.953125,
+      "paired_se_at_worst_pp": 0.9859278868058923,
+      "final_delta_pp": 0.830078125,
+      "final_label_disagreement": 0.2587890625
+    },
+    {
+      "kind": "independent_seed",
+      "waveform": "manual_400us",
+      "reference": "validation_seed21",
+      "comparison": "validation_seed22",
+      "max_delta_pp": 2.3193359375,
+      "worst_n": 47,
+      "delta_at_worst_pp": -2.3193359375,
+      "paired_se_at_worst_pp": 1.0413222389763979,
+      "final_delta_pp": -0.5859375,
+      "final_label_disagreement": 0.48486328125
+    },
+    {
+      "kind": "independent_seed",
+      "waveform": "manual_600us",
+      "reference": "validation_seed21",
+      "comparison": "validation_seed22",
+      "max_delta_pp": 0.7568359375,
+      "worst_n": 56,
+      "delta_at_worst_pp": -0.7568359375,
+      "paired_se_at_worst_pp": 1.0932635029309972,
+      "final_delta_pp": -0.6103515625,
+      "final_label_disagreement": 0.499267578125
+    },
+    {
+      "kind": "independent_seed",
+      "waveform": "ml_400us",
+      "reference": "validation_seed21",
+      "comparison": "validation_seed22",
+      "max_delta_pp": 2.197265625,
+      "worst_n": 42,
+      "delta_at_worst_pp": -2.197265625,
+      "paired_se_at_worst_pp": 0.9304215058655365,
+      "final_delta_pp": -0.537109375,
+      "final_label_disagreement": 0.46826171875
+    }
+  ],
+  "preparation": [
+    {
+      "id": "validation_seed21",
+      "shots": 4096,
+      "unbound": 0,
+      "proposed_T_uK": 19,
+      "kinetic_T_uK": 18.212720724863907,
+      "excitation_quantiles_uK": [
+        20.240873918784978,
+        45.53347007305353,
+        84.69287258002305,
+        119.96309540498733
+      ]
+    },
+    {
+      "id": "validation_seed22",
+      "shots": 4096,
+      "unbound": 0,
+      "proposed_T_uK": 19,
+      "kinetic_T_uK": 18.195830039458052,
+      "excitation_quantiles_uK": [
+        19.780729770874558,
+        46.39491610388712,
+        86.27850814420373,
+        126.81595690711458
+      ]
+    }
+  ],
+  "bootstrap": {
+    "repetitions": 500,
+    "seed": 26091641,
+    "intervals": {
+      "manual_200us": [
+        2.424190428327249,
+        2.7928593501709154,
+        3.1916005022204077
+      ],
+      "manual_400us": [
+        5.958006845497282,
+        6.539945765197727,
+        7.194014495792221
+      ],
+      "manual_600us": [
+        2.8425661560461046,
+        3.4477317890577366,
+        4.011099753161238
+      ],
+      "ml_400us": [
+        2.664226327399716,
+        3.2171295106818776,
+        3.7469680683132145
+      ],
+      "joint": [
+        4.053094309336402,
+        4.26799676850823,
+        4.51371360612672
+      ]
+    },
+    "meaning": "Monte Carlo resampling of atoms; not parameter confidence or experimental likelihood"
+  }
+}

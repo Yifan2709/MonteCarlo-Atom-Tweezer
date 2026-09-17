@@ -1,0 +1,45 @@
+sensitivity_reference manual_200us rmse_pp 2.508 S60 0.1445 seconds 5.8
+sensitivity_reference manual_400us rmse_pp 6.603 S60 0.5264 seconds 16.3
+sensitivity_reference manual_600us rmse_pp 2.825 S60 0.5527 seconds 24.1
+sensitivity_reference ml_400us rmse_pp 4.233 S60 0.6201 seconds 16.7
+SUMMARY {"case": {"temperature": 19, "rin": 5.75e-09, "pointing": 1e-24, "vs": 0, "jitter_nm": 10.0, "alignment_nm": 50.0, "manual": "paper_cubic", "model": "diffusion", "shots": 1024, "seed": 26091612, "dt_us": 0.0125, "noise_us": 0.05, "slm_rin": 0, "slm_pointing": 0, "ml_vector": true, "waist_um": 1.11, "id": "sensitivity_reference"}, "joint_rmse_pp": 4.352924710399801, "curve_rmse_pp": [2.508354750976953, 6.603201878163187, 2.825221911806109, 4.232707961360072], "s60": [0.14453125, 0.5263671875, 0.552734375, 0.6201171875]}
+sensitivity_jitter_off manual_200us rmse_pp 2.85 S60 0.165 seconds 5.5
+sensitivity_jitter_off manual_400us rmse_pp 7.06 S60 0.5273 seconds 16.5
+sensitivity_jitter_off manual_600us rmse_pp 3.144 S60 0.5469 seconds 23.7
+sensitivity_jitter_off ml_400us rmse_pp 3.207 S60 0.6729 seconds 17.9
+SUMMARY {"case": {"temperature": 19, "rin": 5.75e-09, "pointing": 1e-24, "vs": 0, "jitter_nm": 0, "alignment_nm": 50.0, "manual": "paper_cubic", "model": "diffusion", "shots": 1024, "seed": 26091612, "dt_us": 0.0125, "noise_us": 0.05, "slm_rin": 0, "slm_pointing": 0, "ml_vector": true, "waist_um": 1.11, "id": "sensitivity_jitter_off"}, "joint_rmse_pp": 4.419774193990546, "curve_rmse_pp": [2.850285818063954, 7.0599549324061925, 3.143968608803453, 3.2071769826522774], "s60": [0.1650390625, 0.52734375, 0.546875, 0.6728515625]}
+sensitivity_alignment_off manual_200us rmse_pp 2.841 S60 0.1641 seconds 5.5
+sensitivity_alignment_off manual_400us rmse_pp 5.756 S60 0.5098 seconds 15.4
+sensitivity_alignment_off manual_600us rmse_pp 3.289 S60 0.541 seconds 23.1
+sensitivity_alignment_off ml_400us rmse_pp 3.037 S60 0.6582 seconds 17.4
+SUMMARY {"case": {"temperature": 19, "rin": 5.75e-09, "pointing": 1e-24, "vs": 0, "jitter_nm": 10.0, "alignment_nm": 0, "manual": "paper_cubic", "model": "diffusion", "shots": 1024, "seed": 26091612, "dt_us": 0.0125, "noise_us": 0.05, "slm_rin": 0, "slm_pointing": 0, "ml_vector": true, "waist_um": 1.11, "id": "sensitivity_alignment_off"}, "joint_rmse_pp": 3.9128050089117767, "curve_rmse_pp": [2.8407823108214463, 5.7556708907514675, 3.289011364090597, 3.0372330924417765], "s60": [0.1640625, 0.509765625, 0.541015625, 0.658203125]}
+sensitivity_aod_disorder_off manual_200us rmse_pp 2.743 S60 0.1465 seconds 5.5
+sensitivity_aod_disorder_off manual_400us rmse_pp 6.284 S60 0.5215 seconds 15.7
+sensitivity_aod_disorder_off manual_600us rmse_pp 3.901 S60 0.5254 seconds 19.3
+sensitivity_aod_disorder_off ml_400us rmse_pp 4.339 S60 0.623 seconds 15.1
+SUMMARY {"case": {"temperature": 19, "rin": 5.75e-09, "pointing": 1e-24, "vs": 0, "jitter_nm": 10.0, "alignment_nm": 50.0, "manual": "paper_cubic", "model": "diffusion", "shots": 1024, "seed": 26091612, "dt_us": 0.0125, "noise_us": 0.05, "slm_rin": 0, "slm_pointing": 0, "ml_vector": true, "waist_um": 1.11, "no_aod_disorder": true, "id": "sensitivity_aod_disorder_off"}, "joint_rmse_pp": 4.501311229159033, "curve_rmse_pp": [2.7425003282399, 6.283547742042995, 3.9010776821029545, 4.338723748786215], "s60": [0.146484375, 0.521484375, 0.525390625, 0.623046875]}
+sensitivity_pointing_off manual_200us rmse_pp 2.495 S60 0.1387 seconds 10.5
+sensitivity_pointing_off manual_400us rmse_pp 6.844 S60 0.5244 seconds 17.0
+sensitivity_pointing_off manual_600us rmse_pp 2.582 S60 0.5439 seconds 23.5
+sensitivity_pointing_off ml_400us rmse_pp 3.632 S60 0.6523 seconds 16.6
+SUMMARY {"case": {"temperature": 19, "rin": 5.75e-09, "pointing": 0, "vs": 0, "jitter_nm": 10.0, "alignment_nm": 50.0, "manual": "paper_cubic", "model": "diffusion", "shots": 1024, "seed": 26091612, "dt_us": 0.0125, "noise_us": 0.05, "slm_rin": 0, "slm_pointing": 0, "ml_vector": true, "waist_um": 1.11, "id": "sensitivity_pointing_off"}, "joint_rmse_pp": 4.2696773014307565, "curve_rmse_pp": [2.4951288993296346, 6.843786281609979, 2.5817969963771703, 3.6320548468170255], "s60": [0.138671875, 0.5244140625, 0.5439453125, 0.65234375]}
+sensitivity_recoil_off manual_200us rmse_pp 2.228 S60 0.1318 seconds 5.2
+sensitivity_recoil_off manual_400us rmse_pp 6.238 S60 0.5215 seconds 15.4
+sensitivity_recoil_off manual_600us rmse_pp 3.195 S60 0.5352 seconds 22.5
+sensitivity_recoil_off ml_400us rmse_pp 3.113 S60 0.6641 seconds 16.8
+SUMMARY {"case": {"temperature": 19, "rin": 5.75e-09, "pointing": 1e-24, "vs": 0, "jitter_nm": 10.0, "alignment_nm": 50.0, "manual": "paper_cubic", "model": "diffusion", "shots": 1024, "seed": 26091612, "dt_us": 0.0125, "noise_us": 0.05, "slm_rin": 0, "slm_pointing": 0, "ml_vector": true, "waist_um": 1.11, "recoil": false, "id": "sensitivity_recoil_off"}, "joint_rmse_pp": 3.992979567017891, "curve_rmse_pp": [2.2277266694252473, 6.237961430225282, 3.194956139248507, 3.1133373797455794], "s60": [0.1318359375, 0.521484375, 0.53515625, 0.6640625]}
+sensitivity_slm_small manual_200us rmse_pp 2.52 S60 0.1338 seconds 8.4
+sensitivity_slm_small manual_400us rmse_pp 7.069 S60 0.5332 seconds 16.2
+sensitivity_slm_small manual_600us rmse_pp 3.755 S60 0.5342 seconds 22.8
+sensitivity_slm_small ml_400us rmse_pp 3.468 S60 0.6348 seconds 14.5
+SUMMARY {"case": {"temperature": 19, "rin": 5.75e-09, "pointing": 1e-24, "vs": 0, "jitter_nm": 10.0, "alignment_nm": 50.0, "manual": "paper_cubic", "model": "diffusion", "shots": 1024, "seed": 26091612, "dt_us": 0.0125, "noise_us": 0.05, "slm_rin": 1e-12, "slm_pointing": 1e-26, "ml_vector": true, "waist_um": 1.11, "id": "sensitivity_slm_small"}, "joint_rmse_pp": 4.539997270616649, "curve_rmse_pp": [2.5199724560772903, 7.068827527052375, 3.754700693784447, 3.468420358364805], "s60": [0.1337890625, 0.533203125, 0.5341796875, 0.634765625]}
+sensitivity_ml_original manual_200us rmse_pp 2.508 S60 0.1445 seconds 4.6
+sensitivity_ml_original manual_400us rmse_pp 6.603 S60 0.5264 seconds 16.3
+sensitivity_ml_original manual_600us rmse_pp 2.825 S60 0.5527 seconds 23.2
+sensitivity_ml_original ml_400us rmse_pp 3.621 S60 0.6338 seconds 16.8
+SUMMARY {"case": {"temperature": 19, "rin": 5.75e-09, "pointing": 1e-24, "vs": 0, "jitter_nm": 10.0, "alignment_nm": 50.0, "manual": "paper_cubic", "model": "diffusion", "shots": 1024, "seed": 26091612, "dt_us": 0.0125, "noise_us": 0.05, "slm_rin": 0, "slm_pointing": 0, "ml_vector": false, "waist_um": 1.11, "id": "sensitivity_ml_original"}, "joint_rmse_pp": 4.21266601815437, "curve_rmse_pp": [2.508354750976953, 6.603201878163187, 2.825221911806109, 3.6208041193324094], "s60": [0.14453125, 0.5263671875, 0.552734375, 0.6337890625]}
+sensitivity_ml_clamped manual_200us rmse_pp 2.508 S60 0.1445 seconds 5.0
+sensitivity_ml_clamped manual_400us rmse_pp 6.603 S60 0.5264 seconds 13.3
+sensitivity_ml_clamped manual_600us rmse_pp 2.825 S60 0.5527 seconds 19.5
+sensitivity_ml_clamped ml_400us rmse_pp 3.84 S60 0.6406 seconds 14.2
+SUMMARY {"case": {"temperature": 19, "rin": 5.75e-09, "pointing": 1e-24, "vs": 0, "jitter_nm": 10.0, "alignment_nm": 50.0, "manual": "paper_cubic", "model": "diffusion", "shots": 1024, "seed": 26091612, "dt_us": 0.0125, "noise_us": 0.05, "slm_rin": 0, "slm_pointing": 0, "ml_vector": true, "waist_um": 1.11, "ml_endpoints": true, "id": "sensitivity_ml_clamped"}, "joint_rmse_pp": 4.260891703224071, "curve_rmse_pp": [2.508354750976953, 6.603201878163187, 2.825221911806109, 3.8398951775978274], "s60": [0.14453125, 0.5263671875, 0.552734375, 0.640625]}

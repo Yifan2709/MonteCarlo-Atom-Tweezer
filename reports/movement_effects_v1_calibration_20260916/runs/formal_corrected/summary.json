@@ -1,0 +1,31 @@
+{
+  "case": {
+    "temperature": 15.0,
+    "rin": 1e-08,
+    "pointing": 1e-24,
+    "vs": 0.5391689206547424,
+    "jitter_nm": 10.0,
+    "alignment_nm": 50.0,
+    "manual": "paper_cubic",
+    "model": "corrected_constant",
+    "shots": 4096,
+    "seed": 26091621,
+    "dt_us": 0.0125,
+    "noise_us": 0.05,
+    "id": "formal_corrected",
+    "ml_vector": true
+  },
+  "joint_rmse_pp": 10.613953566788632,
+  "curve_rmse_pp": [
+    5.720446875269441,
+    14.169093410118231,
+    11.664551648499613,
+    9.004196554597735
+  ],
+  "s60": [
+    0.055908203125,
+    0.601318359375,
+    0.761962890625,
+    0.852294921875
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "case": {
+    "temperature": 18,
+    "rin": 5.75e-09,
+    "pointing": 1e-24,
+    "vs": 0,
+    "jitter_nm": 10.0,
+    "alignment_nm": 50.0,
+    "manual": "paper_cubic",
+    "model": "diffusion",
+    "shots": 2048,
+    "seed": 26091612,
+    "dt_us": 0.0125,
+    "noise_us": 0.05,
+    "slm_rin": 0,
+    "slm_pointing": 0,
+    "ml_vector": true,
+    "waist_um": 1.11,
+    "id": "selection_T18_R5.75e-09"
+  },
+  "joint_rmse_pp": 4.6623931515058965,
+  "curve_rmse_pp": [
+    3.101593793237179,
+    8.544171940811752,
+    1.368378406468819,
+    1.567297649185993
+  ],
+  "s60": [
+    0.1640625,
+    0.56005859375,
+    0.5576171875,
+    0.6669921875
+  ]
+}

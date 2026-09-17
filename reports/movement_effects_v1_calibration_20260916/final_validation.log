@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "D:\work\MonteCarlo for Atom tweezer\reports\movement_effects_v1_calibration_20260916\run_study.py", line 128, in <module>
+    for case in cases:evaluate(case)
+                      ^^^^^^^^^^^^^^
+  File "D:\work\MonteCarlo for Atom tweezer\reports\movement_effects_v1_calibration_20260916\run_study.py", line 87, in evaluate
+    result=run_noisy_survival(pos,vel,protocol,rounds=30,physics=physics,draws=draws,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\work\MonteCarlo for Atom tweezer\simulation\level2_joint_transfer\src\continuous_transfer\noisy_survival.py", line 152, in run_noisy_survival
+    if not np.all(np.isfinite(amplitudes)) or np.any(amplitudes<0):
+                  ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ufunc 'isfinite' not supported for the input types, and the inputs could not be safely coerced to any supported types according to the casting rule ''safe''

@@ -1,0 +1,33 @@
+{
+  "case": {
+    "temperature": 21,
+    "rin": 6e-09,
+    "pointing": 1e-24,
+    "vs": 0,
+    "jitter_nm": 10.0,
+    "alignment_nm": 50.0,
+    "manual": "paper_cubic",
+    "model": "diffusion",
+    "shots": 256,
+    "seed": 26091611,
+    "dt_us": 0.025,
+    "noise_us": 0.05,
+    "id": "aod_T21_R6e-09",
+    "slm_rin": 0,
+    "slm_pointing": 0,
+    "ml_vector": true
+  },
+  "joint_rmse_pp": 6.137692022173981,
+  "curve_rmse_pp": [
+    7.517368964118283,
+    7.223782088529916,
+    4.954846600320653,
+    4.176204592482151
+  ],
+  "s60": [
+    0.1015625,
+    0.52734375,
+    0.5078125,
+    0.60546875
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "case": {
+    "temperature": 15,
+    "rin": 0,
+    "pointing": 1e-24,
+    "vs": 0,
+    "jitter_nm": 10.0,
+    "alignment_nm": 50.0,
+    "manual": "paper_cubic",
+    "model": "diffusion",
+    "shots": 256,
+    "seed": 26091611,
+    "dt_us": 0.025,
+    "noise_us": 0.05,
+    "id": "aod_T15_R0",
+    "slm_rin": 0,
+    "slm_pointing": 0,
+    "ml_vector": true
+  },
+  "joint_rmse_pp": 17.653286839491486,
+  "curve_rmse_pp": [
+    7.4467189310605075,
+    25.37560419427444,
+    19.043029347954466,
+    13.584633493020876
+  ],
+  "s60": [
+    0.23828125,
+    0.89453125,
+    0.96484375,
+    0.96875
+  ]
+}

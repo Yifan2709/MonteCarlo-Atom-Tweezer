@@ -1,0 +1,33 @@
+{
+  "case": {
+    "temperature": 18,
+    "rin": 7e-09,
+    "pointing": 1e-24,
+    "vs": 0,
+    "jitter_nm": 10.0,
+    "alignment_nm": 50.0,
+    "manual": "paper_cubic",
+    "model": "diffusion",
+    "shots": 1024,
+    "seed": 26091612,
+    "dt_us": 0.025,
+    "noise_us": 0.05,
+    "id": "refine0_T18_R7e-09",
+    "slm_rin": 0,
+    "slm_pointing": 0,
+    "ml_vector": true
+  },
+  "joint_rmse_pp": 4.619910373806527,
+  "curve_rmse_pp": [
+    4.243767613028603,
+    6.368982860825121,
+    3.4379937085074737,
+    3.8705271570432123
+  ],
+  "s60": [
+    0.123046875,
+    0.5166015625,
+    0.54296875,
+    0.6201171875
+  ]
+}

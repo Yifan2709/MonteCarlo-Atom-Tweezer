@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="31" time="54.323" timestamp="2026-09-16T23:17:17.531613+08:00" hostname="DESKTOP-U9MDM34"><testcase classname="tests.test_level5" name="test_cli_help_and_smoke" time="0.140"><failure message="assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['D:\\work\\MonteCarlo for Atom tweezer\\reports\\movement_effects_v1_calibration_20260916\\.ven...ite_pulse_irb\\level5_cli.py&quot;, line 18, in &lt;module&gt;\n    import yaml\nModuleNotFoundError: No module named \'yaml\'\n').returncode">tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-25/test_cli_help_and_smoke0')
+
+    def test_cli_help_and_smoke(tmp_path):
+        root = Path(__file__).resolve().parents[1]
+        env = {k: v for k, v in os.environ.items() if k != "PYTHONPATH"}
+        proc = subprocess.run(
+            [sys.executable, "-m", "level5_finite_pulse_irb.level5_cli",
+             "--help"], cwd=str(root), capture_output=True, text=True, env=env)
+&gt;       assert proc.returncode == 0
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['D:\\work\\MonteCarlo for Atom tweezer\\reports\\movement_effects_v1_calibration_20260916\\.ven...ite_pulse_irb\\level5_cli.py", line 18, in &lt;module&gt;\n    import yaml\nModuleNotFoundError: No module named \'yaml\'\n').returncode
+
+simulation\level2_joint_transfer\tests\test_level5.py:593: AssertionError</failure></testcase><testcase classname="tests.test_level5" name="test_cli_preflight_fast_dev_pool" time="41.628"><failure message="AssertionError: ['build_install_import']&#10;assert not ['build_install_import']">tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-25/test_cli_preflight_fast_dev_po0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D7FEAF7AD0&gt;
+
+    def test_cli_preflight_fast_dev_pool(tmp_path, monkeypatch):
+        """CLI preflight 快速通道（dev 池 + fast-preflight）冒烟。"""
+        root = Path(__file__).resolve().parents[1]
+        cfg_path = root / "configs/level5_finite_pulse_irb.yaml"
+        cfg = load_config(cfg_path)
+        monkeypatch.setattr(cfg, "pool_full_trajectories", 16)
+        monkeypatch.setattr(cfg, "pool_secondary_trajectories", 12)
+        monkeypatch.setattr(cfg, "joint_validation_shots", 16)
+        from level5_finite_pulse_irb import level5_cli as cli
+        out = tmp_path / "out"
+        out.mkdir()
+        l4_dir = cli._discover_level4_output(cfg)
+        from level4_roundtrip_coherence.level4_config import \
+            load_config as load4
+        from level4_roundtrip_coherence import protocol_segments as ps
+        from level4_roundtrip_coherence import upstream_artifacts as l4up
+        cfg4 = load4(root / "configs/level4_roundtrip.yaml")
+        _, resolved = l4up.build_manifest(cfg4)
+        protocols = {
+            "protocol_a": ps.build_protocol_a(
+                cfg4, resolved["nominal_vs_m_per_s"]),
+            "protocol_a_no_lensing": ps.build_protocol_a(cfg4, None),
+            "protocol_b": ps.build_protocol_b(
+                cfg4, resolved["level2_spec"], resolved["nominal_vs_m_per_s"]),
+            "static_idle": ps.build_static_idle(cfg4)}
+        pools = cli._ensure_pools(cfg, cfg4, protocols, out, log=lambda *a: None)
+        assert pools["protocol_a"].n_traj == 16
+        manifest = cli._build_upstream_manifest(cfg, l4_dir, {
+            name: {"_path": "x", "_sha256": pool.sha256()}
+            for name, pool in pools.items()})
+        from level5_finite_pulse_irb.preflight5 import Preflight5
+        pf = Preflight5(cfg, manifest, resolved, group=GROUP,
+                        pool=pools["protocol_a"],
+                        static_pool=pools["static_idle"],
+                        timeline=protocols["protocol_a"], cfg4=cfg4,
+                        run_upstream_tests=False, log=lambda *a: None)
+        checks = pf.run()
+        failed = [n for n in checks["critical_checks"]
+                  if not checks["checks"][n]["passed"]
+                  and not checks["checks"][n]["detail"].get(
+                      "skipped_dev_mode", False)]
+&gt;       assert not failed, failed
+E       AssertionError: ['build_install_import']
+E       assert not ['build_install_import']
+
+simulation\level2_joint_transfer\tests\test_level5.py:637: AssertionError</failure></testcase><testcase classname="tests.test_noise_heating" name="test_recoil_energy_and_scattering_rate_cs_1061nm" time="0.003" /><testcase classname="tests.test_noise_heating" name="test_parametric_and_pointing_formulas" time="0.000" /><testcase classname="tests.test_noise_heating" name="test_constant_power_grows_energy_linearly" time="0.051" /><testcase classname="tests.test_noise_heating" name="test_parametric_channel_is_constant_power_linear" time="0.049" /><testcase classname="tests.test_noise_heating" name="test_custom_time_dependent_callables_are_respected" time="0.013" /><testcase classname="tests.test_noise_heating" name="test_zero_heating_channels_are_bit_identical_to_disabled" time="0.030" /><testcase classname="tests.test_noise_heating" name="test_work_energy_residual_absorbs_noise_channel" time="0.134" /><testcase classname="tests.test_noise_heating" name="test_heating_grows_with_duration_and_destabilizes_capture" time="0.069" /><testcase classname="tests.test_noise_heating" name="test_heating_from_config_disabled_and_enabled" time="0.000" /><testcase classname="tests.test_noise_heating" name="test_scaled_heating_multiplies_all_channels" time="0.000" /><testcase classname="tests.test_noise_heating" name="test_negative_noise_parameter_is_rejected" time="0.009" /><testcase classname="tests.test_noise_heating" name="test_model_pickle_roundtrip" time="0.000" /><testcase classname="tests.test_noise_heating" name="test_parallel_matches_serial_with_heating" time="1.415" /><testcase classname="tests.test_continuous_initialization" name="test_every_prepared_atom_is_bound_in_its_actual_site[baseline_1d]" time="0.122" /><testcase classname="tests.test_continuous_initialization" name="test_every_prepared_atom_is_bound_in_its_actual_site[matched]" time="0.015" /><testcase classname="tests.test_continuous_initialization" name="test_nominal_depth_legacy_exposes_the_archived_initialization_failure" time="0.009" /><testcase classname="tests.test_continuous_initialization" name="test_local_harmonic_widths_and_site_identity_survive_rejection" time="0.015" /><testcase classname="tests.test_continuous_initialization" name="test_initial_temperature_and_heating_reference_can_be_varied_independently" time="0.023" /><testcase classname="tests.test_continuous_transfer" name="test_accelerated_force_is_level3_force" time="0.010" /><testcase classname="tests.test_continuous_transfer" name="test_spin_kernel_matches_level5_and_preserves_unitarity" time="0.006" /><testcase classname="tests.test_continuous_transfer" name="test_protocol_switches_count_and_exact_finite_pulse_edges[matched]" time="0.010" /><testcase classname="tests.test_continuous_transfer" name="test_protocol_switches_count_and_exact_finite_pulse_edges[extended]" time="0.019" /><testcase classname="tests.test_continuous_transfer" name="test_1d_limit_matches_original_level2c" time="1.034" /><testcase classname="tests.test_continuous_transfer" name="test_absorbing_loss_heat_accounting_and_no_spin_feedback" time="0.303" /><testcase classname="tests.test_continuous_transfer" name="test_continuous_spin_matches_direct_level5_replay" time="0.535" /><testcase classname="tests.test_continuous_transfer" name="test_ml_is_unmodified_stage1_digitized_replay" time="0.008" /><testcase classname="tests.test_physical_survival" name="test_pointing_force_derivative_including_axial_coupling" time="0.008" /><testcase classname="tests.test_physical_survival" name="test_paper_cubic_constant_jerk_and_exact_reverse" time="0.001" /><testcase classname="tests.test_physical_survival" name="test_zero_diffusion_matches_continuous_mechanics_and_stage_bookkeeping" time="7.512" /></testsuite></testsuites>

@@ -1,0 +1,15 @@
+sensitivity_lens_filled manual_200us rmse_pp 12.511 S60 0.0576 seconds 9.3
+sensitivity_lens_filled manual_400us rmse_pp 4.149 S60 0.4893 seconds 14.8
+sensitivity_lens_filled manual_600us rmse_pp 4.544 S60 0.5293 seconds 23.4
+sensitivity_lens_filled ml_400us rmse_pp 2.891 S60 0.6396 seconds 17.1
+SUMMARY {"case": {"temperature": 19, "rin": 5.75e-09, "pointing": 1e-24, "vs": 0.39127500000000004, "jitter_nm": 10.0, "alignment_nm": 50.0, "manual": "paper_cubic", "model": "diffusion", "shots": 1024, "seed": 26091612, "dt_us": 0.0125, "noise_us": 0.05, "slm_rin": 0, "slm_pointing": 0, "ml_vector": true, "waist_um": 1.11, "id": "sensitivity_lens_filled"}, "joint_rmse_pp": 7.119319816640132, "curve_rmse_pp": [12.510846682584308, 4.148798784519879, 4.544125584705825, 2.890668643631954], "s60": [0.0576171875, 0.4892578125, 0.529296875, 0.6396484375]}
+sensitivity_mean_only manual_200us rmse_pp 2.379 S60 0.1602 seconds 3.8
+sensitivity_mean_only manual_400us rmse_pp 10.252 S60 0.5742 seconds 11.2
+sensitivity_mean_only manual_600us rmse_pp 4.318 S60 0.627 seconds 17.0
+sensitivity_mean_only ml_400us rmse_pp 3.358 S60 0.7354 seconds 11.8
+SUMMARY {"case": {"temperature": 19, "rin": 5.75e-09, "pointing": 1e-24, "vs": 0, "jitter_nm": 10.0, "alignment_nm": 50.0, "manual": "paper_cubic", "model": "local_mean", "shots": 1024, "seed": 26091612, "dt_us": 0.0125, "noise_us": 0.05, "slm_rin": 0, "slm_pointing": 0, "ml_vector": true, "waist_um": 1.11, "id": "sensitivity_mean_only"}, "joint_rmse_pp": 5.930310497997036, "curve_rmse_pp": [2.3791067207299306, 10.251650676794148, 4.317567806815015, 3.358042325006303], "s60": [0.16015625, 0.57421875, 0.626953125, 0.7353515625]}
+sensitivity_rin_off manual_200us rmse_pp 4.135 S60 0.2246 seconds 9.1
+sensitivity_rin_off manual_400us rmse_pp 20.768 S60 0.8184 seconds 18.7
+sensitivity_rin_off manual_600us rmse_pp 15.701 S60 0.9121 seconds 27.0
+sensitivity_rin_off ml_400us rmse_pp 10.839 S60 0.9189 seconds 20.1
+SUMMARY {"case": {"temperature": 19, "rin": 0, "pointing": 1e-24, "vs": 0, "jitter_nm": 10.0, "alignment_nm": 50.0, "manual": "paper_cubic", "model": "diffusion", "shots": 1024, "seed": 26091612, "dt_us": 0.0125, "noise_us": 0.05, "slm_rin": 0, "slm_pointing": 0, "ml_vector": true, "waist_um": 1.11, "id": "sensitivity_rin_off"}, "joint_rmse_pp": 14.251340483610427, "curve_rmse_pp": [4.13496500759504, 20.767608560036496, 15.701284850219514, 10.838864121968909], "s60": [0.224609375, 0.818359375, 0.912109375, 0.9189453125]}

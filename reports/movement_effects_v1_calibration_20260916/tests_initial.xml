@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="26" time="2.830" timestamp="2026-09-16T23:00:08.726371+08:00" hostname="DESKTOP-U9MDM34"><testcase classname="tests.test_noise_heating" name="test_recoil_energy_and_scattering_rate_cs_1061nm" time="0.004" /><testcase classname="tests.test_noise_heating" name="test_parametric_and_pointing_formulas" time="0.000" /><testcase classname="tests.test_noise_heating" name="test_constant_power_grows_energy_linearly" time="0.044" /><testcase classname="tests.test_noise_heating" name="test_parametric_channel_is_constant_power_linear" time="0.056" /><testcase classname="tests.test_noise_heating" name="test_custom_time_dependent_callables_are_respected" time="0.017" /><testcase classname="tests.test_noise_heating" name="test_zero_heating_channels_are_bit_identical_to_disabled" time="0.038" /><testcase classname="tests.test_noise_heating" name="test_work_energy_residual_absorbs_noise_channel" time="0.152" /><testcase classname="tests.test_noise_heating" name="test_heating_grows_with_duration_and_destabilizes_capture" time="0.068" /><testcase classname="tests.test_noise_heating" name="test_heating_from_config_disabled_and_enabled" time="0.000" /><testcase classname="tests.test_noise_heating" name="test_scaled_heating_multiplies_all_channels" time="0.000" /><testcase classname="tests.test_noise_heating" name="test_negative_noise_parameter_is_rejected" time="0.011" /><testcase classname="tests.test_noise_heating" name="test_model_pickle_roundtrip" time="0.000" /><testcase classname="tests.test_noise_heating" name="test_parallel_matches_serial_with_heating" time="0.533" /><testcase classname="tests.test_continuous_initialization" name="test_every_prepared_atom_is_bound_in_its_actual_site[baseline_1d]" time="0.115" /><testcase classname="tests.test_continuous_initialization" name="test_every_prepared_atom_is_bound_in_its_actual_site[matched]" time="0.011" /><testcase classname="tests.test_continuous_initialization" name="test_nominal_depth_legacy_exposes_the_archived_initialization_failure" time="0.009" /><testcase classname="tests.test_continuous_initialization" name="test_local_harmonic_widths_and_site_identity_survive_rejection" time="0.014" /><testcase classname="tests.test_continuous_initialization" name="test_initial_temperature_and_heating_reference_can_be_varied_independently" time="0.021" /><testcase classname="tests.test_continuous_transfer" name="test_accelerated_force_is_level3_force" time="0.009" /><testcase classname="tests.test_continuous_transfer" name="test_spin_kernel_matches_level5_and_preserves_unitarity" time="0.006" /><testcase classname="tests.test_continuous_transfer" name="test_protocol_switches_count_and_exact_finite_pulse_edges[matched]" time="0.011" /><testcase classname="tests.test_continuous_transfer" name="test_protocol_switches_count_and_exact_finite_pulse_edges[extended]" time="0.016" /><testcase classname="tests.test_continuous_transfer" name="test_1d_limit_matches_original_level2c" time="0.578"><failure message="AssertionError: &#10;Not equal to tolerance rtol=1e-05, atol=1e-12&#10;&#10;Mismatched elements: 16 / 16 (100%)&#10;Max absolute difference among violations: 1.04785017e-06&#10;Max relative difference among violations: 47.87804251&#10; ACTUAL: array([-4.868857e-08,  2.656639e-08, -5.200685e-07, -2.493921e-07,&#10;       -1.712170e-07,  3.596258e-07, -3.763039e-07, -3.512630e-07,&#10;       -6.096932e-08, -2.741736e-07,  4.727929e-07,  2.532039e-07,&#10;        3.794386e-07,  4.998758e-08, -2.782650e-07, -5.201456e-07])&#10; DESIRED: array([ 7.166634e-08, -1.574605e-07,  1.095256e-07,  1.111848e-07,&#10;       -4.320565e-08, -4.330006e-07,  8.027295e-09, -3.547643e-07,&#10;        7.519273e-07, -3.913233e-07,  3.280683e-07, -9.996425e-08,&#10;        4.096124e-07,  9.797831e-08,  2.414675e-07,  5.277045e-07])">inputs = ({'level2c_config': 'configs/level2c_pickup_survival.yaml', 'ml_waveform': 'outputs/level2c_pickup_survival/scan_stage...02e-30, 'parametric': 7.066703938503259e-26, 'pointing': 1.4454368806877797e-28, 'total': 7.081914366179083e-26}, ...))
+
+    def test_1d_limit_matches_original_level2c(inputs):
+        settings,(cfg,physics,pos,vel,_,_,_) = inputs
+        wave = waveform_for("manual_400us",cfg,ROOT/settings["ml_waveform"])
+        protocol = build_protocol(wave,100e-6,.05e-6,dd=False)
+        draws = DisorderDraws.disabled(len(pos))
+        new = run_continuous(pos,vel,protocol,rounds=3,physics=physics,draws=draws,
+                             jitter_sigma_m=0,power_w=0,vs_m_s=0,eta=0)
+        old = run_survival(pos[:,0],vel[:,0],physics["mass_kg"],
+            build_roundtrip_legs(wave,100e-6,.05e-6),.05e-6,6,
+            physics["slm_depth_j"],physics["slm_waist_m"],physics["aod_waist_m"],disorder=draws,
+            record_transfers=(6,))
+        np.testing.assert_array_equal(new["alive"].sum(axis=0),old["survival_counts"])
+        snapshot = old["snapshots"][6]
+        ids = snapshot["shot_ids"]
+        kept = new["alive"][ids,6]
+&gt;       np.testing.assert_allclose(new["states"][ids[kept],6,0],snapshot["x_m"][kept],rtol=1e-5,atol=1e-12)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-05, atol=1e-12
+E       
+E       Mismatched elements: 16 / 16 (100%)
+E       Max absolute difference among violations: 1.04785017e-06
+E       Max relative difference among violations: 47.87804251
+E        ACTUAL: array([-4.868857e-08,  2.656639e-08, -5.200685e-07, -2.493921e-07,
+E              -1.712170e-07,  3.596258e-07, -3.763039e-07, -3.512630e-07,
+E              -6.096932e-08, -2.741736e-07,  4.727929e-07,  2.532039e-07,
+E               3.794386e-07,  4.998758e-08, -2.782650e-07, -5.201456e-07])
+E        DESIRED: array([ 7.166634e-08, -1.574605e-07,  1.095256e-07,  1.111848e-07,
+E              -4.320565e-08, -4.330006e-07,  8.027295e-09, -3.547643e-07,
+E               7.519273e-07, -3.913233e-07,  3.280683e-07, -9.996425e-08,
+E               4.096124e-07,  9.797831e-08,  2.414675e-07,  5.277045e-07])
+
+simulation\level2_joint_transfer\tests\test_continuous_transfer.py:79: AssertionError</failure></testcase><testcase classname="tests.test_continuous_transfer" name="test_absorbing_loss_heat_accounting_and_no_spin_feedback" time="0.073" /><testcase classname="tests.test_continuous_transfer" name="test_continuous_spin_matches_direct_level5_replay" time="0.513" /><testcase classname="tests.test_continuous_transfer" name="test_ml_is_unmodified_stage1_digitized_replay" time="0.009" /></testsuite></testsuites>
