@@ -20,9 +20,12 @@ def tables():
     rows=[]
     for path in sorted((ROOT/'runs').glob('*/*.json')):
         r=json.loads(path.read_text());c=r['config']
+        previous=c['shots']
         for o in r['observations']:
             rows.append({**c,**r['kinematics'],**o,'group':path.parent.name,'file':str(path.relative_to(ROOT)),
+                'previous_alive':previous,'conditional_loss':1-o['alive']/previous if previous else None,
                 'elapsed_total_us':r['kinematics']['complete_oneway_us']*o['repeat']})
+            previous=o['alive']
     df=pd.DataFrame(rows);df.to_csv(ROOT/'all_points.csv',index=False)
     formal=df[df.group.isin(FORMAL)].copy()
     keys=list(json.loads(next((ROOT/'runs/coarse').glob('*.json')).read_text())['config'])
@@ -35,12 +38,23 @@ def tables():
     extra=extra.merge(formal[keys].drop_duplicates(),on=keys,how='inner')
     formal=pd.concat([formal,extra],ignore_index=True)
     formal=formal.sort_values('shots').drop_duplicates(keys+['seed'],keep='last')
-    pooled=[]
+    pooled=[];energy_cache={}
     for values,g in formal.groupby(keys,dropna=False):
         row=g.iloc[0].to_dict();n=int(g.shots.sum());k=int(g.alive.sum());lo,hi=interval(k,n)
         row['representative_file']=row.pop('file');row['representative_seed']=row.pop('seed')
+        distributions=[]
+        for source in g.itertuples():
+            if source.file not in energy_cache:
+                with np.load((ROOT/source.file).with_suffix('.npz')) as raw:
+                    energy_cache[source.file]=(raw['energy_j'],raw['alive'])
+            en,retained=energy_cache[source.file];r=int(source.repeat)
+            distributions.append(en[retained[:,r],r]/1.380649e-29)
+        energy=np.concatenate(distributions);previous=int(g.previous_alive.sum())
         row.update(shots=n,alive=k,survival=k/n,lower=lo,upper=hi,seeds=','.join(map(str,g.seed)),seed_count=len(g),
             source_files=';'.join(g.file),
+            previous_alive=previous,conditional_loss=1-k/previous if previous else None,
+            median_energy_uK=float(np.median(energy)) if len(energy) else None,
+            energy_p95_uK=float(np.quantile(energy,.95)) if len(energy) else None,
             status99='supported' if lo>=.99 else 'failed' if hi<.99 else 'uncertain',
             status999='supported' if lo>=.999 else 'failed' if hi<.999 else 'uncertain')
         pooled.append(row)
