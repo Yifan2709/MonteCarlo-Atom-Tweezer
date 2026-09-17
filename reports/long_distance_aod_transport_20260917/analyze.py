@@ -27,11 +27,20 @@ def tables():
     formal=df[df.group.isin(FORMAL)].copy()
     keys=list(json.loads(next((ROOT/'runs/coarse').glob('*.json')).read_text())['config'])
     keys=[k for k in keys if k not in ['shots','seed','repeats']]+['repeat']
+    # Fresh validation seeds at the same production timestep are additional
+    # evidence, including unfavorable draws. Do not discard them from a final
+    # condition already selected for independent confirmation. Other timesteps
+    # remain numerical controls, never extra independent atom trials.
+    extra=df[df.group.isin(['convergence','boundary_steps','repeat_steps'])&(df.dt_us==.05)]
+    extra=extra.merge(formal[keys].drop_duplicates(),on=keys,how='inner')
+    formal=pd.concat([formal,extra],ignore_index=True)
     formal=formal.sort_values('shots').drop_duplicates(keys+['seed'],keep='last')
     pooled=[]
     for values,g in formal.groupby(keys,dropna=False):
         row=g.iloc[0].to_dict();n=int(g.shots.sum());k=int(g.alive.sum());lo,hi=interval(k,n)
+        row['representative_file']=row.pop('file');row['representative_seed']=row.pop('seed')
         row.update(shots=n,alive=k,survival=k/n,lower=lo,upper=hi,seeds=','.join(map(str,g.seed)),seed_count=len(g),
+            source_files=';'.join(g.file),
             status99='supported' if lo>=.99 else 'failed' if hi<.99 else 'uncertain',
             status999='supported' if lo>=.999 else 'failed' if hi<.999 else 'uncertain')
         pooled.append(row)
@@ -46,7 +55,7 @@ def tables():
                     maximum_confirmed_average_m_s=float(good.average_m_s.max()) if len(good) else None,
                     maximum_confirmed_peak_m_s=float(good.peak_m_s.max()) if len(good) else None,
                     minimum_complete_us=float(good.complete_oneway_us.min()) if len(good) else None,
-                    note='discrete confirmed points only; intervals between them NOT certified; no global optimum'))
+                    note='statistical support in discrete points only; read timestep and parameter uncertainty separately; intervals NOT certified; no global optimum'))
     pd.DataFrame(boundaries).to_csv(ROOT/'boundaries.csv',index=False)
     return df,pool
 

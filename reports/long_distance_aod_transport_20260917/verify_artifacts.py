@@ -10,8 +10,16 @@ ROOT=Path(__file__).resolve().parent
 
 def main():
     failures=[];count=0;atoms=0;versions={};physical_versions={}
+    for queue in ROOT.glob('*_queue.json'):
+        stage=queue.name.removesuffix('_queue.json')
+        for cfg in json.loads(queue.read_text()):
+            key=hashlib.sha256(json.dumps(cfg,sort_keys=True).encode()).hexdigest()[:18]
+            path=ROOT/'runs'/stage/(key+'.json')
+            if not path.exists():failures.append((str(path),'incomplete queue'))
     for path in sorted((ROOT/'runs').glob('*/*.json')):
         result=json.loads(path.read_text());c=result['config'];count+=1;atoms+=c['shots']
+        key=hashlib.sha256(json.dumps(c,sort_keys=True).encode()).hexdigest()[:18]
+        if key!=path.stem:failures.append((str(path),'configuration hash mismatch'))
         for name,digest in result['source_sha256'].items():
             versions.setdefault(name,set()).add(digest)
         with np.load(path.with_suffix('.npz')) as raw:

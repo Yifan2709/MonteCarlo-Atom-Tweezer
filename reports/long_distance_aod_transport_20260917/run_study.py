@@ -238,9 +238,15 @@ def execute(stage,start=0,stop=None):
     checks=json.loads((ROOT/'benchmarks.json').read_text())
     if not checks['passed']:raise RuntimeError('benchmarks required')
     out=ROOT/'runs'/stage;out.mkdir(parents=True,exist_ok=True)
-    configs=list(cases(stage))
+    queue_file=ROOT/(stage+'_queue.json')
+    # Recorded queues are authoritative. Later independent validation can move a
+    # reported boundary without silently replacing the controls already chosen.
+    if queue_file.exists():
+        configs=[Config(**v) for v in json.loads(queue_file.read_text())]
+    else:
+        configs=list(cases(stage))
+        queue_file.write_text(json.dumps([asdict(c) for c in configs],indent=2))
     physics_hashes={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in [Path('simulation/level2_joint_transfer/src/long_distance_transport/model.py'),Path('simulation/level2_joint_transfer/src/paper_integration/exact_trajectories.py')]}
-    (ROOT/(stage+'_queue.json')).write_text(json.dumps([asdict(c) for c in configs],indent=2))
     for i,c in enumerate(configs):
         if i<start or (stop is not None and i>=stop):continue
         cfg=asdict(c);key=hashlib.sha256(json.dumps(cfg,sort_keys=True).encode()).hexdigest()[:18]

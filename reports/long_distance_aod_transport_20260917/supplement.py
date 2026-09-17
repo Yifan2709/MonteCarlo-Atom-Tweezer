@@ -27,7 +27,12 @@ def main():
     text+='\n全部支持时间点列表见 [boundaries.csv](boundaries.csv)，逐点区间与未确定/失败点见 [independent_confirmation.csv](independent_confirmation.csv)。\n'
     (ROOT/'BOUNDARIES.md').write_text(text,encoding='utf-8')
     # Independent seeds are presented separately, not hidden by pooling.
-    df[df.group.isin(['confirm','operations_confirm','repeat_confirm','final_single'])&df['repeat'].isin([1,10,50])].to_csv(ROOT/'seedwise_confirmation.csv',index=False)
+    keys=list(json.loads(next((ROOT/'runs/coarse').glob('*.json')).read_text())['config'])
+    keys=[k for k in keys if k not in ['shots','seed','repeats']]+['repeat']
+    evidence=df[df.group.isin(['confirm','operations_confirm','repeat_confirm','final_single','convergence','boundary_steps','repeat_steps'])&(df.dt_us==.05)]
+    evidence=evidence.merge(pool[keys].drop_duplicates(),on=keys,how='inner')
+    evidence=evidence.sort_values('shots').drop_duplicates(keys+['seed'],keep='last')
+    evidence[evidence['repeat'].isin([1,10,50])].to_csv(ROOT/'seedwise_confirmation.csv',index=False)
     # Native paper controls use identical initial pools at all three timesteps.
     rows=[]
     native=df[df.group=='native_steps']
@@ -40,6 +45,20 @@ def main():
                 survival_difference=float(aa.mean()-bb.mean()),label_disagreement=float(np.mean(aa!=bb)),
                 energy_KS=float(ks_2samp(x['energy_j'][aa,1],y['energy_j'][bb,1]).statistic)))
     pd.DataFrame(rows).to_csv(ROOT/'native_convergence.csv',index=False)
+    steps=df[(df.group.isin(['boundary_steps','convergence']))&(df.protocol=='A')&(df.disorder==0)&(df['repeat']==1)].copy()
+    step_keys=['distance_um','trajectory','tau_us','duration_us','dt_us']
+    bins=[]
+    for key,g in steps.groupby(step_keys):
+        g=g.drop_duplicates('seed');n=int(g.shots.sum());k=int(g.alive.sum());lo,hi=interval(k,n)
+        bins.append(dict(zip(step_keys,key))|dict(shots=n,alive=k,survival=k/n,lower=lo,upper=hi,status99='supported' if lo>=.99 else 'failed' if hi<.99 else 'uncertain'))
+    bst=pd.DataFrame(bins);bst.to_csv(ROOT/'boundary_timestep_status.csv',index=False)
+    edges=[]
+    for key,g in bst.groupby(['distance_um','trajectory','tau_us','dt_us']):
+        good=g[g.status99=='supported'];t=float(good.duration_us.min()) if len(good) else np.nan
+        edges.append(dict(zip(['distance_um','trajectory','tau_us','dt_us'],key))|dict(target=.99,shortest_supported_tested_us=t,
+            average_m_s=key[0]/t,times_tested_us=';'.join(map(str,sorted(g.duration_us))),
+            note='99% threshold in tested refinement subset only; no continuous boundary or 99.9% certification'))
+    pd.DataFrame(edges).to_csv(ROOT/'boundary_position_convergence.csv',index=False)
     nonmono=[]
     screening=df[df.group.isin(['coarse','refine','repeat','repeat_distances'])]
     keys=['distance_um','trajectory','protocol','tau_us','depth_uK','rin','disorder','repeat']
