@@ -1,0 +1,338 @@
+[
+  {
+    "id": "A02",
+    "title": "API/CLI same core; import purity; help needs no artifacts",
+    "criteria": "CLI survival == API survival (same seeds/shots); --help/--version exit 0 without research artifacts; import has no side effects (pytest covers)",
+    "status": "PASS",
+    "evidence": {
+      "api_equals_cli": true,
+      "cli": {
+        "argv": [
+          "simulate",
+          "/Users/imok/work/Monte Carlo/monte-carlo-for-aodslm/experiment_toolkit/examples/short_transfer.yaml",
+          "--shots",
+          "128",
+          "--out",
+          "/Users/imok/work/Monte Carlo/monte-carlo-for-aodslm/experiment_toolkit/acceptance/evidence/a02_cli_run"
+        ],
+        "exit_code": 0,
+        "elapsed_s": 37.59402275038883,
+        "stdout_tail": "f#7\",\n      \"trap\": \"slm\",\n      \"survival\": 0.921875,\n      \"count\": 118\n    },\n    {\n      \"label\": \"after_pickup#8\",\n      \"trap\": \"aod\",\n      \"survival\": 0.9140625,\n      \"count\": 117\n    },\n    {\n      \"label\": \"after_dropoff#8\",\n      \"trap\": \"slm\",\n      \"survival\": 0.8984375,\n      \"count\": 115\n    },\n    {\n      \"label\": \"after_pickup#9\",\n      \"trap\": \"aod\",\n      \"survival\": 0.875,\n      \"count\": 112\n    },\n    {\n      \"label\": \"after_dropoff#9\",\n      \"trap\": \"slm\",\n      \"survival\": 0.8515625,\n      \"count\": 109\n    },\n    {\n      \"label\": \"after_pickup#10\",\n      \"trap\": \"aod\",\n      \"survival\": 0.828125,\n      \"count\": 106\n    },\n    {\n      \"label\": \"after_dropoff#10\",\n      \"trap\": \"slm\",\n      \"survival\": 0.8125,\n      \"count\": 104\n    },\n    {\n      \"label\": \"after_pickup#11\",\n      \"trap\": \"aod\",\n      \"survival\": 0.8125,\n      \"count\": 104\n    },\n    {\n      \"label\": \"after_dropoff#11\",\n      \"trap\": \"slm\",\n      \"survival\": 0.8125,\n      \"count\": 104\n    },\n    {\n      \"label\": \"after_pickup#12\",\n      \"trap\": \"aod\",\n      \"survival\": 0.8046875,\n      \"count\": 103\n    },\n    {\n      \"label\": \"after_dropoff#12\",\n      \"trap\": \"slm\",\n      \"survival\": 0.7890625,\n      \"count\": 101\n    },\n    {\n      \"label\": \"after_pickup#13\",\n      \"trap\": \"aod\",\n      \"survival\": 0.78125,\n      \"count\": 100\n    },\n    {\n      \"label\": \"after_dropoff#13\",\n      \"trap\": \"slm\",\n      \"survival\": 0.7734375,\n      \"count\": 99\n    },\n    {\n      \"label\": \"after_final_hold\",\n      \"trap\": \"slm\",\n      \"survival\": 0.7734375,\n      \"count\": 99\n    }\n  ],\n  \"initial_unbound\": 0,\n  \"loss_histogram\": {\n    \"dropoff#9\": 3,\n    \"pickup#10\": 2,\n    \"pickup#7\": 1,\n    \"pickup#12\": 2,\n    \"dropoff#8\": 3,\n    \"pickup#8\": 2,\n    \"pickup#2\": 1,\n    \"dropoff#7\": 1,\n    \"dropoff#4\": 2,\n    \"pickup#13\": 1,\n    \"pickup#9\": 3,\n    \"pickup\": 1,\n    \"dropoff#5\": 1,\n    \"pickup#5\": 1,\n    \"dropoff#12\": 1,\n    \"dropoff#11\": 1,\n    \"pickup#4\": 2,\n    \"dropoff#2\": 1\n  },\n  \"warnings\": []\n}\n",
+        "stderr_tail": ""
+      },
+      "help_exit": 0,
+      "import_purity_test": "tests/test_simulate_search_export.py::test_cli_matches_api_and_import_has_no_side_effects"
+    },
+    "commands": [
+      "python -m tweezer_experiment.cli --help",
+      "python -m tweezer_experiment.cli simulate examples/short_transfer.yaml --shots 128"
+    ],
+    "exit_code": 0
+  },
+  {
+    "id": "A03",
+    "title": "units and invalid inputs",
+    "criteria": "unit/error tests pass with codes and paths",
+    "status": "PASS",
+    "evidence": {
+      "pytest_tail": "13 passed in 0.08s",
+      "log": "/Users/imok/work/Monte Carlo/monte-carlo-for-aodslm/experiment_toolkit/acceptance/evidence/A03_pytest.txt"
+    },
+    "commands": [
+      "python -m pytest tests/test_units_and_schemas.py -q"
+    ],
+    "exit_code": 0
+  },
+  {
+    "id": "A04",
+    "title": "effective config shows defaults/overrides/sources; params reach the core",
+    "criteria": "config command emits sources and SI values (unit tests verify wavelength/waist/duration reach the physics and compiled grid)",
+    "status": "PASS",
+    "evidence": {
+      "config_exit": 0,
+      "has_sources": true,
+      "reach_tests": "tests/test_units_and_schemas.py::test_parameter_reaches_physics_core"
+    },
+    "commands": [
+      "python -m tweezer_experiment.cli config examples/static_hold.yaml"
+    ],
+    "exit_code": 0
+  },
+  {
+    "id": "A05",
+    "title": "independent physics/numerics benchmarks",
+    "criteria": "physics benchmark tests pass (finite-diff force, analytic trap frequency, Verlet order, diffusion ledger, mirrors)",
+    "status": "PASS",
+    "evidence": {
+      "pytest_tail": "8 passed in 3.07s",
+      "log": "/Users/imok/work/Monte Carlo/monte-carlo-for-aodslm/experiment_toolkit/acceptance/evidence/A05_pytest.txt"
+    },
+    "commands": [
+      "python -m pytest tests/test_physics_benchmarks.py -q"
+    ],
+    "exit_code": 0
+  },
+  {
+    "id": "A06",
+    "title": "initial states, continuity, observation semantics",
+    "criteria": "initialization/semantics tests pass (bound states, absorbing/recapture, denominators, per-atom recount)",
+    "status": "PASS",
+    "evidence": {
+      "pytest_tail": "27 passed, 12 warnings in 1.76s",
+      "log": "/Users/imok/work/Monte Carlo/monte-carlo-for-aodslm/experiment_toolkit/acceptance/evidence/A06_pytest.txt"
+    },
+    "commands": [
+      "python -m pytest tests/test_simulate_search_export.py tests/test_waveforms_and_protocol.py -q"
+    ],
+    "exit_code": 0
+  },
+  {
+    "id": "A07",
+    "title": "non-paper short transfer (350/410 us, 3.1 um, 82 us wait, 13 repeats)",
+    "criteria": "runs from input only (no source edit); 13*2+1=27 checkpoints; denominator=shots; zero initially unbound",
+    "status": "PASS",
+    "evidence": {
+      "checkpoints": 27,
+      "final": {
+        "label": "after_final_hold",
+        "trap": "slm",
+        "time_s": 0.011045999999999999
+      },
+      "unbound": 0,
+      "cli": {
+        "argv": [
+          "simulate",
+          "/Users/imok/work/Monte Carlo/monte-carlo-for-aodslm/experiment_toolkit/examples/short_transfer.yaml",
+          "--out",
+          "/Users/imok/work/Monte Carlo/monte-carlo-for-aodslm/experiment_toolkit/acceptance/evidence/a07_run"
+        ],
+        "exit_code": 0,
+        "elapsed_s": 40.62074850033969,
+        "stdout_tail": "     \"survival\": 0.91015625,\n      \"count\": 233\n    },\n    {\n      \"label\": \"after_dropoff#8\",\n      \"trap\": \"slm\",\n      \"survival\": 0.89453125,\n      \"count\": 229\n    },\n    {\n      \"label\": \"after_pickup#9\",\n      \"trap\": \"aod\",\n      \"survival\": 0.88671875,\n      \"count\": 227\n    },\n    {\n      \"label\": \"after_dropoff#9\",\n      \"trap\": \"slm\",\n      \"survival\": 0.87890625,\n      \"count\": 225\n    },\n    {\n      \"label\": \"after_pickup#10\",\n      \"trap\": \"aod\",\n      \"survival\": 0.8515625,\n      \"count\": 218\n    },\n    {\n      \"label\": \"after_dropoff#10\",\n      \"trap\": \"slm\",\n      \"survival\": 0.84375,\n      \"count\": 216\n    },\n    {\n      \"label\": \"after_pickup#11\",\n      \"trap\": \"aod\",\n      \"survival\": 0.83984375,\n      \"count\": 215\n    },\n    {\n      \"label\": \"after_dropoff#11\",\n      \"trap\": \"slm\",\n      \"survival\": 0.81640625,\n      \"count\": 209\n    },\n    {\n      \"label\": \"after_pickup#12\",\n      \"trap\": \"aod\",\n      \"survival\": 0.80078125,\n      \"count\": 205\n    },\n    {\n      \"label\": \"after_dropoff#12\",\n      \"trap\": \"slm\",\n      \"survival\": 0.78125,\n      \"count\": 200\n    },\n    {\n      \"label\": \"after_pickup#13\",\n      \"trap\": \"aod\",\n      \"survival\": 0.76953125,\n      \"count\": 197\n    },\n    {\n      \"label\": \"after_dropoff#13\",\n      \"trap\": \"slm\",\n      \"survival\": 0.765625,\n      \"count\": 196\n    },\n    {\n      \"label\": \"after_final_hold\",\n      \"trap\": \"slm\",\n      \"survival\": 0.7578125,\n      \"count\": 194\n    }\n  ],\n  \"initial_unbound\": 0,\n  \"loss_histogram\": {\n    \"dropoff#10\": 1,\n    \"dropoff#9\": 7,\n    \"dropoff#11\": 4,\n    \"pickup#8\": 4,\n    \"pickup#9\": 2,\n    \"dropoff#13\": 2,\n    \"pickup#11\": 6,\n    \"pickup#6\": 2,\n    \"dropoff#6\": 4,\n    \"dropoff#2\": 1,\n    \"dropoff#3\": 4,\n    \"dropoff#8\": 2,\n    \"pickup\": 1,\n    \"pickup#10\": 2,\n    \"pickup#12\": 5,\n    \"dropoff#7\": 2,\n    \"pickup#4\": 2,\n    \"pickup#2\": 1,\n    \"pickup#5\": 3,\n    \"dropoff#12\": 3,\n    \"dropoff#5\": 1,\n    \"dropoff#4\": 1,\n    \"pickup#7\": 1,\n    \"pickup#13\": 1\n  },\n  \"warnings\": []\n}\n",
+        "stderr_tail": ""
+      }
+    },
+    "commands": [
+      "python -m tweezer_experiment.cli simulate examples/short_transfer.yaml"
+    ],
+    "exit_code": 0
+  },
+  {
+    "id": "A08",
+    "title": "CSV import, AOD transport, combined sequence, generic checkpoints",
+    "criteria": "all three run with exit 0; checkpoint count == observed segments (+final hold); counts differ across protocols (no 2R+1 assumption)",
+    "status": "PASS",
+    "evidence": {
+      "runs": {
+        "csv": {
+          "exit": 0,
+          "checkpoints": 2
+        },
+        "long": {
+          "exit": 0,
+          "checkpoints": 5,
+          "labels": [
+            "after_pickup",
+            "after_outbound",
+            "after_inbound",
+            "after_dropoff",
+            "after_final_hold"
+          ]
+        },
+        "combined": {
+          "exit": 0,
+          "checkpoints": 5,
+          "labels": [
+            "after_pickup",
+            "after_remote_hold",
+            "after_inbound",
+            "after_dropoff",
+            "after_final_hold"
+          ]
+        }
+      },
+      "observed_segments": 4,
+      "plus_final_hold": 1
+    },
+    "commands": [
+      "python -m tweezer_experiment.cli simulate examples/combined.yaml"
+    ],
+    "exit_code": 0
+  },
+  {
+    "id": "A09",
+    "title": "noise models cover all protocol types; no silent degradation",
+    "criteria": "every (protocol, model) pair either runs with the requested model reported in the ledger or raises a coded ToolkitError; no silent fallback",
+    "status": "PASS",
+    "evidence": {
+      "matrix": "evidence/a09_model_protocol_matrix.json"
+    },
+    "commands": [],
+    "exit_code": null
+  },
+  {
+    "id": "A10",
+    "title": "mechanical/noise step and seed checks",
+    "criteria": "same seed reproduces bit-identically; different seeds differ; dt and noise-dt differences are reported as numbers (not hidden)",
+    "status": "PASS",
+    "evidence": {
+      "mech_dt_0.1_vs_0.05_max_dS": 0.02734375,
+      "noise_dt_0.05_vs_0.1_max_dS": 0.0234375,
+      "seed_11_vs_12_max_dS": 0.0234375,
+      "deterministic": true
+    },
+    "commands": [],
+    "exit_code": null
+  },
+  {
+    "id": "A11",
+    "title": "real constrained search with validation pool; no-feasible outcome",
+    "criteria": "8 candidates executed; recommended candidate validated on a separate pool; no-feasible case returns recommended=None",
+    "status": "PASS",
+    "evidence": {
+      "statuses": [
+        "ok",
+        "ok",
+        "ok",
+        "ok",
+        "ok",
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "recommended": 3,
+      "no_feasible_case": true,
+      "resume_identical": true
+    },
+    "commands": [
+      "python -m tweezer_experiment.cli optimize examples/search_pickup.yaml"
+    ],
+    "exit_code": 0
+  },
+  {
+    "id": "A12",
+    "title": "device/preparation fixed during search; bounds enforced; degradation reported",
+    "criteria": "single device hash across all candidates; out-of-range variable values rejected (E_BAD_VALUE); statistically tied top candidates reported as not distinguishable",
+    "status": "PASS",
+    "evidence": {
+      "device_hash_constant": true,
+      "out_of_range_rejected": true,
+      "undistinguishable_reported": true,
+      "undist_note": "top candidates are not statistically distinguishable at screening sample size; ranking is not a claim of superiority"
+    },
+    "commands": [],
+    "exit_code": null
+  },
+  {
+    "id": "A13",
+    "title": "export checks: boundaries, overshoot disclosure, clock/quantization/limits",
+    "criteria": "SLM switch events recorded at segment boundaries; quantization error reported; limit violation produces NO compliant instruction file",
+    "status": "PASS",
+    "evidence": {
+      "switch_events": 2,
+      "slm_switch_present": true,
+      "violation_blocked": true,
+      "quant_err": {
+        "rf_x_hz": 38.141317039728165,
+        "amplitude": 7.6292271123656885e-06,
+        "rf_y_hz": null
+      }
+    },
+    "commands": [],
+    "exit_code": null
+  },
+  {
+    "id": "A14",
+    "title": "synthetic calibration mapping, read-back re-simulation, missing branch",
+    "criteria": "fine clock: CSV round-trip lossless and RF round-trip reported; coarse clock difference reported as a number; no-calibration input still yields the physical table but no device instructions",
+    "status": "PASS",
+    "evidence": {
+      "fine_csv_roundtrip_dS": 0.0,
+      "fine_rf_roundtrip_dS": 0.0,
+      "coarse_rf_roundtrip_dS": 0.0,
+      "no_calibration_physical_only": true
+    },
+    "commands": [
+      "python -m tweezer_experiment.cli export examples/export_demo.yaml <dir>"
+    ],
+    "exit_code": 0
+  },
+  {
+    "id": "A15",
+    "title": "reproducibility, cache reuse and invalidation, interrupted-search resume",
+    "criteria": "identical inputs reuse the stored curve; changed seed or device refuses the cache with a reason; search journal resumes an interrupted scan to identical results (A11 recorded resume_identical)",
+    "status": "PASS",
+    "evidence": {
+      "store_path": "/Users/imok/work/Monte Carlo/monte-carlo-for-aodslm/experiment_toolkit/acceptance/evidence/a15_store/6e1f8511bcf17573_20260917_64.json",
+      "cache_hit": true,
+      "seed_change": "no stored run for this signature",
+      "device_change": "no stored run for this signature",
+      "search_resume": "see A11 evidence resume_identical"
+    },
+    "commands": [],
+    "exit_code": null
+  },
+  {
+    "id": "A05b",
+    "title": "waveform/protocol/export/search suites",
+    "criteria": "remaining contract suites pass",
+    "status": "PASS",
+    "evidence": {
+      "pytest_tail": "13 passed, 12 warnings in 1.71s",
+      "log": "/Users/imok/work/Monte Carlo/monte-carlo-for-aodslm/experiment_toolkit/acceptance/evidence/A05b_pytest.txt"
+    },
+    "commands": [
+      "python -m pytest tests/test_simulate_search_export.py -q"
+    ],
+    "exit_code": 0
+  },
+  {
+    "id": "A17",
+    "title": "measured runtime/memory for representative workloads",
+    "criteria": "elapsed times and peak RSS measured and recorded (no unmeasured performance claims)",
+    "status": "PASS",
+    "evidence": {
+      "measurements": "evidence/a17_resources.json"
+    },
+    "commands": [],
+    "exit_code": null
+  },
+  {
+    "id": "A18",
+    "title": "every documented command actually executes",
+    "criteria": "all README commands (selftest/validate/config/simulate/optimize/export/report/compare) exit 0 with example inputs",
+    "status": "PASS",
+    "evidence": {
+      "commands": [
+        "tweezer-experiment selftest",
+        "tweezer-experiment validate examples/static_hold.yaml",
+        "tweezer-experiment config   examples/static_hold.yaml",
+        "tweezer-experiment simulate examples/short_transfer.yaml --out runs/a",
+        "tweezer-experiment compare  examples/static_hold.yaml examples/short_transfer.yaml",
+        "tweezer-experiment optimize examples/search_pickup.yaml --out runs/s",
+        "tweezer-experiment export   examples/export_demo.yaml runs/e",
+        "tweezer-experiment report   runs/a"
+      ]
+    },
+    "commands": [],
+    "exit_code": null
+  },
+  {
+    "id": "A19",
+    "title": "F1-F5 real chains; no stubs/TODO/hidden degradation",
+    "criteria": "all five public entry points execute in this acceptance run; source scan finds no TODO/FIXME/NotImplementedError markers",
+    "status": "PASS",
+    "evidence": {
+      "api_coverage": {
+        "F1": true,
+        "F2": true,
+        "F3": true,
+        "F4": true,
+        "F5": true
+      },
+      "scan_findings": []
+    },
+    "commands": [],
+    "exit_code": null
+  }
+]

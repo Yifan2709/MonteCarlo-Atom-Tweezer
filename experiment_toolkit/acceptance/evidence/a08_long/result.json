@@ -1,0 +1,151 @@
+{
+  "run": {
+    "run_id": "run_20260917T051144_ab7dc102",
+    "schema_version": "1",
+    "model_version": "1.0.0",
+    "started_utc": "2026-09-17T12:11:44Z",
+    "inputs_hash": "ab7dc102cc0d7e8f",
+    "calibration_hash": "44136fa355b3678a",
+    "seeds": {
+      "master": 20260917,
+      "streams": [
+        "disorder",
+        "initial",
+        "jitter",
+        "noise"
+      ]
+    },
+    "backend": "numpy",
+    "versions": {
+      "python": "3.14.7",
+      "numpy": "2.5.2",
+      "toolkit": "1.0.0"
+    },
+    "elapsed_s": 6.902676083147526,
+    "status": "ok"
+  },
+  "absorbing": true,
+  "denominator": 256,
+  "checkpoints": [
+    {
+      "label": "after_pickup",
+      "trap": "aod",
+      "time_s": 0.00039999999999999996
+    },
+    {
+      "label": "after_outbound",
+      "trap": "aod",
+      "time_s": 0.0018499999999999999
+    },
+    {
+      "label": "after_inbound",
+      "trap": "aod",
+      "time_s": 0.0033
+    },
+    {
+      "label": "after_dropoff",
+      "trap": "slm",
+      "time_s": 0.0037
+    },
+    {
+      "label": "after_final_hold",
+      "trap": "slm",
+      "time_s": 0.0038
+    }
+  ],
+  "survival_counts": [
+    256,
+    256,
+    255,
+    255,
+    254,
+    254
+  ],
+  "survival": [
+    1.0,
+    1.0,
+    0.99609375,
+    0.99609375,
+    0.9921875,
+    0.9921875
+  ],
+  "wilson95_low": [
+    0.9852161435741286,
+    0.9852161435741286,
+    0.9782090246194175,
+    0.9782090246194175,
+    0.9719672316984642,
+    0.9719672316984642
+  ],
+  "wilson95_high": [
+    0.9999999999999999,
+    0.9999999999999999,
+    0.9993101178330381,
+    0.9993101178330381,
+    0.9978549096323186,
+    0.9978549096323186
+  ],
+  "initial_unbound_actual_site": 0,
+  "energy_stats": [
+    {
+      "checkpoint_index": 0,
+      "survivors": 256,
+      "energy_uK_mean": -99.42705351109657,
+      "energy_uK_median": -101.39014804398064,
+      "energy_uK_p90": -65.77606524647908
+    },
+    {
+      "checkpoint_index": 1,
+      "survivors": 256,
+      "energy_uK_mean": -219.3852041276243,
+      "energy_uK_median": -227.5519277084622,
+      "energy_uK_p90": -172.14894174427724
+    },
+    {
+      "checkpoint_index": 2,
+      "survivors": 255,
+      "energy_uK_mean": -218.19487665091867,
+      "energy_uK_median": -226.49302966213338,
+      "energy_uK_p90": -167.19182441270087
+    },
+    {
+      "checkpoint_index": 3,
+      "survivors": 255,
+      "energy_uK_mean": -215.45937054888802,
+      "energy_uK_median": -222.4445387528956,
+      "energy_uK_p90": -165.66565018475129
+    },
+    {
+      "checkpoint_index": 4,
+      "survivors": 254,
+      "energy_uK_mean": -94.26545127742644,
+      "energy_uK_median": -96.79072841611581,
+      "energy_uK_p90": -56.41110557357454
+    },
+    {
+      "checkpoint_index": 5,
+      "survivors": 254,
+      "energy_uK_mean": -94.26542568231285,
+      "energy_uK_median": -96.78905985798724,
+      "energy_uK_p90": -56.41113427006812
+    }
+  ],
+  "loss_histogram": {
+    "outbound": 1,
+    "dropoff": 1
+  },
+  "noise_ledger": {
+    "mean_realized_j_per_atom": 2.092271402763319e-28,
+    "mean_expected_j_per_atom": 1.051059976218849e-28,
+    "model": "diffusion"
+  },
+  "switch_work_mean_j": [
+    0.0,
+    1.5666147294471861e-30,
+    2.0483282095225532e-30,
+    9.251086644155494e-31,
+    0.0
+  ],
+  "warnings": [],
+  "interval_note": "Wilson 95% per checkpoint reflects Monte Carlo sampling of independent atoms only (no common-path noise in phase 1)"
+}

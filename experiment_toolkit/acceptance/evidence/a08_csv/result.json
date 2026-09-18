@@ -1,0 +1,97 @@
+{
+  "run": {
+    "run_id": "run_20260917T051137_d0612d2a",
+    "schema_version": "1",
+    "model_version": "1.0.0",
+    "started_utc": "2026-09-17T12:11:37Z",
+    "inputs_hash": "d0612d2a6f70ac86",
+    "calibration_hash": "44136fa355b3678a",
+    "seeds": {
+      "master": 20260917,
+      "streams": [
+        "disorder",
+        "initial",
+        "jitter",
+        "noise"
+      ]
+    },
+    "backend": "numpy",
+    "versions": {
+      "python": "3.14.7",
+      "numpy": "2.5.2",
+      "toolkit": "1.0.0"
+    },
+    "elapsed_s": 0.5146350422874093,
+    "status": "ok"
+  },
+  "absorbing": true,
+  "denominator": 256,
+  "checkpoints": [
+    {
+      "label": "after_external_move",
+      "trap": "aod",
+      "time_s": 0.0003
+    },
+    {
+      "label": "after_settle",
+      "trap": "aod",
+      "time_s": 0.00039999999999999996
+    }
+  ],
+  "survival_counts": [
+    256,
+    256,
+    256
+  ],
+  "survival": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "wilson95_low": [
+    0.9852161435741286,
+    0.9852161435741286,
+    0.9852161435741286
+  ],
+  "wilson95_high": [
+    0.9999999999999999,
+    0.9999999999999999,
+    0.9999999999999999
+  ],
+  "initial_unbound_actual_site": 0,
+  "energy_stats": [
+    {
+      "checkpoint_index": 0,
+      "survivors": 256,
+      "energy_uK_mean": -99.42705351109657,
+      "energy_uK_median": -101.39014804398064,
+      "energy_uK_p90": -65.77606524647908
+    },
+    {
+      "checkpoint_index": 1,
+      "survivors": 256,
+      "energy_uK_mean": -218.84507962541954,
+      "energy_uK_median": -226.5428464968329,
+      "energy_uK_p90": -176.30468048203062
+    },
+    {
+      "checkpoint_index": 2,
+      "survivors": 256,
+      "energy_uK_mean": -218.75264889619956,
+      "energy_uK_median": -226.25768103288053,
+      "energy_uK_p90": -176.21020577121178
+    }
+  ],
+  "loss_histogram": {},
+  "noise_ledger": {
+    "mean_realized_j_per_atom": 0.0,
+    "mean_expected_j_per_atom": 0.0,
+    "model": "none"
+  },
+  "switch_work_mean_j": [
+    0.0,
+    2.0536919882366065e-30
+  ],
+  "warnings": [],
+  "interval_note": "Wilson 95% per checkpoint reflects Monte Carlo sampling of independent atoms only (no common-path noise in phase 1)"
+}

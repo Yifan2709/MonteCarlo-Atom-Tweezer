@@ -1,0 +1,49 @@
+# Example 1: static SLM hold — the smallest honest prediction.
+# Atoms are prepared bound in their actual SLM sites and simply sit in the
+# combined field (SLM on, AOD off at the same center) for 200 us. With no
+# noise this must give S=1; with diffusion noise it is the pure heating
+# baseline. All values in this example are assumed/synthetic except where a
+# __source tag says otherwise.
+device:
+  species: Cs133
+  slm:
+    wavelength_nm: 1061
+    waist_um: 1.17
+    depth_uK: 140
+    depth_uK__source: {tag: measured, note: "paper Methods anchor ~0.14 mK (example)"}
+  aod:
+    wavelength_nm: 1055
+    waist_um: 1.17
+    depth_uK: 280
+    depth_uK__source: {tag: assumed, note: "paper Methods anchor, waist assumed matched"}
+  lensing: {mode: off}
+preparation:
+  temperature_uK: 15
+  site_disorder: true
+  slm_depth_rel_sigma: 0.114
+  aod_depth_rel_sigma: 0.02
+  aod_waist_rel_sigma: 0.02
+  alignment_sigma_um: 0.05
+  shot_jitter_alignment_sigma_nm: 10
+noise:
+  model: diffusion
+  aod_rin_psd_per_hz: 5.75e-9
+  aod_pointing_psd_m2_per_hz: 1.0e-24
+  slm_rin_psd_per_hz: 0.0
+  slm_pointing_psd_m2_per_hz: 0.0
+  recoil_per_joule: 0.0
+numerics:
+  dt_us: 0.05
+  noise_dt_us: 0.05
+  shots: 256
+  seed: 20260917
+protocol:
+  segments:
+    - id: hold
+      type: static
+      duration_us: 200
+      aod_center_um: [0, 0]
+      aod_depth_uK: 0
+      slm_factor: 1.0
+      observe: slm
+  sequence: [hold]

@@ -1,0 +1,46 @@
+# Example 4 (A08): user CSV trajectory import (external lab waveform).
+# The CSV (csv_trajectory.csv in this directory) carries its own time axis,
+# AOD x position, depth and SLM factor; velocities are derived by the
+# declared central-difference rule. A static SLM-on wait follows; the CSV
+# segment is observed at its end.
+device:
+  species: Cs133
+  slm:
+    wavelength_nm: 1061
+    waist_um: 1.17
+    depth_uK: 140
+  aod:
+    wavelength_nm: 1055
+    waist_um: 1.17
+    depth_uK: 280
+  lensing: {mode: off}
+preparation:
+  temperature_uK: 15
+  site_disorder: true
+  slm_depth_rel_sigma: 0.114
+  aod_depth_rel_sigma: 0.02
+  aod_waist_rel_sigma: 0.02
+  alignment_sigma_um: 0.05
+  shot_jitter_alignment_sigma_nm: 10
+noise:
+  model: none
+numerics:
+  dt_us: 0.05
+  noise_dt_us: 0.05
+  shots: 256
+  seed: 20260917
+protocol:
+  segments:
+    - id: external_move
+      type: csv
+      file: csv_trajectory.csv
+      interpolation: linear
+      observe: aod
+    - id: settle
+      type: static
+      duration_us: 100
+      aod_center_um: [2.5, 0]
+      aod_depth_uK: 280
+      slm_factor: 0.0
+      observe: aod
+  sequence: [external_move, settle]

@@ -1,0 +1,57 @@
+{
+  "physical_table": {
+    "path": "/Users/imok/work/Monte Carlo/monte-carlo-for-aodslm/experiment_toolkit/acceptance/evidence/a19_export/physical_controls.csv",
+    "rows": 14002,
+    "duplicate_boundary_times": "preserved (segment left/right limits)",
+    "switch_events": [],
+    "audit": {
+      "overshoot": [],
+      "velocity_jumps": [],
+      "accel_notes": [
+        {
+          "segment": "pickup",
+          "note": "paper_manual has acceleration jumps at move endpoints"
+        },
+        {
+          "segment": "dropoff",
+          "note": "paper_manual has acceleration jumps at move endpoints"
+        }
+      ]
+    }
+  },
+  "device_instructions": {
+    "path": "/Users/imok/work/Monte Carlo/monte-carlo-for-aodslm/experiment_toolkit/acceptance/evidence/a19_export/rf_instructions.csv",
+    "clock_hz": 20000000.0,
+    "quantization_bits": 16,
+    "calibration_version": "syn-v1",
+    "calibration_source": "synthetic",
+    "format": "neutral RF table (synthetic calibration example; not a vendor protocol)",
+    "quantization_max_abs_error": {
+      "rf_x_hz": 38.141317039728165,
+      "amplitude": 7.6292271123656885e-06,
+      "rf_y_hz": null
+    },
+    "limit_checks": [
+      {
+        "check": "max_rf_hz",
+        "value": 81120000.0,
+        "limit": 85000000.0,
+        "pass": true
+      },
+      {
+        "check": "max_rf_step_hz",
+        "value": 255.49447979032993,
+        "limit": 60000.0,
+        "pass": true
+      },
+      {
+        "check": "max_amplitude",
+        "value": 0.875,
+        "limit": 1.0,
+        "pass": true
+      }
+    ],
+    "limits_ok": true
+  },
+  "readback": null
+}

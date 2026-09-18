@@ -1,0 +1,83 @@
+# Example 6 (F5): export with a SYNTHETIC calibration.
+# Layer 1 always emits the physical control table. Because a calibration
+# section is present, the neutral RF instruction table is also generated
+# (clock resampling, monotone-table mapping, 16-bit quantization, limit
+# checks) and the read-back re-simulation compares against the original.
+# The calibration is tagged synthetic: it demonstrates the interface, it
+# is NOT a device characterization.
+device:
+  species: Cs133
+  slm:
+    wavelength_nm: 1061
+    waist_um: 1.17
+    depth_uK: 140
+  aod:
+    wavelength_nm: 1055
+    waist_um: 1.17
+    depth_uK: 280
+  lensing: {mode: off}
+preparation:
+  temperature_uK: 15
+  site_disorder: true
+  slm_depth_rel_sigma: 0.114
+  aod_depth_rel_sigma: 0.02
+  aod_waist_rel_sigma: 0.02
+  alignment_sigma_um: 0.05
+  shot_jitter_alignment_sigma_nm: 10
+noise:
+  model: none
+numerics:
+  dt_us: 0.05
+  noise_dt_us: 0.05
+  shots: 256
+  seed: 20260917
+protocol:
+  segments:
+    - id: pickup
+      type: transfer
+      duration_us: 350
+      from_um: [0, 0]
+      to_um: [3.1, 0]
+      depth_from_uK: 0
+      depth_to_uK: 280
+      path: paper_manual
+      ramp_fraction: 0.48
+      slm_factor: 1.0
+      observe: aod
+    - id: dropoff
+      type: transfer
+      duration_us: 350
+      from_um: [3.1, 0]
+      to_um: [0, 0]
+      depth_from_uK: 280
+      depth_to_uK: 0
+      path: paper_manual
+      ramp_fraction: 0.48
+      order: move_then_depth
+      slm_factor: 1.0
+      observe: slm
+  sequence: [pickup, dropoff]
+calibration:
+  version: syn-v1
+  source_tag: synthetic
+  note: monotonic linear tables for interface verification only
+  clock_hz: 2.0e+7
+  quantization_bits: 16
+  channels:
+    aod_x:
+      kind: frequency
+      unit: MHz
+      input: [-5, 20]
+      input_unit: um
+      output: [79.5, 84.5]
+      valid_input: [-4, 18]
+    aod_depth:
+      kind: voltage
+      unit: V
+      input: [0, 320]
+      input_unit: uK
+      output: [0.0, 1.0]
+  limits:
+    max_rf_hz: 8.5e+7
+    max_rf_step_hz: 6.0e+4
+    max_amplitude: 1.0

@@ -1,0 +1,46 @@
+{
+  "shots": 2048,
+  "dt_us": 0.0125,
+  "noise_dt_us": 0.05,
+  "seed": 20260917,
+  "criteria": ">=90% of common n within 3.5*sigma_mc AND max|dS|<=0.06 per curve",
+  "curves": {
+    "manual_200us": {
+      "n_compared": 61,
+      "frac_within_3.5sigma": 1.0,
+      "max_abs_dS": 0.0116,
+      "argmax_n": 14,
+      "final_S_sim": 0.15625,
+      "final_S_archived": 0.15185546875,
+      "passed": true
+    },
+    "manual_400us": {
+      "n_compared": 61,
+      "frac_within_3.5sigma": 1.0,
+      "max_abs_dS": 0.0112,
+      "argmax_n": 15,
+      "final_S_sim": 0.52587890625,
+      "final_S_archived": 0.52001953125,
+      "passed": true
+    },
+    "manual_600us": {
+      "n_compared": 61,
+      "frac_within_3.5sigma": 1.0,
+      "max_abs_dS": 0.0184,
+      "argmax_n": 27,
+      "final_S_sim": 0.52880859375,
+      "final_S_archived": 0.5267333984375,
+      "passed": true
+    },
+    "ml_400us": {
+      "n_compared": 61,
+      "frac_within_3.5sigma": 1.0,
+      "max_abs_dS": 0.0079,
+      "argmax_n": 16,
+      "final_S_sim": 0.630859375,
+      "final_S_archived": 0.634765625,
+      "passed": true
+    }
+  },
+  "status": "PASS"
+}

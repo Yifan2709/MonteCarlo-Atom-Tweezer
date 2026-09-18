@@ -1,0 +1,81 @@
+{
+  "schema_version": "1",
+  "device": {
+    "mass_kg": 2.2069469514370953e-25,
+    "species": "Cs133",
+    "slm": {
+      "wavelength_m": 1.061e-06,
+      "waist_m": 1.1699999999999998e-06,
+      "nominal_depth_j": 1.9329086e-27,
+      "center_m": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "aod": {
+      "wavelength_m": 1.055e-06,
+      "waist_m": 1.1699999999999998e-06,
+      "nominal_depth_j": 3.8658172e-27,
+      "center_m": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "lensing_mode": "off",
+    "lensing_vs_m_s": null
+  },
+  "preparation": {
+    "temperature_uK": 15.0,
+    "sampler": "site_bound_harmonic",
+    "site_disorder": {
+      "enabled": true,
+      "slm_depth_rel_sigma": 0.114,
+      "aod_depth_rel_sigma": 0.02,
+      "aod_waist_rel_sigma": 0.02,
+      "alignment_sigma_m": 5e-08,
+      "shot_jitter_sigma_m": 1e-08
+    }
+  },
+  "noise": {
+    "model": "diffusion",
+    "aod_rin_psd_per_hz": 5.75e-09,
+    "aod_pointing_psd_m2_per_hz": 1e-24,
+    "slm_rin_psd_per_hz": 0.0,
+    "slm_pointing_psd_m2_per_hz": 0.0,
+    "recoil_per_joule": 0.0,
+    "legacy_power_w": null
+  },
+  "numerics": {
+    "dt_s": 5e-08,
+    "noise_dt_s": 5e-08,
+    "shots": 256,
+    "seed": 20260917,
+    "backend": "numpy",
+    "save_trajectories": "checkpoints"
+  },
+  "protocol_summary": {
+    "segments": [
+      "hold"
+    ],
+    "total_duration_s": 0.00019999999999999998,
+    "checkpoints": [
+      [
+        "after_hold",
+        "slm"
+      ]
+    ],
+    "final_hold_s": null
+  },
+  "sources": {
+    "device.slm.depth_uK": {
+      "tag": "measured",
+      "note": "paper Methods anchor ~0.14 mK (example)"
+    },
+    "device.aod.depth_uK": {
+      "tag": "assumed",
+      "note": "paper Methods anchor, waist assumed matched"
+    }
+  }
+}

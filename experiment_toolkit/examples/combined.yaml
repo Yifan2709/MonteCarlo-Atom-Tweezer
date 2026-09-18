@@ -1,0 +1,98 @@
+# Example 7 (A08/A09): combined short + long sequence with extra observations.
+# Pickup, SLM-off wait, 375 um diagonal outbound, remote hold, inbound,
+# dropoff, final SLM hold. Observations after pickup, at the far end (after
+# the remote hold), after inbound, and after dropoff — checkpoint count is
+# whatever the protocol defines.
+device:
+  species: Cs133
+  slm:
+    wavelength_nm: 1061
+    waist_um: 1.17
+    depth_uK: 140
+  aod:
+    wavelength_nm: 1055
+    waist_um: 1.17
+    depth_uK: 280
+  lensing: {mode: "off"}
+preparation:
+  temperature_uK: 15
+  site_disorder: true
+  slm_depth_rel_sigma: 0.114
+  aod_depth_rel_sigma: 0.02
+  aod_waist_rel_sigma: 0.02
+  alignment_sigma_um: 0.05
+  shot_jitter_alignment_sigma_nm: 10
+noise:
+  model: diffusion
+  aod_rin_psd_per_hz: 5.75e-9
+  aod_pointing_psd_m2_per_hz: 1.0e-24
+  slm_rin_psd_per_hz: 0.0
+  slm_pointing_psd_m2_per_hz: 0.0
+  recoil_per_joule: 0.0
+numerics:
+  dt_us: 0.1
+  noise_dt_us: 0.1
+  shots: 256
+  seed: 20260917
+protocol:
+  segments:
+    - id: pickup
+      type: transfer
+      duration_us: 400
+      from_um: [0, 0]
+      to_um: [2.4, 0]
+      depth_from_uK: 0
+      depth_to_uK: 280
+      path: paper_manual
+      ramp_fraction: 0.48
+      slm_factor: 1.0
+      observe: aod
+    - id: wait
+      type: static
+      duration_us: 100
+      aod_center_um: [2.4, 0]
+      aod_depth_uK: 280
+      slm_factor: 0.0
+    - id: outbound
+      type: transfer
+      duration_us: 1450
+      from_um: [2.4, 0]
+      to_um: [267.27, 267.27]
+      depth_from_uK: 280
+      depth_to_uK: 280
+      path: adiabatic_sine
+      ramp_fraction: 0.01
+      slm_factor: 0.0
+    - id: remote_hold
+      type: static
+      duration_us: 54
+      aod_center_um: [267.27, 267.27]
+      aod_depth_uK: 280
+      slm_factor: 0.0
+      observe: aod
+    - id: inbound
+      type: transfer
+      duration_us: 1450
+      from_um: [267.27, 267.27]
+      to_um: [2.4, 0]
+      depth_from_uK: 280
+      depth_to_uK: 280
+      path: adiabatic_sine
+      ramp_fraction: 0.01
+      slm_factor: 0.0
+      observe: aod
+    - id: dropoff
+      type: transfer
+      duration_us: 400
+      from_um: [2.4, 0]
+      to_um: [0, 0]
+      depth_from_uK: 280
+      depth_to_uK: 0
+      path: paper_manual
+      ramp_fraction: 0.48
+      order: move_then_depth
+      slm_factor: 1.0
+      observe: slm
+  sequence: [pickup, wait, outbound, remote_hold, inbound, dropoff]
+  final_hold_us: 100
+  final_observe: slm

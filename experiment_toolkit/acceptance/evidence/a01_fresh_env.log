@@ -1,0 +1,38 @@
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - setuptools>=68
+* Getting build dependencies for wheel...
+WARNING `project.license` as a TOML table is deprecated
+!!
+
+        ********************************************************************************
+        Please use a simple string containing a SPDX expression for `project.license`. You can also use `project.license-files`. (Both options available on setuptools>=77.0.0).
+
+        By 2027-Feb-18, you need to update your project and remove deprecated calls
+        or your builds will no longer be supported.
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+* Installed build dependency versions:
+  - setuptools==84.0.0
+* Building wheel...
+WARNING `project.license` as a TOML table is deprecated
+!!
+
+        ********************************************************************************
+        Please use a simple string containing a SPDX expression for `project.license`. You can also use `project.license-files`. (Both options available on setuptools>=77.0.0).
+
+        By 2027-Feb-18, you need to update your project and remove deprecated calls
+        or your builds will no longer be supported.
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+wheel: tweezer_experiment-1.0.0-py3-none-any.whl
+import location: /private/tmp/tk_fresh_mGBT/venv/lib/python3.14/site-packages/tweezer_experiment/__init__.py
+simulate from spaced cwd: final S = 0.6979166666666666 unbound = 0
+export + readback: {"controls_max_relative_change": 2.1157444156158314e-16, "controls_exact": true, "max_abs_dS": 0.0078125, "final_capture": 0.76171875, "note": "unit-conversion round trips can differ at 1 ULP; with stochastic noise such residuals diverge chaotically, so dS also contains MC-level chaos amplification \u2014 control fidelity is the exactness criterion"}
+A01 OK

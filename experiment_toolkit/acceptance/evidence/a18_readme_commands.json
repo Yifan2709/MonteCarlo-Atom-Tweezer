@@ -1,0 +1,34 @@
+[
+  {
+    "command": "tweezer-experiment selftest",
+    "exit": 0
+  },
+  {
+    "command": "tweezer-experiment validate examples/static_hold.yaml",
+    "exit": 0
+  },
+  {
+    "command": "tweezer-experiment config   examples/static_hold.yaml",
+    "exit": 0
+  },
+  {
+    "command": "tweezer-experiment simulate examples/short_transfer.yaml --out runs/a",
+    "exit": 0
+  },
+  {
+    "command": "tweezer-experiment compare  examples/static_hold.yaml examples/short_transfer.yaml",
+    "exit": 0
+  },
+  {
+    "command": "tweezer-experiment optimize examples/search_pickup.yaml --out runs/s",
+    "exit": 0
+  },
+  {
+    "command": "tweezer-experiment export   examples/export_demo.yaml runs/e",
+    "exit": 0
+  },
+  {
+    "command": "tweezer-experiment report   runs/a",
+    "exit": 0
+  }
+]

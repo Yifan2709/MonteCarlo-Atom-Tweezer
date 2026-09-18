@@ -1,0 +1,86 @@
+# Example 5 (F4): constrained candidate search over pickup controls.
+# Variables: pickup duration 250..400 us (4 grid points) x ramp fraction
+# {0.40, 0.48}. Objective frozen before any run: maximize final capture.
+# Device/preparation/noise identical for every candidate (search cannot
+# touch them); screening and validation pools are separate.
+device:
+  species: Cs133
+  slm:
+    wavelength_nm: 1061
+    waist_um: 1.17
+    depth_uK: 140
+  aod:
+    wavelength_nm: 1055
+    waist_um: 1.17
+    depth_uK: 280
+  lensing: {mode: off}
+preparation:
+  temperature_uK: 15
+  site_disorder: true
+  slm_depth_rel_sigma: 0.114
+  aod_depth_rel_sigma: 0.02
+  aod_waist_rel_sigma: 0.02
+  alignment_sigma_um: 0.05
+  shot_jitter_alignment_sigma_nm: 10
+noise:
+  model: diffusion
+  aod_rin_psd_per_hz: 5.75e-9
+  aod_pointing_psd_m2_per_hz: 1.0e-24
+  slm_rin_psd_per_hz: 0.0
+  slm_pointing_psd_m2_per_hz: 0.0
+  recoil_per_joule: 0.0
+numerics:
+  dt_us: 0.1
+  noise_dt_us: 0.1
+  shots: 256
+  seed: 20260917
+protocol:
+  segments:
+    - id: pickup
+      type: transfer
+      duration_us: 350
+      from_um: [0, 0]
+      to_um: [3.1, 0]
+      depth_from_uK: 0
+      depth_to_uK: 280
+      path: paper_manual
+      ramp_fraction: 0.48
+      slm_factor: 1.0
+      observe: aod
+    - id: wait
+      type: static
+      duration_us: 82
+      aod_center_um: [3.1, 0]
+      aod_depth_uK: 280
+      slm_factor: 0.0
+    - id: dropoff
+      type: transfer
+      duration_us: 410
+      from_um: [3.1, 0]
+      to_um: [0, 0]
+      depth_from_uK: 280
+      depth_to_uK: 0
+      path: minimum_jerk
+      ramp_fraction: 0.5
+      order: move_then_depth
+      slm_factor: 1.0
+      observe: slm
+  sequence:
+    - repeat: 3
+      items: [pickup, wait, dropoff]
+  final_hold_us: 100
+  final_observe: slm
+search:
+  variables:
+    - target: segment.pickup.duration_us
+      grid: [250, 400, 4]
+    - target: segment.pickup.ramp_fraction
+      values: [0.40, 0.48]
+  objective:
+    type: maximize_capture
+    at: final
+  screening_shots: 256
+  screening_seed: 424242
+  validation_shots: 1024
+  validation_seed: 424243
+  max_candidates: 8

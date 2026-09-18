@@ -1,0 +1,80 @@
+{
+  "run": {
+    "run_id": "run_20260917T042842_04f92a35",
+    "schema_version": "1",
+    "model_version": "1.0.0",
+    "started_utc": "2026-09-17T11:28:42Z",
+    "inputs_hash": "04f92a35bc2dcbee",
+    "calibration_hash": "44136fa355b3678a",
+    "seeds": {
+      "master": 20260917,
+      "streams": [
+        "disorder",
+        "initial",
+        "jitter",
+        "noise"
+      ]
+    },
+    "backend": "numpy",
+    "versions": {
+      "python": "3.14.7",
+      "numpy": "2.5.2",
+      "toolkit": "1.0.0"
+    },
+    "elapsed_s": 0.7211491670459509,
+    "status": "ok"
+  },
+  "absorbing": true,
+  "denominator": 256,
+  "checkpoints": [
+    {
+      "label": "after_hold",
+      "trap": "slm",
+      "time_s": 0.00019999999999999998
+    }
+  ],
+  "survival_counts": [
+    256,
+    256
+  ],
+  "survival": [
+    1.0,
+    1.0
+  ],
+  "wilson95_low": [
+    0.9852161435741286,
+    0.9852161435741286
+  ],
+  "wilson95_high": [
+    0.9999999999999999,
+    0.9999999999999999
+  ],
+  "initial_unbound_actual_site": 0,
+  "energy_stats": [
+    {
+      "checkpoint_index": 0,
+      "survivors": 256,
+      "energy_uK_mean": -99.42705351109657,
+      "energy_uK_median": -101.39014804398064,
+      "energy_uK_p90": -65.77606524647908
+    },
+    {
+      "checkpoint_index": 1,
+      "survivors": 256,
+      "energy_uK_mean": -99.42701584808252,
+      "energy_uK_median": -101.39023714492855,
+      "energy_uK_p90": -65.77566972217815
+    }
+  ],
+  "loss_histogram": {},
+  "noise_ledger": {
+    "mean_realized_j_per_atom": 0.0,
+    "mean_expected_j_per_atom": 0.0,
+    "model": "diffusion"
+  },
+  "switch_work_mean_j": [
+    0.0
+  ],
+  "warnings": [],
+  "interval_note": "Wilson 95% per checkpoint reflects Monte Carlo sampling of independent atoms only (no common-path noise in phase 1)"
+}

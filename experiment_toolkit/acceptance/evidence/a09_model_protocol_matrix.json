@@ -1,0 +1,82 @@
+{
+  "static/none": {
+    "ran": true,
+    "noise_model_reported": "none"
+  },
+  "static/diffusion": {
+    "ran": true,
+    "noise_model_reported": "diffusion"
+  },
+  "static/local_mean": {
+    "ran": true,
+    "noise_model_reported": "local_mean"
+  },
+  "static/legacy_constant_power": {
+    "ran": true,
+    "noise_model_reported": "legacy_constant_power"
+  },
+  "transfer_short/none": {
+    "ran": true,
+    "noise_model_reported": "none"
+  },
+  "transfer_short/diffusion": {
+    "ran": true,
+    "noise_model_reported": "diffusion"
+  },
+  "transfer_short/local_mean": {
+    "ran": true,
+    "noise_model_reported": "local_mean"
+  },
+  "transfer_short/legacy_constant_power": {
+    "ran": true,
+    "noise_model_reported": "legacy_constant_power"
+  },
+  "long/none": {
+    "ran": true,
+    "noise_model_reported": "none"
+  },
+  "long/diffusion": {
+    "ran": true,
+    "noise_model_reported": "diffusion"
+  },
+  "long/local_mean": {
+    "ran": true,
+    "noise_model_reported": "local_mean"
+  },
+  "long/legacy_constant_power": {
+    "ran": true,
+    "noise_model_reported": "legacy_constant_power"
+  },
+  "combined/none": {
+    "ran": true,
+    "noise_model_reported": "none"
+  },
+  "combined/diffusion": {
+    "ran": true,
+    "noise_model_reported": "diffusion"
+  },
+  "combined/local_mean": {
+    "ran": true,
+    "noise_model_reported": "local_mean"
+  },
+  "combined/legacy_constant_power": {
+    "ran": true,
+    "noise_model_reported": "legacy_constant_power"
+  },
+  "csv/none": {
+    "ran": false,
+    "rejected": "[E_MISSING_FIELD] control CSV not found: csv_trajectory.csv"
+  },
+  "csv/diffusion": {
+    "ran": false,
+    "rejected": "[E_MISSING_FIELD] control CSV not found: csv_trajectory.csv"
+  },
+  "csv/local_mean": {
+    "ran": false,
+    "rejected": "[E_MISSING_FIELD] control CSV not found: csv_trajectory.csv"
+  },
+  "csv/legacy_constant_power": {
+    "ran": false,
+    "rejected": "[E_MISSING_FIELD] control CSV not found: csv_trajectory.csv"
+  }
+}
