@@ -27,7 +27,7 @@ function page(title,caption,note,refs=['guide'],{cover=false}={}){
  const s=p.slides.add();s.background.fill='#FFFFFF';const n=p.slides.items.length;
  if(!cover)text(s,title,58,35,1165,67,43,C.text,true);
  if(caption)text(s,caption,62,112,1155,48,23,C.muted);
- if(!cover)text(s,n>23?`附录 ${n-23}`:String(n).padStart(2,'0'),1124,676,108,28,16,C.gray);
+ if(!cover)text(s,n>28?`附录 ${n-28}`:String(n).padStart(2,'0'),1124,676,108,28,16,C.gray);
  const sources=refs.map(v=>SRC[v]||v);
  s.speakerNotes.textFrame.setText(`讲解\n${note}\n\n来源与口径\n${sources.map(v=>v.startsWith('http')?v:`${v}\nhttps://github.com/Yifan2709/MonteCarlo-Atom-Tweezer/blob/4d5e200/${v}`).join('\n')}`);
  notes.push({n,title,caption,note,sources});return s;
@@ -79,7 +79,7 @@ function comparison(s,k,o={}){
 
 // 1: formal summary-report cover, with an empty author area.
 {
- const s=page('光镊原子转移的 Monte Carlo 模拟','', '本报告汇总光镊原子转移的Monte Carlo物理方法与已完成的结果。内容按实验问题、交接过程、初态与噪声、存活统计、实验对照以及相干性计算范围展开。正文23页，附录6页。结论说明已经得到的结果和模型适用范围，不安排后续研究或改进任务。',['data','report'],{cover:true});
+ const s=page('光镊原子转移的 Monte Carlo 模拟','', '本报告汇总光镊原子转移的Monte Carlo物理方法与已完成的结果。内容按实验问题、势能与受力、逐步运动、随机抽样与去留、交接过程、存活统计、实验对照以及相干性计算范围展开。正文28页，附录6页。结论说明已经得到的结果和模型适用范围，不安排后续研究或改进任务。',['data','report'],{cover:true});
  text(s,'光镊原子转移的\nMonte Carlo 模拟',80,174,1120,190,63,C.text,true);
  text(s,'方法与结果汇总',84,405,1100,62,35,C.blue);
  text(s,'',84,566,620,50,27,C.muted);
@@ -102,7 +102,65 @@ function comparison(s,k,o={}){
  text(s,'绿线留下，红线丢失',924,565,292,35,21,C.muted);
  takeaway(s,'许多次虚拟实验的结果，组成一条存活曲线');
 }
-// 4: one full round.
+// Five linked method pages: potential, force, motion, sampling and loss.
+{
+ const s=page('势能：两束光形成的势阱','本模型中，光较强的区域势能较低，形成有限深的势阱',
+ '这里展示沿搬运方向的焦平面截面，静止阱深140微开尔文，移动阱深280微开尔文，束腰均为1.11微米，移动阱中心取1.2微米。图中深度是势能除以玻尔兹曼常数后的单位，不代表原子温度。两束不同频率的光在模型中贡献可相加的势能。单束焦平面势为U(x)=-D exp[-2(x-c)^2/w^2]，中心c和深度D按给定控制过程变化。远离两束光时势能趋近零，阱底为负值。Monte Carlo不是凭空随机产生势能，先由光束条件规定势能，再抽取初态、实际位点条件和噪声。正式运动使用完整三维高斯势，这里只取一维截面帮助理解。',['engine','protocol','params']);
+ const r=D.method.potential;
+ plot(s,[ser('静止光',r.x,r.slm,C.gray),ser('移动光',r.x,r.aod,C.orange),ser('总势能',r.x,r.total,C.blue,{width:4})],{x:49,y:189,w:814,h:407,xlabel:'位置（μm）',ylabel:'势能 / kB（μK）',xmin:-1.5,xmax:3,ymin:-400,ymax:0,xstep:.5,ystep:100,xf:'0.0',legendFont:21});
+ label(s,'静止光',904,216,290,C.gray,27);text(s,'中心固定在原点',904,258,300,42,25);
+ label(s,'移动光',904,330,290,C.orange,27);text(s,'中心和深度随时间变',904,372,305,78,25);
+ label(s,'两束光的势能相加',904,478,303,C.blue,27);text(s,'蓝线决定总受力',904,523,304,42,25);
+ takeaway(s,'先给定光束条件，就能算出每个位置、每个时刻的势能');
+}
+{
+ const s=page('受力：势能的坡度决定方向','用一口静止阱看清关系：F = −dU/dx',
+ '上图为140微开尔文、1.11微米的静止高斯阱，下图是对同一条势能曲线求负导数得到的力，单位为10的负21次方牛顿。两个圆点位于左右各0.4微米，颜色在上下图保持一致。左侧势能向右下降，所以力向右；右侧势能向左下降，所以力向左。图示右侧力约为-1.94e-21 N。所谓坡度是原子所在位置的局部斜率，并非势能值本身。阱底势能最低但坡度为零，因此该点受力为零；已经有速度的原子仍会穿过阱底。正式计算分别对x、y、z求负偏导，并把两束光的力相加。',['engine']);
+ const r=D.method.force;
+ plot(s,[ser('',r.x,r.u,C.blue),ser('',[-.4],[r.point_u],C.orange,{points:true,size:11}),ser('',[.4],[r.point_u],C.green,{points:true,size:11})],{x:54,y:176,w:788,h:209,xlabel:'',ylabel:'势能 / kB（μK）',xmin:-1.5,xmax:1.5,xstep:.5,ymin:-150,ymax:0,ystep:50,legend:false,xf:'0.0',axisFont:20});
+ plot(s,[ser('',r.x,r.f,C.blue),ser('',[-1.5,1.5],[0,0],C.gray,{width:1}),ser('',[-.4],[-r.point_f],C.orange,{points:true,size:11}),ser('',[.4],[r.point_f],C.green,{points:true,size:11})],{x:54,y:405,w:788,h:196,xlabel:'位置（μm）',ylabel:'力（10⁻²¹ N）',xmin:-1.5,xmax:1.5,xstep:.5,ymin:-3,ymax:3,ystep:1,legend:false,xf:'0.0',yf:'0.0',axisFont:20});
+ label(s,'左侧：力向右',895,214,317,C.orange,29);text(s,'势能向右降低',895,261,307,45,25);
+ label(s,'右侧：力向左',895,335,317,C.green,29);text(s,'势能向左降低',895,382,307,45,25);
+ label(s,'阱底：受力为零',895,481,320,C.blue,27);text(s,'有速度，仍会向前走',895,527,320,45,25);
+ takeaway(s,'力指向势能降低的方向；局部坡度越陡，力越大');
+}
+{
+ const s=page('移动：把时间切成许多小步','固定高斯阱中的一维示例：原子从右侧静止释放',
+ '图中轨迹重新按仓库使用的速度Verlet方法计算，阱深140微开尔文、束腰1.11微米、铯133质量，起点x=0.4微米、v=0，不含噪声。每个机械步长为0.0125微秒。先用旧位置的力更新半步速度，再用这份速度更新一步位置，然后在新的位置与时刻重新求力，补上另一半步速度。这里的半步只用于计算，原子的真实运动是连续的。左图只每0.25微秒显示一次数值，两个图共用时间轴。开始受向左的力，速度变为负；通过阱底后受力向右，先减速再转向，所以位置和速度并不同步变号。单颗在静止无噪声阱中总能量近似守恒。正式计算同时推进三个方向，移动阱随时间变化，并按另一个固定间隔加入有物理强度的随机速度增量。',['engine','noise','params']);
+ const r=D.method.motion;
+ plot(s,[ser('',r.t,r.x,C.blue),ser('',[0,32],[0,0],C.gray,{width:1})],{x:52,y:184,w:765,h:189,xlabel:'',ylabel:'位置（μm）',xmin:0,xmax:32,ymin:-.5,ymax:.5,xstep:8,ystep:.25,yf:'0.00',legend:false,axisFont:20});
+ plot(s,[ser('',r.t,r.v,C.orange),ser('',[0,32],[0,0],C.gray,{width:1})],{x:52,y:405,w:765,h:191,xlabel:'时间（μs）',ylabel:'速度（cm/s）',xmin:0,xmax:32,ymin:-8,ymax:8,xstep:8,ystep:4,legend:false,axisFont:20});
+ label(s,'①  用当前的力改速度',849,202,367,C.blue,26);
+ text(s,'先走半个时间步',882,245,329,40,24,C.muted);
+ label(s,'②  按速度移动一点',849,326,367,C.blue,26);
+ text(s,'得到新的位置',882,369,329,40,24,C.muted);
+ label(s,'③  重新算力，再改速度',849,449,369,C.blue,26);
+ text(s,'补完另半个时间步',882,492,329,40,24,C.muted);
+ takeaway(s,'每小步 0.0125 μs：不断重复，就连成一条原子轨迹');
+}
+{
+ const s=page('随机抽样：重复计算许多颗原子','一维教学示例：抽取初态并加入噪声，得到不同轨迹',
+ '图中是独立的一维教学计算：一口中心固定的280微开尔文高斯移动阱，束腰1.11微米，初态由仓库实际束缚采样方法按19微开尔文抽取，取三个样本的x方向位置与速度。强度噪声取5.75e-9/Hz，机械步长0.0125微秒，每0.05微秒加入一次随机速度变化。每次增量是当前位置的力除以质量，再乘sqrt(S h/2)和独立的标准正态数，均值为零，幅度受噪声强度约束。三条轨迹分别保留自己的初态和独立噪声样本。这个简化算例展示相同光阱条件下不同原子的经历，不是三维连续交接的标定结果。正式Monte Carlo还会抽取温度决定的位置和速度、位点深度等条件，位点差异随该颗原子固定保留，阶段对准抖动按相应规则抽取。后续轮次继承位置与速度，不重新抽初态。更多样本的去留比例才给出存活概率，不能把三条教学轨迹当成可靠概率统计。',['init','noise','params']);
+ plot(s,D.method.ensemble.map((r,i)=>ser(`原子 ${i+1}`,r.t,r.x,cols[i],{width:2.6})),{x:49,y:199,w:824,h:398,xlabel:'时间（μs）',ylabel:'位置（μm）',xmin:0,xmax:100,xstep:20,ystep:.2,yf:'0.0',legendFont:21});
+ label(s,'初态',916,213,280,C.blue,28);text(s,'位置、速度按温度抽取',916,254,299,77,24);
+ label(s,'光阱差异',916,347,280,C.blue,28);text(s,'每颗原子保留自己的条件',916,388,299,77,24);
+ label(s,'沿途噪声',916,482,280,C.blue,28);text(s,'不断加入随机的小扰动',916,523,299,77,24);
+ takeaway(s,'随机数决定抽到哪种经历，每次运动仍由力学规律计算');
+}
+{
+ const r=D.method.loss, q=D.method.force;
+ const s=page('丢失：总能量是否达到零','远处势能取零；竖线表示动能，水平彩线表示总能量',
+ `图示送回结束后对静止目标阱做判断。两颗原子都在x=0.4微米，势能U/kB=${r.u.toFixed(2)}微开尔文，蓝色圆点画在势能曲线上。左侧动能K/kB=40微开尔文，对应速率${r.v[0].toFixed(2)}厘米每秒，总能量${r.e[0].toFixed(2)}微开尔文，小于零。右侧动能140微开尔文，对应速率${r.v[1].toFixed(2)}厘米每秒，总能量${r.e[1].toFixed(2)}微开尔文，大于零。竖线表示从势能加上动能，水平彩线表示该总能量，均不是原子路径。远处目标阱的势能定义为零，因此负总能量表示该静态目标阱中仍被束缚，非负记为丢失。这是本次模型的检查点判据，不代表原子此刻已飞到图外，也不是每个机械小步都判断。等待结束检查移动阱，送回结束检查静止阱；使用目标阱自身势能而非任意总势。正式K使用三个方向速度的平方和，丢失后停止该颗轨迹、不补原子。非有限数值另作为异常丢失处理。`,['noise','protocol','engine']);
+ label(s,'同一位置，速度较小：留下',108,177,520,C.green,28);
+ label(s,'同一位置，速度较大：丢失',719,177,512,C.red,28);
+ for(let i=0;i<2;i++){
+   const color=i?C.red:C.green;
+   plot(s,[ser('',q.x,q.u,C.blue),ser('',[-1.5,1.5],[0,0],C.gray,{width:1.5}),ser('',[-1,1],[r.e[i],r.e[i]],color),ser('',[.4,.4],[r.u,r.e[i]],color,{width:4}),ser('',[.4],[r.u],C.blue,{points:true,size:10})],{x:51+i*612,y:234,w:569,h:337,xlabel:'位置（μm）',ylabel:'能量 / kB（μK）',xmin:-1.5,xmax:1.5,xstep:.5,ymin:-150,ymax:50,ystep:50,xf:'0.0',legend:false,axisFont:20});
+   text(s,`动能 ${r.k[i]} + 势能 (${Math.round(r.u)}) = ${Math.round(r.e[i])}`,113+i*612,573,510,43,27,color,true);
+ }
+ takeaway(s,'等待结束查移动阱，送回结束查静止阱；E ≥ 0 就记为丢失');
+}
+// One full round, followed by the existing result summary.
 {
  const s=page('一轮交接：接走、等待、送回','以手工 400 μs 操作为例，一轮共 900 μs',
  '上图是移动阱中心，下图是两束光的名义深度。接走400微秒，等待100微秒，送回400微秒。等待时SLM关闭，AOD独自束缚原子。放回是控制波形的时间反向，不是把原子的速度反向。30轮包含60次单程交接。深度以U/kB的正值表示阱深，非原子温度。边沿画为理想开关，未引入额外平滑。',['protocol']);
@@ -312,9 +370,9 @@ function comparison(s,k,o={}){
  label(s,'物理依据',72,463,1080,C.blue,28);text(s,'Manetsch 等的光镊阵列论文；Savard 等的噪声加热理论',72,511,1110,88,27);
 }
 
-if(p.slides.items.length!==29)throw Error(`Expected 29, got ${p.slides.items.length}`);
+if(p.slides.items.length!==34)throw Error(`Expected 34, got ${p.slides.items.length}`);
 await fs.writeFile(path.join(build,'presentation.json'),JSON.stringify(p.toProto()));
-await fs.writeFile(path.join(here,'图解版讲解备注.md'),'# 光镊原子转移的 Monte Carlo 模拟：方法与结果汇总\n\n正文23页，附录6页。\n\n'+notes.map(v=>`## ${v.n}. ${v.title}\n\n${v.caption}\n\n${v.note}\n\n来源：\n${v.sources.map(r=>`- ${r}`).join('\n')}\n`).join('\n'));
+await fs.writeFile(path.join(here,'图解版讲解备注.md'),'# 光镊原子转移的 Monte Carlo 模拟：方法与结果汇总\n\n正文28页，附录6页。\n\n'+notes.map(v=>`## ${v.n}. ${v.title}\n\n${v.caption}\n\n${v.note}\n\n来源：\n${v.sources.map(r=>`- ${r}`).join('\n')}\n`).join('\n'));
 await fs.mkdir(path.join(here,'output'),{recursive:true});
 const exported=path.join(build,'exported-summary.pptx');
 const candidate=path.join(build,'candidate-summary.pptx');
@@ -324,12 +382,12 @@ console.log(`Exported ${p.slides.items.length} slides.`);
 const samples=(process.env.SAMPLE_SLIDES||'').split(',').filter(Boolean).map(Number);
 for(const n of samples){const blob=await p.export({slide:p.slides.items[n-1],format:'png',scale:1});await fs.writeFile(path.join(build,`preview-${n}.png`),new Uint8Array(await blob.arrayBuffer()));}
 if(process.env.DRAFT_ONLY!=='1'){
- const out=process.env.FINAL_PPTX||path.join(here,'output','光镊原子转移的Monte_Carlo模拟_方法与结果汇总.pptx');
+ const out=process.env.FINAL_PPTX||path.join(here,'output','光镊原子转移的Monte_Carlo模拟_方法与结果汇总_过程图解版.pptx');
  const tables=[...new Set(tableOwners)],charts=[...new Set(chartOwners)];
  const result=await finalizePresentation({workspaceDir:root,candidatePath:candidate,finalPath:out,pythonExecutable:python,
  integrityValidatorPath:path.join(skill,'container_tools/inspect_presentation_package_integrity.py'),layoutValidatorPath:path.join(skill,'container_tools/inspect_presentation_layout_geometry.py'),
  layoutArgs:['--expected-slide-size-emu','12192000,6858000','--validate-bullet-geometry','--validate-heading-fit',...tables.flatMap(n=>['--require-native-table-slide',String(n)])],
- explicitTotalSlideCount:29,requiredNativeChartOwnerSlides:charts,requiredNativeTableOwnerSlides:tables,fontPolicy:{basis:'design',families:[FONT]},materializeLiteralChartWorkbooks:true,verifyArtifactToolImport:true,
+ explicitTotalSlideCount:34,requiredNativeChartOwnerSlides:charts,requiredNativeTableOwnerSlides:tables,fontPolicy:{basis:'design',families:[FONT]},materializeLiteralChartWorkbooks:true,verifyArtifactToolImport:true,
  receiptPath:path.join(build,`${path.basename(out)}.validation.json`)});
  console.log(JSON.stringify({path:out,sha256:result.finalSha256}));
 }
