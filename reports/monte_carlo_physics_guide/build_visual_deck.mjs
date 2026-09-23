@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {createRequire} from 'node:module';
+import {execFileSync} from 'node:child_process';
 const here=path.dirname(fileURLToPath(import.meta.url)),root=path.resolve(here,'../..');
 const build=path.join(here,'.build','visual-v2');
 const runtime=process.env.RUNTIME_NODE_MODULES||'/Users/imok/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules';
@@ -22,11 +23,11 @@ function text(s,t,x,y,w,h,size=27,color=C.text,bold=false){
  const sh=s.shapes.add({geometry:'textbox',position:{left:x,top:y,width:w,height:h},fill:'none',line:{fill:'none',width:0}});
  sh.text=t;sh.text.style={typeface:FONT,fontSize:size,color,bold,autoFit:'none',verticalAlignment:'top'};return sh;
 }
-function page(title,caption,note,refs=['guide']){
+function page(title,caption,note,refs=['guide'],{cover=false}={}){
  const s=p.slides.add();s.background.fill='#FFFFFF';const n=p.slides.items.length;
- text(s,title,58,35,1165,67,43,C.text,true);
+ if(!cover)text(s,title,58,35,1165,67,43,C.text,true);
  if(caption)text(s,caption,62,112,1155,48,23,C.muted);
- text(s,n>24?`附录 ${n-24}`:String(n).padStart(2,'0'),1124,676,108,28,16,C.gray);
+ if(!cover)text(s,n>23?`附录 ${n-23}`:String(n).padStart(2,'0'),1124,676,108,28,16,C.gray);
  const sources=refs.map(v=>SRC[v]||v);
  s.speakerNotes.textFrame.setText(`讲解\n${note}\n\n来源与口径\n${sources.map(v=>v.startsWith('http')?v:`${v}\nhttps://github.com/Yifan2709/MonteCarlo-Atom-Tweezer/blob/4d5e200/${v}`).join('\n')}`);
  notes.push({n,title,caption,note,sources});return s;
@@ -76,13 +77,12 @@ function comparison(s,k,o={}){
  {xlabel:'单程转移次数 n',ylabel:'存活比例',xmin:0,xmax:max,ymin:0,ymax:1,xstep:max===30?10:20,ystep:.2,percent:true,...o});
 }
 
-// 1: minimal cover, immediately tied to the observable.
+// 1: formal summary-report cover, with an empty author area.
 {
- const s=page('光镊原子的 Monte Carlo','', '本汇报围绕短距离反复交接的存活实验。先提出要解释的曲线，再沿着一颗原子的实际操作顺序讲述，随后引入初态差异和随机噪声，最后回到实验结果。主报告24页，参数与推导放在6页附录。右图为归档最终共同模型的手工400微秒结果，说明模拟最后得到一条存活曲线。',['data','report']);
- text(s,'一颗颗算运动\n最后数剩下多少',65,214,530,174,53,C.blue,true);
- text(s,'图解汇报',69,446,500,50,29,C.muted);
- text(s,'Yifan2709',69,565,430,40,25,C.muted);
- const r=curve(keys[1]);plot(s,[ser('手工 400 μs 模拟示例',r.map(v=>+v.n),r.map(v=>+v.survival),C.blue)],{x:609,y:187,w:610,h:420,xlabel:'转移次数',ylabel:'存活比例',xmin:0,xmax:60,ymin:0,ymax:1,percent:true,xstep:20,ystep:.5,legend:true});
+ const s=page('光镊原子转移的 Monte Carlo 模拟','', '本报告汇总光镊原子转移的Monte Carlo物理方法与已完成的结果。内容按实验问题、交接过程、初态与噪声、存活统计、实验对照以及相干性计算范围展开。正文23页，附录6页。结论说明已经得到的结果和模型适用范围，不安排后续研究或改进任务。',['data','report'],{cover:true});
+ text(s,'光镊原子转移的\nMonte Carlo 模拟',80,174,1120,190,63,C.text,true);
+ text(s,'方法与结果汇总',84,405,1100,62,35,C.blue);
+ text(s,'',84,566,620,50,27,C.muted);
 }
 // 2: experimental question before any background.
 {
@@ -212,21 +212,21 @@ function comparison(s,k,o={}){
 }
 // 18: a decisive mismatch rather than four more textual analyses.
 {
- const s=page('最需要解释的是 400 与 600 μs 的差别','第 60 次转移，模型给出几乎相同的存活率',
+ const s=page('400 与 600 μs 的实验差别未被模型复现','第 60 次转移，模型给出几乎相同的存活率',
  '直接从point_residuals.csv取末点：手工400实验约41.4%，600约57.3%。归档报告正文写41.8%与CSV有小差别，此处以原散点CSV为准。最终模拟400约52.0%，600约52.7%。这是模型对操作时长的相对反应仍不正确的具体表现，不只是整体曲线上下平移的问题。',['points','metrics','report']);
  const kk=[keys[1],keys[2]];bars(s,['手工 400 μs','手工 600 μs'],[{name:'实验中心值',y:kk.map(k=>+points(k).find(r=>+r.n===60).experiment),color:C.orange},{name:'模拟',y:kk.map(k=>+metric(k).S60),color:C.blue}],{ylabel:'存活比例',ymax:.7,percent:true});
  takeaway(s,'实验有明显差别，模型还没有把这个差别算出来');
 }
 // 19: a real local sensitivity test.
 {
- const s=page('统一增大噪声，不能同时修正这些差距','归档中的共同参数对照，三组使用同一批初态',
- '局部选参对照为T19微开尔文、束腰1.11微米、N2048、同seed。RIN由5.75e-9增大到6.5e-9/Hz，400的RMSE6.86到5.39，600由2.71到5.83，优化400由3.37到4.37。它表明这一局部调节无法同时改善三组，不证明所有更完整物理模型都不可能解释。此页数值来自选参对照，样本池与上一页8192最终验证不同。',['report']);
+ const s=page('同样的噪声变化，对三种操作的影响不同','归档中的共同参数对照，三组使用同一批初态',
+ '局部选参对照为T19微开尔文、束腰1.11微米、N2048、同seed。RIN由5.75e-9增大到6.5e-9/Hz，400的RMSE6.86到5.39，600由2.71到5.83，优化400由3.37到4.37。这一对照反映了不同波形对同一噪声变化的不同响应。此页数值来自选参对照，样本池与上一页8192最终验证不同。',['report']);
  plot(s,[ser('手工 400 μs',[5.75,6.5],[6.86,5.39],C.blue,{markers:true,size:9}),ser('手工 600 μs',[5.75,6.5],[2.71,5.83],C.orange,{markers:true,size:9}),ser('优化 400 μs',[5.75,6.5],[3.37,4.37],C.green,{markers:true,size:9})],{xlabel:'AOD 强度噪声谱（10⁻⁹ /Hz）',ylabel:'曲线误差（百分点）',xmin:5.75,xmax:6.5,xstep:.75,ymin:0,ymax:8,xf:'0.00',ystep:2});
  takeaway(s,'400 μs 更接近了，另外两组却偏得更多');
 }
 // 20: phase is an extension, with native quantitative phase lines.
 {
- const s=page('原子留下以后，还要问相位是否整齐','相位示意：轨迹差异带来不同的相位积累，橙线表示平均值',
+ const s=page('存活与相位分散','相位示意：轨迹差异带来不同的相位积累，橙线表示平均值',
  '一个箭头代表一次轨迹中两个内部态的相对相位。这里用单位圆上的数值线段表示8个相位。左侧全部同向，中间共同转90度，右侧在圆周等间隔分散。共同相位偏移会改变条纹位置，但不降低C；彼此分散使平均向量变短。不同原子不需要相互干涉，统计可以是同一个位点的重复实验。图为精确构造示例，非本次计算输出。',['phase','noise']);
  const circle=Array.from({length:81},(_,i)=>2*Math.PI*i/80);
  for(let j=0;j<3;j++){
@@ -250,25 +250,18 @@ function comparison(s,k,o={}){
 }
 // 22: explicit boundary, short and factual.
 {
- const s=page('这次结果回答到了哪里','存活率和相干性分开说明',
+ const s=page('本次计算的范围','存活率和相干性分开说明',
  '左列是最新随机扩散存活标定实际输出。右列是仓库已有相干性扩展能够计算的量，但它没有与本次最终噪声条件一起完成新的联合验证。内部态模型的η=1.3e-4仍是简化假设。使用半经典路径，没有求完整运动波函数，也没有自旋相关力对运动的反馈。读者不能把两批结果合成一次已经完成的联合证明。',['noise','cli','phase','report']);
- table(s,[['本次存活标定','仓库中的相干性扩展'],['三维运动与随机扰动','沿轨迹累积差分光移'],['统计留下和丢失','统计相位分散'],['与四条实验曲线比较','比较回波与有限脉冲'],['尚有 400 μs 的明显差距','尚未与本次噪声联合验证']],[1,1],{h:364,size:28});
- takeaway(s,'同一套轨迹可以连接两类问题，当前证据仍需分别看');
+ table(s,[['本次存活标定','仓库中的相干性扩展'],['三维运动与随机扰动','沿轨迹累积差分光移'],['统计留下和丢失','统计相位分散'],['与四条实验曲线比较','比较回波与有限脉冲'],['400 μs 后期存活偏高','与本次存活标定分开计算']],[1,1],{h:364,size:28});
+ takeaway(s,'存活统计与相干性计算分别对应不同的观测量');
 }
-// 23: the useful next physical measurements.
+// 23: closing summary of the completed work.
 {
- const s=page('下一步需要哪些实验输入','先区分原因，再增加模型细节',
- '初态分布影响最初损失，AOD/SLM各自噪声谱影响随时间的能量扩散，真实位置和阱深控制关系影响操作激发。三类输入在原归档报告中均被列为优先独立测量。这里没有声称某一个是已证实的残差来源，也不建议直接给400微秒曲线添加独立损失倍率。',['report','params']);
- table(s,[['需要测量','要分清的问题'],['转移前的温度与能量分布','初态是否比假设更热或更偏'],['两条光路各自的噪声谱','随机加热到底来自哪里'],['位置、阱深和开关的实际波形','400 与 600 μs 为何响应不同']],[1.1,1.6],{h:340,size:29});
- takeaway(s,'更独立的物理输入，才能缩小剩余原因的范围');
-}
-// 24: final argument on one figure, not a word-heavy recap.
-{
- const s=page('Monte Carlo 把单颗运动变成整体概率','当前共同模型已经改善比较，仍保留明确的未解释差距',
- '结束时回到第一页提出的问题。每条轨迹由初态、时变势和噪声决定，检查点将它转成留下或丢失，多次抽样给出存活曲线。最后不能只说拟合成功：三条明显改善，400微秒后期仍高估。右侧用四组真实实验末点与模拟末点对照，200取n30其余取n60。相干性则是对这些运动路径继续问内部态相位的问题，不在本次存活验收中。',['data','points','metrics','report']);
+ const s=page('汇总结论','三条曲线明显改善，400 μs 后期仍高估存活',
+ '结束时回到第一页提出的问题。每条轨迹由初态、时变势和噪声决定，检查点将它转成留下或丢失，多次抽样给出存活曲线。最后不能只说拟合成功：三条明显改善，400微秒后期仍高估。右侧用四组真实实验末点与模拟末点对照，200取n30其余取n60。相干性部分描述内部态的相位变化，与本次存活标定结果分开解释。这里汇总已完成工作的结论，不延伸为后续任务安排。',['data','points','metrics','report']);
  text(s,'逐颗算运动',70,237,430,62,39,C.blue,true);
  text(s,'汇总成概率',70,342,430,62,39,C.blue,true);
- text(s,'用差距检验物理假设',70,451,490,78,32,C.text,true);
+ text(s,'对照实验结果',70,451,490,78,32,C.text,true);
  const chosen=keys.map(k=>k===keys[0]?30:60);
  bars(s,['200 μs\nn=30','400 μs\nn=60','600 μs\nn=60','优化\nn=60'],[{name:'实验',y:keys.map((k,i)=>+points(k).find(r=>+r.n===chosen[i]).experiment),color:C.orange},{name:'模拟',y:keys.map((k,i)=>+curve(k).find(r=>+r.n===chosen[i]).survival),color:C.blue}],{x:582,y:215,w:641,h:379,ylabel:'末点存活比例',ymax:.8,percent:true,labels:false});
 }
@@ -319,22 +312,24 @@ function comparison(s,k,o={}){
  label(s,'物理依据',72,463,1080,C.blue,28);text(s,'Manetsch 等的光镊阵列论文；Savard 等的噪声加热理论',72,511,1110,88,27);
 }
 
-if(p.slides.items.length!==30)throw Error(`Expected 30, got ${p.slides.items.length}`);
+if(p.slides.items.length!==29)throw Error(`Expected 29, got ${p.slides.items.length}`);
 await fs.writeFile(path.join(build,'presentation.json'),JSON.stringify(p.toProto()));
-await fs.writeFile(path.join(here,'图解版讲解备注.md'),'# Monte Carlo 图解版讲解备注\n\n主报告24页，附录6页。\n\n'+notes.map(v=>`## ${v.n}. ${v.title}\n\n${v.caption}\n\n${v.note}\n\n来源：\n${v.sources.map(r=>`- ${r}`).join('\n')}\n`).join('\n'));
+await fs.writeFile(path.join(here,'图解版讲解备注.md'),'# 光镊原子转移的 Monte Carlo 模拟：方法与结果汇总\n\n正文23页，附录6页。\n\n'+notes.map(v=>`## ${v.n}. ${v.title}\n\n${v.caption}\n\n${v.note}\n\n来源：\n${v.sources.map(r=>`- ${r}`).join('\n')}\n`).join('\n'));
 await fs.mkdir(path.join(here,'output'),{recursive:true});
-const candidate=path.join(build,'candidate.pptx');
-await(await PresentationFile.exportPptx(p)).save(candidate);
+const exported=path.join(build,'exported-summary.pptx');
+const candidate=path.join(build,'candidate-summary.pptx');
+await(await PresentationFile.exportPptx(p)).save(exported);
+execFileSync(python,[path.join(here,'set_presentation_metadata.py'),exported,candidate]);
 console.log(`Exported ${p.slides.items.length} slides.`);
 const samples=(process.env.SAMPLE_SLIDES||'').split(',').filter(Boolean).map(Number);
 for(const n of samples){const blob=await p.export({slide:p.slides.items[n-1],format:'png',scale:1});await fs.writeFile(path.join(build,`preview-${n}.png`),new Uint8Array(await blob.arrayBuffer()));}
 if(process.env.DRAFT_ONLY!=='1'){
- const out=process.env.FINAL_PPTX||path.join(here,'output','Monte_Carlo_光镊原子_图解汇报版_修订.pptx');
+ const out=process.env.FINAL_PPTX||path.join(here,'output','光镊原子转移的Monte_Carlo模拟_方法与结果汇总.pptx');
  const tables=[...new Set(tableOwners)],charts=[...new Set(chartOwners)];
  const result=await finalizePresentation({workspaceDir:root,candidatePath:candidate,finalPath:out,pythonExecutable:python,
  integrityValidatorPath:path.join(skill,'container_tools/inspect_presentation_package_integrity.py'),layoutValidatorPath:path.join(skill,'container_tools/inspect_presentation_layout_geometry.py'),
  layoutArgs:['--expected-slide-size-emu','12192000,6858000','--validate-bullet-geometry','--validate-heading-fit',...tables.flatMap(n=>['--require-native-table-slide',String(n)])],
- explicitTotalSlideCount:30,requiredNativeChartOwnerSlides:charts,requiredNativeTableOwnerSlides:tables,fontPolicy:{basis:'design',families:[FONT]},materializeLiteralChartWorkbooks:true,verifyArtifactToolImport:true,
+ explicitTotalSlideCount:29,requiredNativeChartOwnerSlides:charts,requiredNativeTableOwnerSlides:tables,fontPolicy:{basis:'design',families:[FONT]},materializeLiteralChartWorkbooks:true,verifyArtifactToolImport:true,
  receiptPath:path.join(build,`${path.basename(out)}.validation.json`)});
  console.log(JSON.stringify({path:out,sha256:result.finalSha256}));
 }
